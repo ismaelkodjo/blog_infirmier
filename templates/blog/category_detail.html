@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }} — {{ site_name }}{% endblock %}
+{% block breadcrumb %}
+<nav class="bg-light border-bottom py-2"><div class="container"><ol class="breadcrumb mb-0 small">
+  <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Accueil</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'blog:category_list' %}">Catégories</a></li>
+  <li class="breadcrumb-item active">{{ category.name }}</li>
+</ol></div></nav>
+{% endblock %}
+{% block content %}
+<section class="py-4 bg-primary-light" style="border-left:6px solid {{ category.color }};">
+  <div class="container py-2">
+    <div class="d-flex align-items-center gap-3">
+      <div class="rounded-3 p-3" style="background:{{ category.color }}22;"><i class="{{ category.icon }}" style="color:{{ category.color }};font-size:2rem;"></i></div>
+      <div>
+        <h1 class="fw-bold mb-0">{{ category.name }}</h1>
+        {% if category.description %}<p class="text-muted mb-0">{{ category.description }}</p>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container py-5">
+  <div class="row g-4">
+    {% for article in articles %}
+    <div class="col-md-6 col-lg-4">
+      <article class="card border-0 shadow-sm rounded-4 h-100 hover-lift overflow-hidden">
+        {% if article.cover_image %}<a href="{{ article.get_absolute_url }}"><img src="{{ article.cover_image.url }}" class="card-img-top article-img" alt="{{ article.title }}" loading="lazy"></a>{% endif %}
+        <div class="card-body p-4">
+          <h2 class="fs-6 fw-bold mb-2"><a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a></h2>
+          <p class="text-muted small">{{ article.summary|truncatewords:15 }}</p>
+          <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ article.published_at|date:"d M Y" }}</small>
+        </div>
+      </article>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5"><p class="text-muted">Aucun article dans cette catégorie.</p></div>
+    {% endfor %}
+  </div>
+  {% if articles.has_other_pages %}
+  <nav class="mt-5"><ul class="pagination justify-content-center">
+    {% if articles.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ articles.previous_page_number }}">«</a></li>{% endif %}
+    <li class="page-item active"><span class="page-link">{{ articles.number }}/{{ articles.paginator.num_pages }}</span></li>
+    {% if articles.has_next %}<li class="page-item"><a class="page-link" href="?page={{ articles.next_page_number }}">»</a></li>{% endif %}
+  </ul></nav>
+  {% endif %}
+</div>
+{% endblock %}

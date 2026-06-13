@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} — {{ site_name }}{% endblock %}
+{% block newsletter_strip %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <h1 class="fw-bold mb-0">
+      <i class="bi bi-pencil me-2 text-primary"></i>{{ title }}
+    </h1>
+    {% if action == 'edit' and article %}
+    <a href="{{ article.get_absolute_url }}" class="btn btn-outline-secondary btn-sm ms-auto">
+      <i class="bi bi-eye me-1"></i>Voir l'article
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="row g-4">
+    <!-- Formulaire principal -->
+    <div class="col-lg-9">
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        <!-- Titre -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+          <h3 class="fs-6 fw-bold mb-3 text-muted text-uppercase small">
+            <i class="bi bi-type me-2"></i>Informations principales
+          </h3>
+
+          <div class="mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label fw-semibold">
+              Titre <span class="text-danger">*</span>
+            </label>
+            <input type="text"
+                   name="{{ form.title.html_name }}"
+                   id="{{ form.title.id_for_label }}"
+                   class="form-control form-control-lg {% if form.title.errors %}is-invalid{% endif %}"
+                   value="{{ form.title.value|default:'' }}"
+                   placeholder="Titre de l'article..."
+                   maxlength="250"
+                   required>
+            {% if form.title.errors %}
+              <div class="invalid-feedback">{{ form.title.errors|join:", " }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="{{ form.subtitle.id_for_label }}" class="form-label fw-semibold">
+              Sous-titre <span class="text-muted small fw-normal">(optionnel)</span>
+            </label>
+            <input type="text"
+                   name="{{ form.subtitle.html_name }}"
+                   id="{{ form.subtitle.id_for_label }}"
+                   class="form-control {% if form.subtitle.errors %}is-invalid{% endif %}"
+                   value="{{ form.subtitle.value|default:'' }}"
+                   placeholder="Sous-titre ou accroche..."
+                   maxlength="300">
+            {% if form.subtitle.errors %}
+              <div class="invalid-feedback">{{ form.subtitle.errors|join:", " }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="{{ form.summary.id_for_label }}" class="form-label fw-semibold">
+              Résumé <span class="text-danger">*</span>
+              <small class="text-muted fw-normal ms-1">(affiché dans les listes d'articles)</small>
+            </label>
+            <textarea name="{{ form.summary.html_name }}"
+                      id="{{ form.summary.id_for_label }}"
+                      class="form-control {% if form.summary.errors %}is-invalid{% endif %}"
+                      rows="3"
+                      maxlength="500"
+                      placeholder="Résumé accrocheur de l'article (max 500 caractères)..."
+                      required>{{ form.summary.value|default:'' }}</textarea>
+            {% if form.summary.errors %}
+              <div class="invalid-feedback">{{ form.summary.errors|join:", " }}</div>
+            {% endif %}
+            <div class="text-end mt-1">
+              <small class="text-muted" id="summary-counter">0 / 500</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image de couverture -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+          <h3 class="fs-6 fw-bold mb-3 text-muted text-uppercase small">
+            <i class="bi bi-image me-2"></i>Image de couverture
+          </h3>
+
+          {% if form.instance.cover_image %}
+          <div class="mb-3">
+            <img src="{{ form.instance.cover_image.url }}"
+                 alt="Image actuelle" class="img-thumbnail rounded-3"
+                 style="max-height:200px; object-fit:cover;">
+            <p class="text-muted small mt-1">Image actuelle — téléchargez-en une nouvelle pour la remplacer.</p>
+          </div>
+          {% endif %}
+
+          <div class="mb-0">
+            <input type="file"
+                   name="{{ form.cover_image.html_name }}"
+                   id="{{ form.cover_image.id_for_label }}"
+                   class="form-control {% if form.cover_image.errors %}is-invalid{% endif %}"
+                   accept="image/*">
+            <div class="form-text">JPG, PNG, WebP — recommandé : 1200×630 px</div>
+            {% if form.cover_image.errors %}
+              <div class="invalid-feedback">{{ form.cover_image.errors|join:", " }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Contenu -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+          <h3 class="fs-6 fw-bold mb-3 text-muted text-uppercase small">
+            <i class="bi bi-file-text me-2"></i>Contenu de l'article
+          </h3>
+          <div class="mb-0">
+            <label for="{{ form.content.id_for_label }}" class="form-label fw-semibold">
+              Contenu <span class="text-danger">*</span>
+            </label>
+            {{ form.content }}
+            {% if form.content.errors %}
+              <div class="text-danger small mt-1">{{ form.content.errors|join:", " }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Catégorie, Tags, Statut -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+          <h3 class="fs-6 fw-bold mb-3 text-muted text-uppercase small">
+            <i class="bi bi-tags me-2"></i>Classification
+          </h3>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="{{ form.category.id_for_label }}" class="form-label fw-semibold">Catégorie</label>
+              <select name="{{ form.category.html_name }}"
+                      id="{{ form.category.id_for_label }}"
+                      class="form-select {% if form.category.errors %}is-invalid{% endif %}">
+                <option value="">— Choisir une catégorie —</option>
+                {% for choice in form.category.field.queryset %}
+                <option value="{{ choice.pk }}"
+                  {% if form.category.value|stringformat:"s" == choice.pk|stringformat:"s" %}selected{% endif %}>
+                  {{ choice.name }}
+                </option>
+                {% endfor %}
+              </select>
+              {% if form.category.errors %}
+                <div class="invalid-feedback">{{ form.category.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label for="{{ form.status.id_for_label }}" class="form-label fw-semibold">
+                Statut <span class="text-danger">*</span>
+              </label>
+              <select name="{{ form.status.html_name }}"
+                      id="{{ form.status.id_for_label }}"
+                      class="form-select {% if form.status.errors %}is-invalid{% endif %}">
+                {% for val, label in form.status.field.choices %}
+                <option value="{{ val }}"
+                  {% if form.status.value == val %}selected{% endif %}>
+                  {{ label }}
+                </option>
+                {% endfor %}
+              </select>
+              {% if form.status.errors %}
+                <div class="invalid-feedback">{{ form.status.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="mb-0">
+            <label for="{{ form.tags.id_for_label }}" class="form-label fw-semibold">
+              Tags
+              <small class="text-muted fw-normal ms-1">(séparés par des virgules)</small>
+            </label>
+            <input type="text"
+                   name="{{ form.tags.html_name }}"
+                   id="{{ form.tags.id_for_label }}"
+                   class="form-control {% if form.tags.errors %}is-invalid{% endif %}"
+                   value="{{ form.tags.value|default:'' }}"
+                   placeholder="vaccination, paludisme, santé-publique...">
+            {% if form.tags.errors %}
+              <div class="invalid-feedback">{{ form.tags.errors|join:", " }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+          <h3 class="fs-6 fw-bold mb-3 text-muted text-uppercase small">
+            <i class="bi bi-search me-2"></i>SEO
+            <span class="badge bg-light text-muted fw-normal ms-2">Optionnel</span>
+          </h3>
+
+          <div class="mb-3">
+            <label for="{{ form.meta_description.id_for_label }}" class="form-label fw-semibold">
+              Meta description
+            </label>
+            <textarea name="{{ form.meta_description.html_name }}"
+                      id="{{ form.meta_description.id_for_label }}"
+                      class="form-control {% if form.meta_description.errors %}is-invalid{% endif %}"
+                      rows="2"
+                      maxlength="160"
+                      placeholder="Description pour Google (max 160 caractères)...">{{ form.meta_description.value|default:'' }}</textarea>
+            <div class="text-end mt-1">
+              <small class="text-muted" id="meta-counter">0 / 160</small>
+            </div>
+          </div>
+
+          <div class="mb-0">
+            <label for="{{ form.meta_keywords.id_for_label }}" class="form-label fw-semibold">
+              Mots-clés SEO
+            </label>
+            <input type="text"
+                   name="{{ form.meta_keywords.html_name }}"
+                   id="{{ form.meta_keywords.id_for_label }}"
+                   class="form-control {% if form.meta_keywords.errors %}is-invalid{% endif %}"
+                   value="{{ form.meta_keywords.value|default:'' }}"
+                   placeholder="mot-clé1, mot-clé2, mot-clé3..."
+                   maxlength="255">
+          </div>
+        </div>
+
+        <!-- Options -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+          <h3 class="fs-6 fw-bold mb-3 text-muted text-uppercase small">
+            <i class="bi bi-toggles me-2"></i>Options
+          </h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-check form-switch">
+                <input type="checkbox"
+                       name="{{ form.featured.html_name }}"
+                       id="{{ form.featured.id_for_label }}"
+                       class="form-check-input"
+                       role="switch"
+                       {% if form.featured.value %}checked{% endif %}>
+                <label class="form-check-label fw-semibold" for="{{ form.featured.id_for_label }}">
+                  <i class="bi bi-star-fill text-warning me-1"></i>Article mis en avant
+                </label>
+                <div class="form-text">Afficher sur la page d'accueil</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check form-switch">
+                <input type="checkbox"
+                       name="{{ form.allow_comments.html_name }}"
+                       id="{{ form.allow_comments.id_for_label }}"
+                       class="form-check-input"
+                       role="switch"
+                       {% if form.allow_comments.value != False %}checked{% endif %}>
+                <label class="form-check-label fw-semibold" for="{{ form.allow_comments.id_for_label }}">
+                  <i class="bi bi-chat-dots text-primary me-1"></i>Autoriser les commentaires
+                </label>
+                <div class="form-text">Permettre aux lecteurs de commenter</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutons de soumission -->
+        <div class="d-flex gap-3 align-items-center">
+          <button type="submit" name="status" value="published" class="btn btn-primary btn-lg px-4">
+            <i class="bi bi-send me-2"></i>
+            {% if action == 'edit' %}Mettre à jour{% else %}Publier l'article{% endif %}
+          </button>
+          <button type="submit" name="_save_draft" value="1" class="btn btn-outline-secondary btn-lg px-4">
+            <i class="bi bi-floppy me-2"></i>Sauvegarder brouillon
+          </button>
+          {% if action == 'edit' and article %}
+          <a href="{{ article.get_absolute_url }}" class="btn btn-outline-danger ms-auto">
+            <i class="bi bi-x-circle me-1"></i>Annuler
+          </a>
+          {% else %}
+          <a href="{% url 'blog:article_list' %}" class="btn btn-outline-danger ms-auto">
+            <i class="bi bi-x-circle me-1"></i>Annuler
+          </a>
+          {% endif %}
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Sidebar conseils -->
+    <div class="col-lg-3">
+      <div class="card border-0 shadow-sm rounded-4 p-4 sticky-sidebar">
+        <h3 class="fs-6 fw-bold mb-3">
+          <i class="bi bi-lightbulb text-warning me-2"></i>Conseils rédaction
+        </h3>
+        <ul class="list-unstyled small text-muted mb-4">
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-1"></i>Titre entre 50-60 caractères</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-1"></i>Résumé accrocheur &lt; 500 car.</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-1"></i>Image 1200×630 px recommandée</li>
+          <li class="mb-2"><i class="bi bi-check-circle text-success me-1"></i>3 à 8 tags pertinents</li>
+          <li><i class="bi bi-check-circle text-success me-1"></i>Meta description &lt; 160 car.</li>
+        </ul>
+
+        <h3 class="fs-6 fw-bold mb-3">
+          <i class="bi bi-search text-primary me-2"></i>SEO
+        </h3>
+        <ul class="list-unstyled small text-muted mb-0">
+          <li class="mb-2"><i class="bi bi-info-circle me-1"></i>Le slug est généré automatiquement depuis le titre</li>
+          <li class="mb-2"><i class="bi bi-info-circle me-1"></i>Ajoutez le mot-clé principal dans le titre</li>
+          <li><i class="bi bi-info-circle me-1"></i>La meta description améliore le taux de clic</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Compteur caractères résumé
+(function() {
+  const textarea = document.getElementById('{{ form.summary.id_for_label }}');
+  const counter  = document.getElementById('summary-counter');
+  if (!textarea || !counter) return;
+  const update = () => {
+    const len = textarea.value.length;
+    counter.textContent = len + ' / 500';
+    counter.className = 'text-' + (len > 450 ? 'danger' : len > 350 ? 'warning' : 'muted');
+  };
+  textarea.addEventListener('input', update);
+  update();
+})();
+
+// Compteur caractères meta description
+(function() {
+  const el  = document.getElementById('{{ form.meta_description.id_for_label }}');
+  const ctr = document.getElementById('meta-counter');
+  if (!el || !ctr) return;
+  const update = () => {
+    const len = el.value.length;
+    ctr.textContent = len + ' / 160';
+    ctr.className = 'text-' + (len > 150 ? 'danger' : len > 120 ? 'warning' : 'muted');
+  };
+  el.addEventListener('input', update);
+  update();
+})();
+
+// Sauvegarde brouillon : forcer statut "draft"
+document.querySelector('[name="_save_draft"]')?.addEventListener('click', function(e) {
+  // Décocher "published" et laisser le statut en draft
+  const statusSelect = document.querySelector('[name="{{ form.status.html_name }}"]');
+  if (statusSelect) statusSelect.value = 'draft';
+});
+</script>
+{% endblock %}

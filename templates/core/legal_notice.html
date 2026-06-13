@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Mentions légales — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="fw-bold mb-4">Mentions légales</h1>
+      <p class="text-muted small mb-4">Conformément aux dispositions légales en vigueur.</p>
+      <div class="article-content">
+        <h2>Éditeur du site</h2>
+        <p>Ce blog est édité par un infirmier de santé publique à titre personnel, dans un objectif de partage de connaissances médicales et sanitaires.</p>
+        <ul>
+          <li><strong>Nom</strong> : Infirmier de Santé Publique</li>
+          <li><strong>Email</strong> : contact@bloginfirmier.com</li>
+          <li><strong>Statut</strong> : Professionnel de santé — exercice libéral</li>
+        </ul>
+
+        <h2>Hébergement</h2>
+        <p>Le site est hébergé sur un serveur dédié sécurisé. En cas de demande d'identification de l'hébergeur, vous pouvez contacter l'éditeur via le formulaire de contact.</p>
+
+        <h2>Propriété intellectuelle</h2>
+        <p>L'ensemble du contenu de ce site (articles, textes, images, ressources) est protégé par le droit d'auteur. Toute reproduction, même partielle, est soumise à l'accord préalable de l'auteur, sauf mention contraire explicite.</p>
+        <p>Les ressources téléchargeables mises à disposition sont publiées sous licence Creative Commons BY-NC 4.0, sauf mention contraire.</p>
+
+        <h2>Responsabilité médicale</h2>
+        <p>Les informations publiées sur ce site ont un caractère éducatif et informatif. Elles ne constituent en aucun cas un avis médical personnalisé et ne sauraient remplacer une consultation avec un professionnel de santé qualifié.</p>
+        <p>L'éditeur décline toute responsabilité quant à l'utilisation faite des informations présentées sur ce site.</p>
+
+        <h2>Sources et références</h2>
+        <p>Les informations médicales et scientifiques publiées s'appuient sur des sources reconnues : OMS, UNICEF, CDC, publications scientifiques indexées (PubMed, Cochrane). Les sources sont citées dans les articles concernés.</p>
+
+        <h2>Liens externes</h2>
+        <p>Ce site peut contenir des liens vers des sites externes. L'éditeur ne peut être tenu responsable du contenu de ces sites tiers ni de leur politique de confidentialité.</p>
+
+        <h2>Droit applicable</h2>
+        <p>Ce site est soumis au droit en vigueur dans le pays d'hébergement. Tout litige relatif à l'utilisation de ce site sera soumis à la juridiction compétente.</p>
+
+        <h2>Contact</h2>
+        <p>Pour toute question relative aux présentes mentions légales, contactez-nous via le <a href="{% url 'contact:contact_view' %}">formulaire de contact</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

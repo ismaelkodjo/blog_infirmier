@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user.get_full_name }} — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-3 text-center">
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+        <img src="{{ profile.get_avatar_url }}" class="rounded-circle mx-auto mb-3" width="90" height="90" style="object-fit:cover;">
+        <h2 class="fs-5 fw-bold">{{ profile_user.get_full_name|default:profile_user.username }}</h2>
+        {% if profile.speciality %}<p class="text-primary small">{{ profile.speciality }}</p>{% endif %}
+        {% if profile.bio %}<p class="text-muted small">{{ profile.bio|truncatewords:30 }}</p>{% endif %}
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <h2 class="fs-4 fw-bold mb-4">Articles de {{ profile_user.get_full_name|default:profile_user.username }}</h2>
+      <div class="row g-3">
+        {% for article in articles %}
+        <div class="col-md-6"><div class="card border-0 shadow-sm rounded-3 p-3 hover-lift">
+          <h3 class="fs-6 fw-semibold"><a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a></h3>
+          <small class="text-muted">{{ article.published_at|date:"d M Y" }}</small>
+        </div></div>
+        {% empty %}<div class="col-12"><p class="text-muted">Aucun article publié.</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

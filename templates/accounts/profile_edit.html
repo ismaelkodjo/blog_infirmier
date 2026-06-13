@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Modifier mon profil — {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+        <h1 class="fs-3 fw-bold mb-4">
+          <i class="bi bi-person-gear me-2 text-primary"></i>Modifier mon profil
+        </h1>
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          <!-- Photo -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Photo de profil</label>
+            {% if form.instance.avatar %}
+            <div class="mb-2">
+              <img src="{{ form.instance.avatar.url }}" class="rounded-circle" width="70" height="70" style="object-fit:cover;">
+            </div>
+            {% endif %}
+            <input type="file" name="{{ form.avatar.html_name }}" class="form-control" accept="image/*">
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Prénom</label>
+              <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value|default:'' }}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nom</label>
+              <input type="text" name="last_name" class="form-control" value="{{ form.last_name.value|default:'' }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email</label>
+            <input type="email" name="email" class="form-control" value="{{ form.email.value|default:'' }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Biographie</label>
+            <textarea name="{{ form.bio.html_name }}" class="form-control" rows="4"
+                      placeholder="Présentez-vous en quelques mots...">{{ form.bio.value|default:'' }}</textarea>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Spécialité</label>
+              <input type="text" name="{{ form.speciality.html_name }}" class="form-control"
+                     value="{{ form.speciality.value|default:'' }}" placeholder="Santé Publique...">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Institution</label>
+              <input type="text" name="{{ form.institution.html_name }}" class="form-control"
+                     value="{{ form.institution.value|default:'' }}" placeholder="Nom de votre institution...">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Téléphone</label>
+            <input type="text" name="{{ form.phone.html_name }}" class="form-control"
+                   value="{{ form.phone.value|default:'' }}" placeholder="+228 00 00 00 00">
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">LinkedIn</label>
+              <input type="url" name="{{ form.linkedin.html_name }}" class="form-control"
+                     value="{{ form.linkedin.value|default:'' }}" placeholder="https://linkedin.com/in/...">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Twitter / X</label>
+              <input type="url" name="{{ form.twitter.html_name }}" class="form-control"
+                     value="{{ form.twitter.value|default:'' }}" placeholder="https://twitter.com/...">
+            </div>
+          </div>
+
+          <div class="d-flex gap-3">
+            <button type="submit" class="btn btn-primary px-4">
+              <i class="bi bi-check-circle me-2"></i>Enregistrer
+            </button>
+            <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary px-4">Annuler</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

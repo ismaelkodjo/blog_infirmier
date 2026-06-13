@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1a6fc4"/>
+  <rect x="0" y="0" width="600" height="630" fill="#145ba3" opacity="0.5"/>
+  <circle cx="600" cy="315" r="200" fill="none" stroke="white" stroke-width="2" opacity="0.2"/>
+  <circle cx="600" cy="315" r="150" fill="none" stroke="white" stroke-width="1" opacity="0.15"/>
+  <text x="600" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="80" fill="white" opacity="0.9">❤</text>
+  <text x="600" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="white">Blog Infirmier</text>
+  <text x="600" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="white" opacity="0.85">Santé Publique &amp; Numérique</text>
+  <line x1="400" y1="430" x2="800" y2="430" stroke="white" stroke-width="1" opacity="0.4"/>
+  <text x="600" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white" opacity="0.7">Épidémiologie · SIS · e-Santé · Vaccination</text>
+</svg>

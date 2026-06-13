@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Page introuvable — {{ site_name }}{% endblock %}
+{% block newsletter_strip %}{% endblock %}
+{% block content %}
+<div class="container py-5 text-center min-vh-100 d-flex align-items-center justify-content-center">
+  <div>
+    <div class="display-1 fw-bold text-primary mb-3">404</div>
+    <h1 class="fs-2 fw-bold mb-3">Page introuvable</h1>
+    <p class="text-muted lead mb-4">La page que vous cherchez n'existe pas ou a été déplacée.</p>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="{% url 'core:home' %}" class="btn btn-primary btn-lg">
+        <i class="bi bi-house me-2"></i>Retour à l'accueil
+      </a>
+      <a href="{% url 'blog:article_list' %}" class="btn btn-outline-primary btn-lg">
+        <i class="bi bi-journal-text me-2"></i>Voir le blog
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Connexion — {{ site_name }}{% endblock %}
+{% block newsletter_strip %}{% endblock %}
+
+{% block content %}
+<section class="py-5 d-flex align-items-center bg-light" style="min-height:90vh">
+  <div class="container">
+    <div class="mx-auto" style="max-width:460px">
+      <div class="text-center mb-4">
+        <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle mb-3"
+             style="width:64px;height:64px;">
+          <i class="bi bi-heart-pulse-fill text-white fs-3"></i>
+        </div>
+        <h1 class="fs-3 fw-bold">Bon retour !</h1>
+        <p class="text-muted">Connectez-vous à votre compte</p>
+      </div>
+
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body p-4 p-md-5">
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="id_username" class="form-label fw-semibold">Nom d'utilisateur</label>
+              <input type="text" name="username" id="id_username" autofocus
+                     class="form-control form-control-lg {% if form.errors %}is-invalid{% endif %}"
+                     value="{{ form.username.value|default:'' }}"
+                     placeholder="Votre nom d'utilisateur" required>
+            </div>
+
+            <div class="mb-4">
+              <label for="id_password" class="form-label fw-semibold">Mot de passe</label>
+              <input type="password" name="password" id="id_password"
+                     class="form-control form-control-lg {% if form.errors %}is-invalid{% endif %}"
+                     placeholder="Votre mot de passe" required>
+              {% if form.non_field_errors %}
+              <div class="invalid-feedback d-block">
+                Nom d'utilisateur ou mot de passe incorrect.
+              </div>
+              {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+              <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+            </button>
+          </form>
+
+          <hr class="my-4">
+          <div class="text-center">
+            <a href="{% url 'accounts:password_reset' %}" class="text-decoration-none text-muted small hover-primary">
+              <i class="bi bi-key me-1"></i>Mot de passe oublié ?
+            </a>
+          </div>
+          <div class="text-center mt-3">
+            <span class="text-muted small">Pas encore de compte ?</span>
+            <a href="{% url 'accounts:register' %}" class="text-primary fw-semibold ms-1 text-decoration-none">
+              S'inscrire
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

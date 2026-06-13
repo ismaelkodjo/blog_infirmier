@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}À propos — {{ site_name }}{% endblock %}
+{% block meta_description %}Découvrez le profil et la mission de l'infirmier de santé publique derrière ce blog dédié à la santé numérique et l'épidémiologie.{% endblock %}
+
+{% block breadcrumb %}
+<nav class="bg-light border-bottom py-2" aria-label="Fil d'Ariane">
+  <div class="container">
+    <ol class="breadcrumb mb-0 small">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Accueil</a></li>
+      <li class="breadcrumb-item active">À propos</li>
+    </ol>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="py-5 bg-medical-light text-white">
+  <div class="container py-3">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="badge bg-white text-primary px-3 py-2 rounded-pill mb-3 fw-semibold">
+          <i class="bi bi-person-badge me-1"></i>À propos
+        </span>
+        <h1 class="display-5 fw-bold mb-4">Infirmier de Santé Publique &amp; Expert en Santé Numérique</h1>
+        <p class="lead opacity-90 mb-4">
+          Ce blog est né d'une conviction profonde : l'information médicale fiable et accessible est un droit fondamental. Je m'engage à partager des connaissances vérifiées en santé publique, épidémiologie et systèmes d'information sanitaire.
+        </p>
+        <div class="d-flex gap-3">
+          <a href="{% url 'core:parcours' %}" class="btn btn-light fw-semibold">
+            <i class="bi bi-briefcase me-2"></i>Mon parcours
+          </a>
+          <a href="{% url 'contact:contact_view' %}" class="btn btn-outline-light fw-semibold">
+            <i class="bi bi-envelope me-2"></i>Me contacter
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center">
+        <div class="bg-white bg-opacity-10 rounded-4 p-4">
+          <div class="rounded-circle bg-white d-flex align-items-center justify-content-center mx-auto mb-3"
+               style="width:130px;height:130px;">
+            <i class="bi bi-person-circle text-primary" style="font-size:5rem;"></i>
+          </div>
+          <h3 class="text-white fw-bold mb-1">Infirmier ESP</h3>
+          <p class="text-white opacity-75 small mb-3">Santé Publique · Épidémiologie · Santé Numérique</p>
+          <div class="d-flex justify-content-center gap-3">
+            <a href="#" class="text-white opacity-75"><i class="bi bi-linkedin fs-5"></i></a>
+            <a href="#" class="text-white opacity-75"><i class="bi bi-twitter-x fs-5"></i></a>
+            <a href="#" class="text-white opacity-75"><i class="bi bi-envelope fs-5"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission & Valeurs -->
+<section class="py-5">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <span class="section-badge">Mission</span>
+      <h2 class="fw-bold mt-2">Ce que je défends</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4 text-center hover-lift">
+          <div class="icon-box bg-primary-light rounded-3 mx-auto mb-3 p-3" style="width:64px;height:64px;">
+            <i class="bi bi-shield-check text-primary fs-3"></i>
+          </div>
+          <h3 class="fs-5 fw-bold mb-2">Information fiable</h3>
+          <p class="text-muted small">Des articles basés sur des données probantes, des études scientifiques et les recommandations des organisations de santé internationales.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4 text-center hover-lift">
+          <div class="icon-box bg-health-light rounded-3 mx-auto mb-3 p-3" style="width:64px;height:64px;">
+            <i class="bi bi-people text-health fs-3"></i>
+          </div>
+          <h3 class="fs-5 fw-bold mb-2">Accessibilité</h3>
+          <p class="text-muted small">Rendre la santé publique compréhensible pour tous : professionnels de santé, étudiants et grand public.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100 p-4 text-center hover-lift">
+          <div class="icon-box bg-warning-light rounded-3 mx-auto mb-3 p-3" style="width:64px;height:64px;">
+            <i class="bi bi-lightbulb text-warning fs-3"></i>
+          </div>
+          <h3 class="fs-5 fw-bold mb-2">Innovation</h3>
+          <p class="text-muted small">Promouvoir la santé numérique, les systèmes d'information sanitaire et les nouvelles technologies au service de la santé.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Compétences -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <span class="section-badge">Expertise</span>
+        <h2 class="fw-bold mt-2 mb-4">Domaines de compétences</h2>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1"><span class="small fw-semibold">Santé publique &amp; Épidémiologie</span><span class="small text-muted">95%</span></div>
+          <div class="progress rounded-pill" style="height:8px;"><div class="progress-bar bg-primary rounded-pill" style="width:95%"></div></div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1"><span class="small fw-semibold">Systèmes d'information sanitaire</span><span class="small text-muted">88%</span></div>
+          <div class="progress rounded-pill" style="height:8px;"><div class="progress-bar bg-success rounded-pill" style="width:88%"></div></div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1"><span class="small fw-semibold">Santé numérique &amp; e-santé</span><span class="small text-muted">82%</span></div>
+          <div class="progress rounded-pill" style="height:8px;"><div class="progress-bar bg-info rounded-pill" style="width:82%"></div></div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1"><span class="small fw-semibold">Hygiène hospitalière</span><span class="small text-muted">90%</span></div>
+          <div class="progress rounded-pill" style="height:8px;"><div class="progress-bar bg-warning rounded-pill" style="width:90%"></div></div>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1"><span class="small fw-semibold">Santé maternelle &amp; infantile</span><span class="small text-muted">85%</span></div>
+          <div class="progress rounded-pill" style="height:8px;"><div class="progress-bar bg-danger rounded-pill" style="width:85%"></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-3">
+          {% with badges="Santé Publique,Épidémiologie,OMS/UNICEF,Dhis2,SNIS,Vaccination,Nutrition,e-Santé,Informatique Médicale,Recherche Clinique,Formation,Communication Santé" %}
+          {% for badge in badges.split %}
+          <div class="col-auto">
+            <span class="badge bg-white shadow-sm text-dark px-3 py-2 rounded-pill border">{{ badge }}</span>
+          </div>
+          {% endfor %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ce blog -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <span class="section-badge">Le blog</span>
+        <h2 class="fw-bold mt-2 mb-4">Pourquoi ce blog ?</h2>
+        <p class="text-muted lead mb-4">
+          Partager les connaissances en santé publique, c'est contribuer à la prévention des maladies et à l'amélioration de la santé des populations. Ce blog est un espace d'échange, de partage et de formation continue.
+        </p>
+        <div class="row g-3 text-start">
+          <div class="col-md-6">
+            <div class="d-flex gap-3 align-items-start">
+              <i class="bi bi-check-circle-fill text-success fs-5 flex-shrink-0 mt-1"></i>
+              <div><strong>Articles scientifiques</strong><p class="text-muted small mb-0">Contenu basé sur des preuves et des références vérifiées.</p></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex gap-3 align-items-start">
+              <i class="bi bi-check-circle-fill text-success fs-5 flex-shrink-0 mt-1"></i>
+              <div><strong>Ressources téléchargeables</strong><p class="text-muted small mb-0">Guides, protocoles, fiches pratiques en PDF.</p></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex gap-3 align-items-start">
+              <i class="bi bi-check-circle-fill text-success fs-5 flex-shrink-0 mt-1"></i>
+              <div><strong>Actualités sanitaires</strong><p class="text-muted small mb-0">Veille épidémiologique et alertes de santé publique.</p></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex gap-3 align-items-start">
+              <i class="bi bi-check-circle-fill text-success fs-5 flex-shrink-0 mt-1"></i>
+              <div><strong>Formation continue</strong><p class="text-muted small mb-0">Mise à jour des connaissances pour les professionnels.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-5">
+          <a href="{% url 'blog:article_list' %}" class="btn btn-primary btn-lg me-3">
+            <i class="bi bi-journal-text me-2"></i>Lire les articles
+          </a>
+          <a href="{% url 'contact:contact_view' %}" class="btn btn-outline-primary btn-lg">
+            <i class="bi bi-envelope me-2"></i>Me contacter
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

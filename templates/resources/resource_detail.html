@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ resource.title }} — {{ site_name }}{% endblock %}
+
+{% block breadcrumb %}
+<nav class="bg-light border-bottom py-2" aria-label="Fil d'Ariane">
+  <div class="container">
+    <ol class="breadcrumb mb-0 small">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Accueil</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'resources:resource_list' %}">Ressources</a></li>
+      <li class="breadcrumb-item active">{{ resource.title|truncatechars:40 }}</li>
+    </ol>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+        <!-- En-tête -->
+        <div class="d-flex align-items-start gap-4 mb-4">
+          <div class="resource-icon-box rounded-4 p-3 bg-{{ resource.get_color }}-subtle flex-shrink-0"
+               style="width:72px;height:72px;display:flex;align-items:center;justify-content:center;">
+            <i class="{{ resource.get_icon }} text-{{ resource.get_color }}" style="font-size:2.2rem;"></i>
+          </div>
+          <div>
+            <div class="d-flex gap-2 mb-2">
+              <span class="badge bg-{{ resource.get_color }}-subtle text-{{ resource.get_color }} text-uppercase small fw-bold">
+                {{ resource.get_file_type_display }}
+              </span>
+              {% if resource.category %}
+              <a href="{{ resource.category.get_absolute_url }}" class="badge-category">{{ resource.category.name }}</a>
+              {% endif %}
+            </div>
+            <h1 class="fs-3 fw-bold mb-1">{{ resource.title }}</h1>
+            <div class="text-muted small d-flex gap-3">
+              <span><i class="bi bi-person me-1"></i>{{ resource.author.get_full_name|default:resource.author.username }}</span>
+              <span><i class="bi bi-calendar3 me-1"></i>{{ resource.created_at|date:"d M Y" }}</span>
+              <span><i class="bi bi-download me-1"></i>{{ resource.download_count }} téléchargement{{ resource.download_count|pluralize }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+          <h2 class="fs-5 fw-bold mb-2">Description</h2>
+          <p class="text-muted">{{ resource.description }}</p>
+        </div>
+
+        <!-- Bouton téléchargement -->
+        <div class="p-4 bg-primary-light rounded-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div>
+            <strong class="d-block">Prêt à télécharger</strong>
+            <small class="text-muted">Format {{ resource.get_file_type_display }}</small>
+          </div>
+          <a href="{% url 'resources:resource_download' resource.slug %}"
+             class="btn btn-primary btn-lg px-4 shadow-sm">
+            <i class="bi bi-download me-2"></i>Télécharger gratuitement
+          </a>
+        </div>
+      </div>
+
+      <!-- Ressources similaires -->
+      {% if related %}
+      <section class="mt-4">
+        <h2 class="fs-5 fw-bold mb-3">Ressources similaires</h2>
+        <div class="row g-3">
+          {% for res in related %}
+          <div class="col-md-6">
+            <a href="{{ res.get_absolute_url }}" class="card border-0 shadow-sm rounded-3 p-3 text-decoration-none hover-lift h-100">
+              <div class="d-flex align-items-center gap-3">
+                <i class="{{ res.get_icon }} text-{{ res.get_color }} fs-3 flex-shrink-0"></i>
+                <div>
+                  <span class="fw-semibold text-dark small d-block">{{ res.title|truncatechars:45 }}</span>
+                  <small class="text-muted">{{ res.download_count }} téléchargements</small>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+        <h3 class="fs-6 fw-bold mb-3"><i class="bi bi-info-circle me-2 text-primary"></i>Informations</h3>
+        <ul class="list-unstyled small mb-0">
+          <li class="d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted">Format</span>
+            <span class="fw-semibold">{{ resource.get_file_type_display }}</span>
+          </li>
+          {% if resource.category %}
+          <li class="d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted">Catégorie</span>
+            <a href="{{ resource.category.get_absolute_url }}" class="text-decoration-none text-primary fw-semibold">{{ resource.category.name }}</a>
+          </li>
+          {% endif %}
+          <li class="d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted">Auteur</span>
+            <span class="fw-semibold">{{ resource.author.get_full_name|default:resource.author.username }}</span>
+          </li>
+          <li class="d-flex justify-content-between py-2 border-bottom">
+            <span class="text-muted">Date d'ajout</span>
+            <span class="fw-semibold">{{ resource.created_at|date:"d/m/Y" }}</span>
+          </li>
+          <li class="d-flex justify-content-between py-2">
+            <span class="text-muted">Téléchargements</span>
+            <span class="fw-semibold text-primary">{{ resource.download_count }}</span>
+          </li>
+        </ul>
+        <a href="{% url 'resources:resource_download' resource.slug %}" class="btn btn-primary w-100 mt-3">
+          <i class="bi bi-download me-2"></i>Télécharger
+        </a>
+      </div>
+
+      <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+        <h3 class="fs-6 fw-bold mb-3"><i class="bi bi-folder2-open me-2 text-primary"></i>Toutes les ressources</h3>
+        <a href="{% url 'resources:resource_list' %}" class="btn btn-outline-primary w-100">
+          Voir toutes les ressources
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

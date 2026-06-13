@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Recherche : {{ query }} — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="fw-bold mb-2">Résultats de recherche</h1>
+  <p class="text-muted mb-4">{{ articles|length }} résultat{{ articles|length|pluralize }} pour <strong>"{{ query }}"</strong></p>
+  <div class="row g-4">
+    {% for article in articles %}
+    <div class="col-12">
+      <article class="card border-0 shadow-sm rounded-4 p-4 hover-lift">
+        <div class="row align-items-center g-3">
+          {% if article.cover_image %}<div class="col-auto"><img src="{{ article.cover_image.url }}" class="rounded-3" style="width:80px;height:60px;object-fit:cover;" alt="{{ article.title }}"></div>{% endif %}
+          <div class="col">
+            {% if article.category %}<a href="{{ article.category.get_absolute_url }}" class="badge-category mb-1">{{ article.category.name }}</a>{% endif %}
+            <h2 class="fs-5 fw-bold mb-1"><a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a></h2>
+            <p class="text-muted small mb-1">{{ article.summary|truncatewords:20 }}</p>
+            <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ article.published_at|date:"d M Y" }}</small>
+          </div>
+        </div>
+      </article>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+      <i class="bi bi-search text-muted" style="font-size:4rem;"></i>
+      <h2 class="mt-3 text-muted">Aucun résultat trouvé</h2>
+      <p class="text-muted">Essayez d'autres mots-clés.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

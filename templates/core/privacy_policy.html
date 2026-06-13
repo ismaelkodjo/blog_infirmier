@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Politique de confidentialité — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="fw-bold mb-4">Politique de confidentialité</h1>
+      <p class="text-muted small mb-4">Dernière mise à jour : {% now "d F Y" %}</p>
+
+      <div class="article-content">
+        <h2>1. Collecte des données</h2>
+        <p>Ce site collecte les données suivantes :</p>
+        <ul>
+          <li><strong>Données d'inscription</strong> : nom, prénom, adresse email, nom d'utilisateur</li>
+          <li><strong>Données de contact</strong> : informations fournies via le formulaire de contact</li>
+          <li><strong>Données de navigation</strong> : adresse IP, navigateur, pages visitées</li>
+          <li><strong>Newsletter</strong> : adresse email des abonnés</li>
+        </ul>
+
+        <h2>2. Utilisation des données</h2>
+        <p>Les données collectées sont utilisées pour :</p>
+        <ul>
+          <li>La gestion des comptes utilisateurs</li>
+          <li>L'envoi de la newsletter (avec consentement explicite)</li>
+          <li>La réponse aux messages de contact</li>
+          <li>L'amélioration du site et des contenus</li>
+          <li>La sécurité et la prévention des fraudes</li>
+        </ul>
+
+        <h2>3. Vos droits (RGPD)</h2>
+        <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants :</p>
+        <ul>
+          <li><strong>Droit d'accès</strong> : consulter vos données personnelles</li>
+          <li><strong>Droit de rectification</strong> : modifier vos données</li>
+          <li><strong>Droit à l'effacement</strong> : supprimer votre compte et vos données</li>
+          <li><strong>Droit d'opposition</strong> : vous opposer au traitement de vos données</li>
+          <li><strong>Droit à la portabilité</strong> : recevoir vos données dans un format structuré</li>
+        </ul>
+
+        <h2>4. Conservation des données</h2>
+        <p>Vos données sont conservées :</p>
+        <ul>
+          <li>Données de compte : jusqu'à la suppression du compte</li>
+          <li>Newsletter : jusqu'à la désinscription</li>
+          <li>Logs de connexion : 12 mois</li>
+          <li>Messages de contact : 3 ans</li>
+        </ul>
+
+        <h2>5. Cookies</h2>
+        <p>Ce site utilise uniquement des cookies techniques nécessaires au fonctionnement (session Django, protection CSRF). Aucun cookie publicitaire ou de tracking n'est utilisé.</p>
+
+        <h2>6. Sécurité</h2>
+        <p>Nous mettons en œuvre des mesures techniques et organisationnelles pour protéger vos données : chiffrement HTTPS, protection CSRF, hachage des mots de passe, accès restreint aux données.</p>
+
+        <h2>7. Contact</h2>
+        <p>Pour exercer vos droits ou pour toute question concernant cette politique, contactez-nous via le <a href="{% url 'contact:contact_view' %}">formulaire de contact</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

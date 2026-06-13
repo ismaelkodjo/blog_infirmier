@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mon Parcours Professionnel — {{ site_name }}{% endblock %}
+
+{% block breadcrumb %}
+<nav class="bg-light border-bottom py-2" aria-label="Fil d'Ariane">
+  <div class="container">
+    <ol class="breadcrumb mb-0 small">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Accueil</a></li>
+      <li class="breadcrumb-item active">Parcours</li>
+    </ol>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="py-5 bg-medical-light text-white">
+  <div class="container py-3 text-center">
+    <span class="badge bg-white text-primary px-3 py-2 rounded-pill mb-3"><i class="bi bi-briefcase me-1"></i>CV Professionnel</span>
+    <h1 class="display-5 fw-bold mb-3">Mon Parcours Professionnel</h1>
+    <p class="lead opacity-85 mb-0">Infirmier de santé publique avec une expertise en épidémiologie, systèmes d'information sanitaire et santé numérique.</p>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-8">
+
+      <!-- Expériences professionnelles -->
+      <section class="mb-5" aria-labelledby="exp-heading">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="icon-box bg-primary-light rounded-3 p-2"><i class="bi bi-briefcase-fill text-primary fs-4"></i></div>
+          <h2 id="exp-heading" class="fw-bold mb-0">Expériences professionnelles</h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot active"></div>
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+              <div class="d-flex justify-content-between flex-wrap gap-2 mb-2">
+                <h3 class="fs-5 fw-bold mb-0">Infirmier de Santé Publique</h3>
+                <span class="badge bg-success rounded-pill">Poste actuel</span>
+              </div>
+              <p class="text-primary fw-semibold small mb-2"><i class="bi bi-building me-1"></i>Direction Régionale de la Santé Publique</p>
+              <p class="text-muted small mb-3"><i class="bi bi-calendar3 me-1"></i>2020 – Présent &nbsp;·&nbsp; <i class="bi bi-geo-alt me-1"></i>Abidjan, Côte d'Ivoire</p>
+              <ul class="text-muted small mb-0">
+                <li>Surveillance épidémiologique et analyse des données de santé</li>
+                <li>Gestion des systèmes d'information sanitaire (DHIS2)</li>
+                <li>Formation du personnel de santé en santé numérique</li>
+                <li>Coordination des programmes de vaccination</li>
+                <li>Participation à la riposte aux épidémies</li>
+              </ul>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+              <h3 class="fs-5 fw-bold mb-1">Infirmier Chef de Poste</h3>
+              <p class="text-primary fw-semibold small mb-2"><i class="bi bi-building me-1"></i>Centre de Santé Communautaire</p>
+              <p class="text-muted small mb-3"><i class="bi bi-calendar3 me-1"></i>2017 – 2020 &nbsp;·&nbsp; <i class="bi bi-geo-alt me-1"></i>Bouaké</p>
+              <ul class="text-muted small mb-0">
+                <li>Gestion administrative et technique du centre de santé</li>
+                <li>Prise en charge des patients en consultation générale</li>
+                <li>Suivi des indicateurs de santé maternelle et infantile</li>
+                <li>Collecte et analyse des données du SNIS</li>
+              </ul>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+              <h3 class="fs-5 fw-bold mb-1">Infirmier Soins Généraux</h3>
+              <p class="text-primary fw-semibold small mb-2"><i class="bi bi-building me-1"></i>Hôpital Général</p>
+              <p class="text-muted small mb-3"><i class="bi bi-calendar3 me-1"></i>2014 – 2017</p>
+              <ul class="text-muted small mb-0">
+                <li>Soins infirmiers en médecine interne et chirurgie</li>
+                <li>Gestion des urgences médicales</li>
+                <li>Application des protocoles d'hygiène hospitalière</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formation -->
+      <section class="mb-5" aria-labelledby="edu-heading">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="icon-box bg-health-light rounded-3 p-2"><i class="bi bi-mortarboard-fill text-health fs-4"></i></div>
+          <h2 id="edu-heading" class="fw-bold mb-0">Formation académique</h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot active"></div>
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+              <h3 class="fs-5 fw-bold mb-1">Master en Santé Publique</h3>
+              <p class="text-primary fw-semibold small mb-1">Spécialisation : Épidémiologie &amp; Systèmes de Santé</p>
+              <p class="text-muted small mb-0"><i class="bi bi-calendar3 me-1"></i>2019 – 2021 &nbsp;·&nbsp; <i class="bi bi-geo-alt me-1"></i>Université d'Abidjan</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+              <h3 class="fs-5 fw-bold mb-1">Licence en Sciences Infirmières</h3>
+              <p class="text-muted small mb-0"><i class="bi bi-calendar3 me-1"></i>2011 – 2014 &nbsp;·&nbsp; Institut National de Formation des Agents de Santé</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certifications -->
+      <section aria-labelledby="cert-heading">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="icon-box bg-warning-light rounded-3 p-2"><i class="bi bi-award-fill text-warning fs-4"></i></div>
+          <h2 id="cert-heading" class="fw-bold mb-0">Formations &amp; Certifications</h2>
+        </div>
+        <div class="row g-3">
+          {% with certs="Formation DHIS2 — OMS Afrique 2022,Épidémiologie appliquée — CDC FETP 2021,Gestion des épidémies — OMS 2020,Santé numérique — WHO Digital Health 2022,Vaccination PEV — UNICEF 2019,Hygiène hospitalière — OMS 2018,Biostatistiques &amp; Recherche — 2020,Sécurité des données médicales — 2023" %}
+          {% for cert in certs.split %}
+          <div class="col-md-6">
+            <div class="d-flex align-items-center gap-2 p-3 bg-light rounded-3">
+              <i class="bi bi-patch-check-fill text-primary"></i>
+              <span class="small fw-semibold">{{ cert }}</span>
+            </div>
+          </div>
+          {% endfor %}
+          {% endwith %}
+        </div>
+      </section>
+    </div>
+
+    <!-- Sidebar infos -->
+    <aside class="col-lg-4">
+      <!-- Infos personnelles -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 sticky-sidebar">
+        <div class="text-center mb-4">
+          <div class="bg-primary-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+               style="width:90px;height:90px;">
+            <i class="bi bi-person-circle text-primary" style="font-size:3.5rem;"></i>
+          </div>
+          <h3 class="fs-5 fw-bold mb-1">Infirmier de Santé Publique</h3>
+          <p class="text-muted small mb-0">Expert SIS &amp; Santé Numérique</p>
+        </div>
+
+        <ul class="list-unstyled small">
+          <li class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
+            <i class="bi bi-geo-alt-fill text-primary flex-shrink-0"></i>
+            <span>Abidjan, Côte d'Ivoire</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
+            <i class="bi bi-translate text-primary flex-shrink-0"></i>
+            <span>Français (Natif) · Anglais (Courant)</span>
+          </li>
+          <li class="d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-code-slash text-primary flex-shrink-0"></i>
+            <span>DHIS2, ODK, REDCap, SNIS</span>
+          </li>
+        </ul>
+
+        <div class="d-grid gap-2 mt-3">
+          <a href="{% url 'contact:contact_view' %}" class="btn btn-primary">
+            <i class="bi bi-envelope me-2"></i>Me contacter
+          </a>
+          <a href="{% url 'resources:resource_list' %}" class="btn btn-outline-primary">
+            <i class="bi bi-download me-2"></i>Télécharger CV
+          </a>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 mt-3">
+          <a href="#" class="text-muted hover-primary"><i class="bi bi-linkedin fs-5"></i></a>
+          <a href="#" class="text-muted hover-primary"><i class="bi bi-twitter-x fs-5"></i></a>
+          <a href="#" class="text-muted hover-primary"><i class="bi bi-envelope fs-5"></i></a>
+        </div>
+      </div>
+
+      <!-- Compétences clés -->
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+        <h3 class="fs-6 fw-bold mb-3"><i class="bi bi-stars me-2 text-warning"></i>Compétences clés</h3>
+        <div class="d-flex flex-wrap gap-2">
+          {% with skills="Santé publique,Épidémiologie,DHIS2,Surveillance,Vaccination,Nutrition,SIS,e-Santé,Formation,Recherche,SNIS,SPSS,Excel,Rédaction" %}
+          {% for skill in skills.split %}
+          <span class="badge bg-primary-light text-primary px-3 py-2 rounded-pill">{{ skill }}</span>
+          {% endfor %}
+          {% endwith %}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

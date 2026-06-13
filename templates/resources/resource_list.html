@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ressources téléchargeables — {{ site_name }}{% endblock %}
+
+{% block breadcrumb %}
+<nav class="bg-light border-bottom py-2" aria-label="Fil d'Ariane">
+  <div class="container">
+    <ol class="breadcrumb mb-0 small">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Accueil</a></li>
+      <li class="breadcrumb-item active">Ressources</li>
+    </ol>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="py-4 bg-medical-light text-white">
+  <div class="container py-2">
+    <h1 class="fw-bold mb-1"><i class="bi bi-folder2-open me-2"></i>Ressources téléchargeables</h1>
+    <p class="opacity-85 mb-0">Guides, protocoles, fiches pratiques et outils de santé publique</p>
+  </div>
+</section>
+
+<div class="container py-5">
+  <!-- Filtres -->
+  <div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+    <span class="text-muted small fw-semibold me-2">Filtrer :</span>
+    <a href="{% url 'resources:resource_list' %}" class="btn btn-sm {% if not file_type %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">
+      Tous
+    </a>
+    <a href="?type=pdf" class="btn btn-sm {% if file_type == 'pdf' %}btn-danger{% else %}btn-outline-danger{% endif %} rounded-pill">
+      <i class="bi bi-file-earmark-pdf me-1"></i>PDF
+    </a>
+    <a href="?type=word" class="btn btn-sm {% if file_type == 'word' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
+      <i class="bi bi-file-earmark-word me-1"></i>Word
+    </a>
+    <a href="?type=excel" class="btn btn-sm {% if file_type == 'excel' %}btn-success{% else %}btn-outline-success{% endif %} rounded-pill">
+      <i class="bi bi-file-earmark-excel me-1"></i>Excel
+    </a>
+    <a href="?type=powerpoint" class="btn btn-sm {% if file_type == 'powerpoint' %}btn-warning{% else %}btn-outline-warning{% endif %} rounded-pill">
+      <i class="bi bi-file-earmark-slides me-1"></i>PowerPoint
+    </a>
+    <div class="ms-auto">
+      <form action="" method="get" class="d-flex gap-2">
+        <input type="search" name="q" class="form-control form-control-sm" placeholder="Rechercher..." value="{{ query }}">
+        <button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Grille -->
+  <div class="row g-4">
+    {% for resource in resources %}
+    <div class="col-md-6 col-lg-4">
+      <article class="card border-0 shadow-sm rounded-4 h-100 hover-lift">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-start gap-3 mb-3">
+            <div class="resource-icon-box bg-{{ resource.get_color }}-subtle rounded-3 p-3 flex-shrink-0"
+                 style="width:52px;height:52px;display:flex;align-items:center;justify-content:center;">
+              <i class="{{ resource.get_icon }} text-{{ resource.get_color }} fs-4"></i>
+            </div>
+            <div>
+              <span class="badge bg-{{ resource.get_color }}-subtle text-{{ resource.get_color }} text-uppercase small">{{ resource.get_file_type_display }}</span>
+              {% if resource.category %}
+              <span class="badge-category-sm ms-1">{{ resource.category.name }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <h2 class="fs-6 fw-bold mb-2">
+            <a href="{{ resource.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ resource.title }}</a>
+          </h2>
+          <p class="text-muted small mb-3">{{ resource.description|truncatewords:20 }}</p>
+          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+            <small class="text-muted">
+              <i class="bi bi-download me-1"></i>{{ resource.download_count }} téléchargement{{ resource.download_count|pluralize }}
+            </small>
+            <a href="{% url 'resources:resource_download' resource.slug %}" class="btn btn-sm btn-primary">
+              <i class="bi bi-download me-1"></i>Télécharger
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+      <i class="bi bi-folder-x text-muted" style="font-size:4rem;"></i>
+      <h3 class="mt-3 text-muted">Aucune ressource disponible</h3>
+      {% if query %}<p class="text-muted">Aucun résultat pour "{{ query }}".</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

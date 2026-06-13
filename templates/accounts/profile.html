@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Mon Profil — {{ site_name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4 text-center">
+        <img src="{{ profile.get_avatar_url }}" alt="Avatar" class="rounded-circle mx-auto mb-3 shadow" width="100" height="100" style="object-fit:cover;">
+        <h2 class="fs-4 fw-bold mb-0">{{ user.get_full_name|default:user.username }}</h2>
+        <p class="text-muted small">{{ profile.get_role_display }}</p>
+        {% if profile.speciality %}<p class="text-primary small">{{ profile.speciality }}</p>{% endif %}
+        <a href="{% url 'accounts:profile_edit' %}" class="btn btn-primary w-100 mt-2"><i class="bi bi-pencil me-2"></i>Modifier</a>
+        <a href="{% url 'accounts:change_password' %}" class="btn btn-outline-secondary w-100 mt-2"><i class="bi bi-key me-2"></i>Mot de passe</a>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+        <h3 class="fs-5 fw-bold mb-3">Informations personnelles</h3>
+        <dl class="row mb-0">
+          <dt class="col-sm-4 text-muted small">Nom complet</dt><dd class="col-sm-8">{{ user.get_full_name|default:"—" }}</dd>
+          <dt class="col-sm-4 text-muted small">Email</dt><dd class="col-sm-8">{{ user.email|default:"—" }}</dd>
+          <dt class="col-sm-4 text-muted small">Téléphone</dt><dd class="col-sm-8">{{ profile.phone|default:"—" }}</dd>
+          <dt class="col-sm-4 text-muted small">Institution</dt><dd class="col-sm-8">{{ profile.institution|default:"—" }}</dd>
+          <dt class="col-sm-4 text-muted small">Biographie</dt><dd class="col-sm-8">{{ profile.bio|default:"—" }}</dd>
+        </dl>
+      </div>
+      {% if user.is_staff %}
+      <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+        <h3 class="fs-5 fw-bold mb-3">Actions rapides</h3>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="{% url 'blog:article_create' %}" class="btn btn-primary btn-sm"><i class="bi bi-plus me-1"></i>Nouvel article</a>
+          <a href="{% url 'dashboard:home' %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-speedometer2 me-1"></i>Tableau de bord</a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
