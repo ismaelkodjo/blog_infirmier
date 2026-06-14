@@ -362,6 +362,81 @@ a { transition: color var(--transition); }
   .article-content { font-size: 1rem; }
 }
 
+/* FIX 1 : empêche le débordement horizontal du hero */
+.bg-medical-light {
+  overflow: hidden;
+}
+
+/* FIX 2 : timeline ne déborde plus à gauche sur mobile */
+.timeline {
+  padding-left: 2.5rem;
+}
+.timeline::before {
+  left: .85rem;
+}
+.timeline-dot {
+  left: -1.85rem;
+  width: 18px;
+  height: 18px;
+}
+
+/* FIX 3 : sidebar déstickée sur mobile */
+@media (max-width: 991px) {
+  .sticky-sidebar {
+    position: static;
+  }
+
+  /* Hero en colonne sur tablette/mobile */
+  .col-lg-7, .col-lg-4 {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Boutons hero en colonne */
+  .hero-btns, section .d-flex.gap-3:has(.btn) {
+    flex-direction: column;
+  }
+  .hero-btns .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Certifications en colonne unique */
+  .col-md-6 {
+    width: 100%;
+  }
+
+  /* Hero titre plus petit */
+  .display-5 {
+    font-size: 1.75rem;
+  }
+
+  /* Cards moins de padding */
+  .card.p-4 {
+    padding: 1rem !important;
+  }
+
+  /* Compétences badges wrappent bien */
+  .d-flex.flex-wrap.gap-2 {
+    gap: .4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .display-5 {
+    font-size: 1.5rem;
+  }
+  .timeline {
+    padding-left: 1.75rem;
+  }
+  .timeline-dot {
+    left: -1.5rem;
+    width: 16px;
+    height: 16px;
+  }
+}
 /* ── Print ── */
 @media print {
   .navbar, .footer, .newsletter-strip, .back-to-top, .btn, aside { display: none !important; }
