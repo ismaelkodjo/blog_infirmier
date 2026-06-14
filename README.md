@@ -86,7 +86,7 @@ python manage.py runserver
 ```
 
 Accéder à : http://127.0.0.1:8000
-Administration : http://127.0.0.1:8000/amou/
+Administration : http://127.0.0.1:8000/admin/
 
 ---
 
