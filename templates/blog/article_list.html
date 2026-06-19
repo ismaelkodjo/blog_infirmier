@@ -3,6 +3,10 @@
 
 {% block title %}Blog — {{ site_name }}{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/article.css' %}">
+{% endblock %}
+
 {% block breadcrumb %}
 <nav class="bg-light border-bottom py-2" aria-label="Fil d'Ariane">
   <div class="container">

@@ -1,0 +1,12 @@
+/* ============================================================
+   Pages : AUTH (connexion / inscription)
+   Dépend de : base.css
+   ============================================================ */
+
+.auth-card              { max-width: 480px; margin: 3rem auto; }
+.auth-card .card        { border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); }
+
+/* ── Responsive ── */
+@media (max-width: 479.98px) {
+  .auth-card { margin: 1.5rem auto; }
+}

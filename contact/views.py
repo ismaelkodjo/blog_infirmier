@@ -35,7 +35,7 @@ def contact_view(request):
                     subject=f'[Contact Blog] {msg.get_subject_display()} de {msg.name}',
                     message=f'Nom: {msg.name}\nEmail: {msg.email}\n\nMessage:\n{msg.message}',
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[settings.EMAIL_HOST_USER or 'admin@bloginfirmier.com'],
+                    recipient_list=[settings.EMAIL_HOST_USER or 'snanliebe@gmail.com'],
                     fail_silently=True,
                 )
             except Exception:

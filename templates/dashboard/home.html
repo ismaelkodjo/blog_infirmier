@@ -3,6 +3,9 @@
 
 {% block title %}Tableau de bord — {{ site_name }}{% endblock %}
 {% block newsletter_strip %}{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid py-4 px-4">

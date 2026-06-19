@@ -1,0 +1,65 @@
+/* ============================================================
+   Page : ARTICLE
+   Dépend de : base.css
+   ============================================================ */
+
+/* ── Article Content (prose) ── */
+.article-content {
+  font-family: var(--font-body);
+  font-size: 1.05rem; line-height: 1.8; color: #2d3748;
+}
+.article-content h2 {
+  font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1rem;
+  color: var(--medical-blue-dark);
+  border-bottom: 2px solid var(--medical-blue-light); padding-bottom: .5rem;
+}
+.article-content h3    { font-size: 1.3rem; margin-top: 2rem; margin-bottom: .75rem; color: var(--text-dark); }
+.article-content p     { margin-bottom: 1.2rem; }
+.article-content ul,
+.article-content ol    { margin-bottom: 1.2rem; padding-left: 1.5rem; }
+.article-content li    { margin-bottom: .4rem; }
+.article-content blockquote {
+  border-left: 4px solid var(--medical-blue);
+  background: var(--medical-blue-light);
+  padding: 1rem 1.5rem; margin: 1.5rem 0;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic; color: var(--medical-blue-dark);
+}
+.article-content table   { width: 100%; margin-bottom: 1.5rem; border-collapse: collapse; }
+.article-content th,
+.article-content td      { padding: .75rem 1rem; border: 1px solid var(--neutral-200); }
+.article-content th      { background: var(--medical-blue-light); color: var(--medical-blue-dark); font-weight: 600; }
+.article-content img     { border-radius: var(--radius-md); margin: 1rem 0; box-shadow: var(--shadow-sm); }
+.article-content a       { color: var(--medical-blue); text-decoration: underline; }
+.article-content code {
+  background: var(--neutral-100); border: 1px solid var(--neutral-200);
+  padding: .15rem .4rem; border-radius: var(--radius-sm); font-size: .9em;
+}
+.article-content pre {
+  background: #1a1f2e; color: #e2e8f0;
+  padding: 1.25rem; border-radius: var(--radius-md);
+  overflow-x: auto; margin: 1.5rem 0;
+}
+
+/* ── Article summary callout ── */
+.article-summary      { background: var(--medical-blue-light) !important; }
+
+/* ── Author badge ── */
+.author-photo-wrapper          { position: relative; display: inline-block; }
+.author-badge {
+  position: absolute; bottom: -12px; left: 50%;
+  transform: translateX(-50%); white-space: nowrap;
+}
+
+/* ── Comment ── */
+.comment              { transition: box-shadow var(--transition); }
+.comment:hover        { box-shadow: var(--shadow-sm) !important; }
+
+/* ── Responsive ── */
+@media (max-width: 767.98px) {
+  .article-content { font-size: 1rem; }
+}
+
+@media print {
+  .article-content    { font-size: 12pt; line-height: 1.6; }
+}

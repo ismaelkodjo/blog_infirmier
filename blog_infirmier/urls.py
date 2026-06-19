@@ -17,7 +17,7 @@ sitemaps = {
 
 urlpatterns = [
     # Admin
-    path('amouzou/', admin.site.urls),
+    path('djiba/', admin.site.urls),
 
     # CKEditor
     path('ckeditor/', include('ckeditor_uploader.urls')),

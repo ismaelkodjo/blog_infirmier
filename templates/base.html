@@ -49,7 +49,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% block extra_css %}{% endblock %}
 
   <!-- Favicon -->
@@ -60,6 +60,7 @@
 <!-- ===== NAVBAR ===== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-medical sticky-top shadow-sm" role="navigation" aria-label="Navigation principale">
   <div class="container">
+
     <!-- Logo / Brand -->
     <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'core:home' %}">
       <div class="brand-icon">
@@ -67,32 +68,37 @@
       </div>
       <div class="brand-text lh-1">
         <span class="fw-bold fs-6 d-block">Blog Infirmier</span>
-        <small class="opacity-75 d-none d-md-block" style="font-size:0.65rem;">Santé Publique & Numérique</small>
+        <small class="opacity-75 d-none d-md-block" style="font-size:0.65rem;">Santé Publique &amp; Numérique</small>
       </div>
     </a>
 
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
-            aria-controls="navbarMain" aria-expanded="false" aria-label="Menu">
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarMain" aria-controls="navbarMain"
+            aria-expanded="false" aria-label="Menu">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarMain">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
         <li class="nav-item">
           <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
              href="{% url 'core:home' %}">
             <i class="bi bi-house me-1"></i>Accueil
           </a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link {% if 'blog' in request.path %}active{% endif %}"
              href="{% url 'blog:article_list' %}">
             <i class="bi bi-journal-text me-1"></i>Blog
           </a>
         </li>
+
         <!-- Catégories dropdown -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
             <i class="bi bi-grid me-1"></i>Catégories
           </a>
           <ul class="dropdown-menu dropdown-menu-lg shadow border-0">
@@ -104,68 +110,98 @@
             </li>
             {% endfor %}
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item py-2 text-primary fw-semibold" href="{% url 'blog:category_list' %}">
-              <i class="bi bi-grid-3x3-gap me-2"></i>Toutes les catégories
-            </a></li>
+            <li>
+              <a class="dropdown-item py-2 text-primary fw-semibold" href="{% url 'blog:category_list' %}">
+                <i class="bi bi-grid-3x3-gap me-2"></i>Toutes les catégories
+              </a>
+            </li>
           </ul>
         </li>
+
         <li class="nav-item">
           <a class="nav-link {% if 'ressources' in request.path %}active{% endif %}"
              href="{% url 'resources:resource_list' %}">
             <i class="bi bi-download me-1"></i>Ressources
           </a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link {% if 'parcours' in request.path %}active{% endif %}"
              href="{% url 'core:parcours' %}">
             <i class="bi bi-person-badge me-1"></i>Parcours
           </a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link {% if 'a-propos' in request.path %}active{% endif %}"
              href="{% url 'core:about' %}">
             <i class="bi bi-info-circle me-1"></i>À propos
           </a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link {% if 'contact' in request.path %}active{% endif %}"
              href="{% url 'contact:contact_view' %}">
             <i class="bi bi-envelope me-1"></i>Contact
           </a>
         </li>
+
       </ul>
 
       <!-- Recherche + Auth -->
       <div class="d-flex align-items-center gap-2">
+
         <!-- Barre de recherche -->
         <form class="d-flex" action="{% url 'blog:search' %}" method="get" role="search">
           <div class="input-group input-group-sm">
             <input class="form-control border-0 rounded-start" type="search" name="q"
                    placeholder="Rechercher..." aria-label="Rechercher"
                    value="{{ request.GET.q|default:'' }}">
-            <button class="btn btn-light btn-sm rounded-end" type="submit" aria-label="Lancer la recherche">
+            <button class="btn btn-light btn-sm rounded-end" type="submit"
+                    aria-label="Lancer la recherche">
               <i class="bi bi-search text-primary"></i>
             </button>
           </div>
         </form>
 
-        <!-- Utilisateur -->
+        <!-- Utilisateur connecté -->
         {% if user.is_authenticated %}
         <div class="dropdown">
           <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-1"
-                  data-bs-toggle="dropdown">
+                  data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-person-circle"></i>
             <span class="d-none d-md-inline">{{ user.first_name|default:user.username }}</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person me-2"></i>Mon profil</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'accounts:profile' %}">
+                <i class="bi bi-person me-2"></i>Mon profil
+              </a>
+            </li>
             {% if user.is_staff %}
-            <li><a class="dropdown-item" href="{% url 'dashboard:home' %}"><i class="bi bi-speedometer2 me-2"></i>Tableau de bord</a></li>
-            <li><a class="dropdown-item" href="{% url 'blog:article_create' %}"><i class="bi bi-pencil me-2"></i>Nouvel article</a></li>
-            <li><a class="dropdown-item" href="/admin/"><i class="bi bi-gear me-2"></i>Admin Django</a></li>
+            <li>
+              <a class="dropdown-item" href="{% url 'dashboard:home' %}">
+                <i class="bi bi-speedometer2 me-2"></i>Tableau de bord
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'blog:article_create' %}">
+                <i class="bi bi-pencil me-2"></i>Nouvel article
+              </a>
+            </li>
+            <li>
+              <!-- CORRECTION : utilise {% url 'admin:index' %} au lieu de /admin/ hardcodé -->
+              <a class="dropdown-item" href="{% url 'admin:index' %}">
+                <i class="bi bi-gear me-2"></i>Admin Django
+              </a>
+            </li>
             {% endif %}
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
+            <li>
+              <a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">
+                <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+              </a>
+            </li>
           </ul>
         </div>
         {% else %}
@@ -173,6 +209,7 @@
           <i class="bi bi-box-arrow-in-right me-1"></i>Connexion
         </a>
         {% endif %}
+
       </div>
     </div>
   </div>
@@ -182,11 +219,17 @@
 {% if messages %}
 <div class="container mt-3">
   {% for message in messages %}
-  <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
-    {% if message.tags == 'success' %}<i class="bi bi-check-circle-fill"></i>
-    {% elif message.tags == 'error' %}<i class="bi bi-exclamation-triangle-fill"></i>
-    {% elif message.tags == 'warning' %}<i class="bi bi-exclamation-circle-fill"></i>
-    {% else %}<i class="bi bi-info-circle-fill"></i>{% endif %}
+  <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show d-flex align-items-center gap-2"
+       role="alert">
+    {% if message.tags == 'success' %}
+      <i class="bi bi-check-circle-fill"></i>
+    {% elif message.tags == 'error' %}
+      <i class="bi bi-exclamation-triangle-fill"></i>
+    {% elif message.tags == 'warning' %}
+      <i class="bi bi-exclamation-circle-fill"></i>
+    {% else %}
+      <i class="bi bi-info-circle-fill"></i>
+    {% endif %}
     <span>{{ message }}</span>
     <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Fermer"></button>
   </div>
@@ -204,18 +247,23 @@
 
 <!-- ===== NEWSLETTER STRIP ===== -->
 {% block newsletter_strip %}
-<section class="newsletter-strip py-5 bg-medical-light" aria-label="Inscription newsletter">
+<section class="newsletter-strip py-5" aria-label="Inscription newsletter">
   <div class="container">
     <div class="row align-items-center justify-content-center text-center text-md-start">
       <div class="col-md-6 mb-3 mb-md-0">
-        <h3 class="fw-bold mb-1 text-white"><i class="bi bi-envelope-heart me-2"></i>Restez informé</h3>
-        <p class="text-white opacity-85 mb-0">Recevez les derniers articles et ressources en santé publique.</p>
+        <h3 class="fw-bold mb-1 text-white">
+          <i class="bi bi-envelope-heart me-2"></i>Restez informé
+        </h3>
+        <p class="text-white-75 mb-0">Recevez les derniers articles et ressources en santé publique.</p>
       </div>
       <div class="col-md-4">
         <form action="{% url 'newsletter:subscribe' %}" method="post" class="d-flex gap-2">
           {% csrf_token %}
-          <input type="email" name="email" class="form-control" placeholder="votre@email.com" required aria-label="Email newsletter">
-          <button type="submit" class="btn btn-light fw-semibold text-primary flex-shrink-0">S'abonner</button>
+          <input type="email" name="email" class="form-control"
+                 placeholder="votre@email.com" required aria-label="Email newsletter">
+          <button type="submit" class="btn btn-light fw-semibold text-primary flex-shrink-0">
+            S'abonner
+          </button>
         </form>
       </div>
     </div>
@@ -227,6 +275,7 @@
 <footer class="footer bg-dark text-white py-5" role="contentinfo">
   <div class="container">
     <div class="row g-4">
+
       <!-- Colonne 1 : À propos -->
       <div class="col-lg-4">
         <div class="d-flex align-items-center gap-2 mb-3">
@@ -234,12 +283,19 @@
           <span class="fw-bold fs-5">Blog Infirmier</span>
         </div>
         <p class="text-white-50 small">
-          Plateforme dédiée à la santé publique, l'épidémiologie et la santé numérique. Des contenus fiables pour les professionnels et le grand public.
+          Plateforme dédiée à la santé publique, l'épidémiologie et la santé numérique.
+          Des contenus fiables pour les professionnels et le grand public.
         </p>
         <div class="d-flex gap-3 mt-3">
-          <a href="#" class="text-white-50 hover-white" aria-label="LinkedIn"><i class="bi bi-linkedin fs-5"></i></a>
-          <a href="#" class="text-white-50 hover-white" aria-label="Twitter"><i class="bi bi-twitter-x fs-5"></i></a>
-          <a href="#" class="text-white-50 hover-white" aria-label="Facebook"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#" class="text-white-50 hover-white" aria-label="LinkedIn">
+            <i class="bi bi-linkedin fs-5"></i>
+          </a>
+          <a href="#" class="text-white-50 hover-white" aria-label="Twitter">
+            <i class="bi bi-twitter-x fs-5"></i>
+          </a>
+          <a href="#" class="text-white-50 hover-white" aria-label="Facebook">
+            <i class="bi bi-facebook fs-5"></i>
+          </a>
         </div>
       </div>
 
@@ -247,11 +303,31 @@
       <div class="col-lg-2 col-md-4">
         <h6 class="text-white fw-semibold mb-3 border-bottom border-secondary pb-2">Navigation</h6>
         <ul class="list-unstyled small">
-          <li class="mb-2"><a href="{% url 'core:home' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Accueil</a></li>
-          <li class="mb-2"><a href="{% url 'blog:article_list' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Blog</a></li>
-          <li class="mb-2"><a href="{% url 'core:parcours' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Mon Parcours</a></li>
-          <li class="mb-2"><a href="{% url 'resources:resource_list' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Ressources</a></li>
-          <li class="mb-2"><a href="{% url 'contact:contact_view' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Contact</a></li>
+          <li class="mb-2">
+            <a href="{% url 'core:home' %}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-chevron-right me-1"></i>Accueil
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="{% url 'blog:article_list' %}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-chevron-right me-1"></i>Blog
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="{% url 'core:parcours' %}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-chevron-right me-1"></i>Mon Parcours
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="{% url 'resources:resource_list' %}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-chevron-right me-1"></i>Ressources
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="{% url 'contact:contact_view' %}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-chevron-right me-1"></i>Contact
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -273,35 +349,46 @@
       <div class="col-lg-3 col-md-4">
         <h6 class="text-white fw-semibold mb-3 border-bottom border-secondary pb-2">Informations</h6>
         <ul class="list-unstyled small">
-          <li class="mb-2"><a href="{% url 'core:about' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>À propos</a></li>
-          <li class="mb-2"><a href="{% url 'core:privacy_policy' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Politique de confidentialité</a></li>
-          <li class="mb-2"><a href="{% url 'core:legal_notice' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Mentions légales</a></li>
-          <li class="mb-2"><a href="/sitemap.xml" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-right me-1"></i>Sitemap</a></li>
-        </ul>
+          <li class="mb-2">
+            <a href="{% url 'core:about' %}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-chevron-right me-1"></i>À propos
+            </a>
+          </li>
+          <li class="mb-2">
+          <li class="mb-2">
+            <a href="{% url 'core:legal_notice' %}" class="text-white-50 text-decoration-none hover-white">
+              <i class="bi bi-chevron-right me-1"></i>Mentions légales
+            </a>
+          </li>
+          </ul>
         <div class="mt-3">
-          <small class="text-white-50"><i class="bi bi-shield-check me-1 text-health"></i>Contenu médical vérifié</small>
+          <small class="text-white-50">
+            <i class="bi bi-shield-check me-1 text-health"></i>Contenu médical vérifié
+          </small>
         </div>
       </div>
+
     </div>
 
     <hr class="border-secondary mt-4">
     <div class="row align-items-center">
       <div class="col-md-6 text-center text-md-start">
-        <small class="text-white-50">© {% now "Y" %} Blog Infirmier de Santé Publique. Tous droits réservés.</small>
+        <small class="text-white-50">
+          &copy; {% now "Y" %} Blog Infirmier de Santé Publique. Tous droits réservés.
+        </small>
       </div>
       <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
         <small class="text-white-50">
-          <i class="bi bi-code-slash me-1"></i>Développé avec Django &amp; Bootstrap 5
-          <span class="mx-2">|</span>
-          <i class="bi bi-heart-fill text-danger me-1"></i>Pour la santé publique
+        <i class="bi bi-heart-fill text-danger me-1"></i>Pour la santé publique
         </small>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- Back to top -->
-<button class="btn btn-primary btn-sm back-to-top" id="backToTop" title="Retour en haut" aria-label="Retour en haut de la page">
+<!-- ===== BACK TO TOP ===== -->
+<button class="btn btn-primary btn-sm back-to-top" id="backToTop"
+        title="Retour en haut" aria-label="Retour en haut de la page">
   <i class="bi bi-arrow-up"></i>
 </button>
 
@@ -312,5 +399,6 @@
 <!-- Custom JS -->
 <script src="{% static 'js/main.js' %}"></script>
 {% block extra_js %}{% endblock %}
+
 </body>
 </html>

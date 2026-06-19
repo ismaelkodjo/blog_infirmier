@@ -1,0 +1,106 @@
+/* ============================================================
+   Page : PARCOURS
+   Dépend de : base.css
+   ============================================================ */
+
+/* ── Timeline ── */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before {
+  content: '';
+  position: absolute; left: .6rem; top: 0; bottom: 0;
+  width: 2px; background: var(--medical-blue-light);
+}
+.timeline-item   { position: relative; margin-bottom: 2rem; }
+.timeline-dot {
+  position: absolute; left: -2rem;
+  width: 20px; height: 20px;
+  background: var(--medical-blue);
+  border: 3px solid #fff; border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--medical-blue-light);
+  top: .25rem;
+}
+.timeline-dot.active { background: var(--health-green); box-shadow: 0 0 0 3px var(--health-green-light); }
+
+/* ── Responsive : Tablette ── */
+@media (max-width: 991.98px) {
+  /* La sidebar <aside class="col-12 col-lg-4"> remonte en premier.
+     order: -1 fonctionne uniquement si la row est un flex container,
+     ce que Bootstrap garantit avec .row */
+  .row > aside.col-lg-4,
+  .row > aside.col-12.col-lg-4 {
+    order: -1;
+  }
+
+  /* Limite la largeur des cards sidebar centrées */
+  .row > aside .card {
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ── Responsive : Mobile ── */
+@media (max-width: 767.98px) {
+
+  /* Hero parcours */
+  section.bg-medical-light.py-5 {
+    padding-top: 2rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  section.bg-medical-light .display-5 {
+    font-size: clamp(1.4rem, 6vw, 2rem) !important;
+  }
+  section.bg-medical-light .lead {
+    font-size: .9rem;
+  }
+
+  /* Timeline compacte */
+  .timeline                { padding-left: 1.75rem; }
+  .timeline::before        { left: .4rem; }
+  .timeline-dot            { left: -1.75rem; width: 18px; height: 18px; top: .3rem; }
+  .timeline-item           { margin-bottom: 1.25rem; }
+  .timeline .card.p-4      { padding: 1rem 1.1rem !important; }
+  .timeline .card .fs-5    { font-size: .93rem !important; }
+  .timeline .card ul       { padding-left: 1.1rem; }
+  .timeline .card ul li    { font-size: .82rem; margin-bottom: .15rem; }
+
+  /* Section headers parcours */
+  .d-flex.align-items-center.gap-3.mb-4 {
+    gap: .6rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  .d-flex.align-items-center.gap-3 > h2 {
+    font-size: 1.1rem !important;
+  }
+
+  /* Certifications : 1 colonne sur mobile */
+  .row.g-3 > .col-md-6 {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ── Responsive : Très petits écrans ── */
+@media (max-width: 479.98px) {
+
+  /* Badge poste actuel passe sous le titre */
+  .timeline .card .d-flex.justify-content-between.flex-wrap {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: .35rem;
+  }
+
+  /* Date · Lieu en colonne */
+  .timeline .card > p.text-muted.small {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    line-height: 1.6;
+  }
+}
+
+/* ── Print ── */
+@media print {
+  .timeline-dot { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}

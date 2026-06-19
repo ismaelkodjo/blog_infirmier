@@ -1,0 +1,6 @@
+/* ============================================================
+   Page : DASHBOARD
+   Dépend de : base.css
+   ============================================================ */
+
+.stat-icon { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; }
