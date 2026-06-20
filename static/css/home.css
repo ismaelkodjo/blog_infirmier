@@ -40,6 +40,17 @@
   50%       { transform: translateY(-10px); }
 }
 
+/* ── Articles populaires (section "Articles les plus lus") ── */
+/* min-w-0 empêche le texte/titre de pousser le flex item hors du
+   conteneur quand le titre est long (cause du débordement mobile) */
+.min-w-0 { min-width: 0; }
+
+.popular-article-img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+}
+
 /* ── Responsive ── */
 @media (max-width: 991.98px) {
   .hero-section     { min-height: auto; padding: 3rem 0 4rem; }
@@ -49,4 +60,14 @@
 
 @media (max-width: 767.98px) {
   .display-4 { font-size: 2rem; }
+}
+
+/* Sous 576px, l'article populaire passe en colonne (rang+image en
+   haut, texte en dessous) grâce à .flex-column.flex-sm-row côté HTML.
+   On réduit juste l'image pour qu'elle reste proportionnée. */
+@media (max-width: 575.98px) {
+  .popular-article-img {
+    width: 70px;
+    height: 52px;
+  }
 }
