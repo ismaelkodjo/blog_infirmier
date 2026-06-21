@@ -308,13 +308,34 @@ a { transition: color var(--transition); }
   .navbar-collapse .form-control::placeholder { color: rgba(255,255,255,.6) !important; }
   .navbar-collapse .d-flex { flex-wrap: wrap; gap: .5rem !important; }
 
+  /* Bouton utilisateur — pleine largeur dans le menu mobile */
+  .navbar-collapse .d-flex.align-items-center { flex-direction: column; align-items: stretch !important; }
+  .navbar-collapse form.d-flex { flex-direction: row !important; }
+  .navbar-collapse .dropdown { width: 100%; }
+  .navbar-collapse .dropdown > button {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    background: rgba(255,255,255,.12) !important;
+    border: 1px solid rgba(255,255,255,.2) !important;
+    color: #fff !important;
+    border-radius: var(--radius-md) !important;
+    padding: .6rem .85rem !important;
+    font-size: .875rem;
+  }
+  .navbar-collapse .dropdown > button .bi-person-circle { font-size: 1.1rem; }
+  .navbar-collapse .dropdown > button span.d-none { display: inline !important; }
+
   /* Dropdown utilisateur (Mon profil, Tableau de bord…) */
   .navbar-collapse .dropdown .dropdown-menu {
-    background: #1a55a0 !important;
+    background: #1255a0 !important;
     border: 1px solid rgba(255,255,255,.15) !important;
     box-shadow: 0 8px 24px rgba(0,0,0,.25) !important;
     border-radius: var(--radius-lg) !important;
     padding: .5rem !important;
+    width: 100% !important;
+    position: static !important;
+    transform: none !important;
+    margin-top: .35rem !important;
   }
   .navbar-collapse .dropdown .dropdown-item {
     color: rgba(255,255,255,.9) !important;
