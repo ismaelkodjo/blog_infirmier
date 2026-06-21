@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
-    'django_ratelimit',
+    'ratelimit',
 
     # Local apps
     'accounts',
