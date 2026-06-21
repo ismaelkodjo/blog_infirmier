@@ -2,10 +2,25 @@
 Modèles pour la gestion des utilisateurs et profils.
 """
 
+import os
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+ALLOWED_IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+
+
+def validate_avatar(value):
+    ext = os.path.splitext(value.name)[1].lower()
+    if ext not in ALLOWED_IMAGE_EXTENSIONS:
+        raise ValidationError(
+            f"Type d'image non autorisé. Extensions acceptées : {', '.join(sorted(ALLOWED_IMAGE_EXTENSIONS))}"
+        )
+    if value.size > 2 * 1024 * 1024:
+        raise ValidationError("L'image ne doit pas dépasser 2 Mo.")
 
 
 class Profile(models.Model):
@@ -20,7 +35,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', verbose_name="Utilisateur")
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='visitor', verbose_name="Rôle")
     bio = models.TextField(blank=True, null=True, verbose_name="Biographie")
-    avatar = models.ImageField(upload_to='profiles/', blank=True, null=True, verbose_name="Photo de profil")
+    avatar = models.ImageField(upload_to='profiles/', blank=True, null=True, verbose_name="Photo de profil", validators=[validate_avatar])
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Téléphone")
     website = models.URLField(blank=True, null=True, verbose_name="Site web")
     linkedin = models.URLField(blank=True, null=True, verbose_name="LinkedIn")

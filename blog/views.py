@@ -10,6 +10,7 @@ from django.db.models import Q, F
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django_ratelimit.decorators import ratelimit
 from .models import Article, Category, Comment
 from .forms import CommentForm, ArticleForm
 
@@ -54,6 +55,7 @@ def article_list(request):
     })
 
 
+@ratelimit(key='ip', rate='10/h', method='POST', block=True)
 def article_detail(request, slug):
     """Détail d'un article."""
     article = get_object_or_404(Article, slug=slug, status='published')
@@ -216,9 +218,10 @@ def article_delete(request, slug):
     })
 
 
+@login_required
 @require_POST
 def flag_comment(request, comment_id):
-    """Signaler un commentaire."""
+    """Signaler un commentaire (authentification requise)."""
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.is_flagged = True
     comment.save()

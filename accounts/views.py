@@ -8,13 +8,16 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
+from django.utils.http import url_has_allowed_host_and_scheme
+from django_ratelimit.decorators import ratelimit
 from .forms import RegisterForm, CustomLoginForm, ProfileUpdateForm
 from .models import Profile
 
 
+@ratelimit(key='ip', rate='5/h', method='POST', block=True)
 def register_view(request):
-    """Vue d'inscription."""
+    """Vue d'inscription — limitée à 5 inscriptions/heure par IP."""
     if request.user.is_authenticated:
         return redirect('core:home')
 
@@ -36,8 +39,9 @@ def register_view(request):
     return render(request, 'accounts/register.html', {'form': form, 'title': 'Inscription'})
 
 
+@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def login_view(request):
-    """Vue de connexion."""
+    """Vue de connexion — limitée à 10 tentatives/min par IP."""
     if request.user.is_authenticated:
         return redirect('core:home')
 
@@ -47,8 +51,14 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             messages.success(request, f"Bon retour, {user.first_name or user.username} !")
-            next_url = request.GET.get('next', 'core:home')
-            return redirect(next_url)
+            next_url = request.GET.get('next', '')
+            if next_url and url_has_allowed_host_and_scheme(
+                url=next_url,
+                allowed_hosts={request.get_host()},
+                require_https=request.is_secure(),
+            ):
+                return redirect(next_url)
+            return redirect('core:home')
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
     else:
@@ -58,6 +68,7 @@ def login_view(request):
 
 
 @login_required
+@require_POST
 def logout_view(request):
     """Vue de déconnexion."""
     logout(request)

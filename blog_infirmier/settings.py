@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
+    'django_ratelimit',
 
     # Local apps
     'accounts',
@@ -135,16 +136,18 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono-lisa',
-        'toolbar_Basic': [['Source', '-', 'Bold', 'Italic']],
+        'toolbar_Basic': [['Bold', 'Italic']],
         'toolbar_YourCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            # 'Source' retiré : empêche l'injection de HTML/JS arbitraire
+            {'name': 'document', 'items': ['NewPage', 'Preview', 'Print', '-', 'Templates']},
             {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
             {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
             '/',
             {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
             {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']},
             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert', 'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            # 'Flash' et 'Iframe' retirés : vecteurs XSS/clickjacking
+            {'name': 'insert', 'items': ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak']},
             '/',
             {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
@@ -154,6 +157,8 @@ CKEDITOR_CONFIGS = {
         'height': 400,
         'width': '100%',
         'tabSpaces': 4,
+        # Désactiver les balises dangereuses côté CKEditor
+        'disallowedContent': 'script *; *[on*]; iframe *; frame *; object *; embed *;',
         'extraPlugins': ','.join([
             'uploadimage', 'div', 'autolink', 'autoembed',
             'embedsemantic', 'autogrow', 'widget', 'lineutils',
@@ -195,3 +200,10 @@ SITE_NAME = "Blog Infirmier de Santé Publique"
 SITE_DESCRIPTION = "Plateforme dédiée à la santé publique, l'épidémiologie et la santé numérique"
 SITE_AUTHOR = "Infirmier de Santé Publique"
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
+
+# Email de destination pour les messages de contact (ne jamais mettre en dur dans le code)
+CONTACT_EMAIL = config('CONTACT_EMAIL', default='')
+
+# Rate limiting (django-ratelimit)
+SILENCED_SYSTEM_CHECKS = ['django_ratelimit.E003']
+RATELIMIT_USE_CACHE = 'default'

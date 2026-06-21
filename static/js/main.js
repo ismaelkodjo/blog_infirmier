@@ -24,13 +24,16 @@
   });
 })();
 
-// ── Navbar shrink on scroll ───────────────────────────────────
+// ── Navbar glassmorphism on scroll ───────────────────────────────
 (function () {
   const nav = document.querySelector('.navbar');
   if (!nav) return;
-  window.addEventListener('scroll', () => {
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
     nav.classList.toggle('navbar-shrunk', window.scrollY > 50);
-  });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
 
 // ── Search form UX ────────────────────────────────────────────

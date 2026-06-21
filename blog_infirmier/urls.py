@@ -6,7 +6,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required
 from django.contrib.sitemaps.views import sitemap
+from ckeditor_uploader import views as ck_views
 from blog.sitemaps import ArticleSitemap, CategorySitemap, StaticViewSitemap
 
 sitemaps = {
@@ -19,8 +21,9 @@ urlpatterns = [
     # Admin
     path('djiba/', admin.site.urls),
 
-    # CKEditor
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    # CKEditor — upload et browse réservés aux utilisateurs connectés
+    path('ckeditor/upload/', login_required(ck_views.upload), name='ckeditor_upload'),
+    path('ckeditor/browse/', login_required(ck_views.browse), name='ckeditor_browse'),
 
     # Applications
     path('', include('core.urls')),

@@ -2,6 +2,7 @@
 Modèles principaux du blog : Category, Tag, Article, Comment.
 """
 
+import re
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -104,9 +105,10 @@ class Article(models.Model):
         if self.status == 'published' and not self.published_at:
             self.published_at = timezone.now()
 
-        # Estimate reading time (200 words/min)
+        # Estimate reading time (200 words/min) — strip HTML tags first
         if self.content:
-            word_count = len(self.content.split())
+            plain_text = re.sub(r'<[^>]+>', ' ', self.content)
+            word_count = len(plain_text.split())
             self.reading_time = max(1, word_count // 200)
 
         super().save(*args, **kwargs)
@@ -123,16 +125,18 @@ class Article(models.Model):
     def get_similar_articles(self):
         """Retourner des articles similaires basés sur la catégorie et les tags."""
         article_tags = self.tags.values_list('id', flat=True)
-        similar = Article.objects.filter(
-            status='published',
-            category=self.category
-        ).exclude(pk=self.pk).distinct()[:4]
-        if similar.count() < 4:
+        similar = list(
+            Article.objects.filter(
+                status='published',
+                category=self.category
+            ).exclude(pk=self.pk).distinct()[:4]
+        )
+        if len(similar) < 4:
             tag_similar = Article.objects.filter(
                 status='published',
                 tags__in=article_tags
-            ).exclude(pk=self.pk).exclude(pk__in=similar).distinct()[:4 - similar.count()]
-            similar = list(similar) + list(tag_similar)
+            ).exclude(pk=self.pk).exclude(pk__in=[a.pk for a in similar]).distinct()[:4 - len(similar)]
+            similar = similar + list(tag_similar)
         return similar
 
 

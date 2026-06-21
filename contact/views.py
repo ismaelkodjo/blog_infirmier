@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django_ratelimit.decorators import ratelimit
 from .models import ContactMessage
 
 
@@ -22,24 +23,31 @@ class ContactForm(forms.ModelForm):
         }
 
 
+def _get_client_ip(request):
+    """Retourne l'IP réelle du client sans faire confiance à X-Forwarded-For côté client."""
+    return request.META.get('REMOTE_ADDR', '')
+
+
+@ratelimit(key='ip', rate='5/h', method='POST', block=True)
 def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
             msg = form.save(commit=False)
-            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-            msg.ip_address = x_forwarded_for.split(',')[0] if x_forwarded_for else request.META.get('REMOTE_ADDR')
+            msg.ip_address = _get_client_ip(request)
             msg.save()
-            try:
-                send_mail(
-                    subject=f'[Contact Blog] {msg.get_subject_display()} de {msg.name}',
-                    message=f'Nom: {msg.name}\nEmail: {msg.email}\n\nMessage:\n{msg.message}',
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[settings.EMAIL_HOST_USER or 'snanliebe@gmail.com'],
-                    fail_silently=True,
-                )
-            except Exception:
-                pass
+            recipient = getattr(settings, 'CONTACT_EMAIL', None) or settings.EMAIL_HOST_USER
+            if recipient:
+                try:
+                    send_mail(
+                        subject=f'[Contact Blog] {msg.get_subject_display()} de {msg.name}',
+                        message=f'Nom: {msg.name}\nEmail: {msg.email}\n\nMessage:\n{msg.message}',
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[recipient],
+                        fail_silently=True,
+                    )
+                except Exception:
+                    pass
             messages.success(request, "Votre message a été envoyé avec succès ! Je vous répondrai dans les plus brefs délais.")
             return redirect('contact:contact_view')
         else:

@@ -1,0 +1,20 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blog Infirmier">
+  <rect width="48" height="48" rx="13" fill="#1a6fc4"/>
+  <rect width="48" height="48" rx="13" fill="url(#iconGrad)" opacity="0.55"/>
+
+  <!-- ECG line -->
+  <polyline
+    points="5,24 12,24 15,14 18,34 21,20 25,24 33,24 38,24 43,24"
+    stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Croix médicale -->
+  <rect x="34" y="7" width="7" height="2.4" rx="1.2" fill="rgba(255,255,255,0.8)"/>
+  <rect x="36.8" y="4.8" width="2.4" height="7" rx="1.2" fill="rgba(255,255,255,0.8)"/>
+
+  <defs>
+    <linearGradient id="iconGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2d81d6"/>
+      <stop offset="100%" stop-color="#1255a0"/>
+    </linearGradient>
+  </defs>
+</svg>

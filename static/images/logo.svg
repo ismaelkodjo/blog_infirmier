@@ -1,0 +1,27 @@
+<svg width="160" height="48" viewBox="0 0 160 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blog Infirmier">
+  <!-- Icône : fond arrondi + ECG + croix -->
+  <rect width="48" height="48" rx="13" fill="#1a6fc4"/>
+  <rect width="48" height="48" rx="13" fill="url(#logoGrad)" opacity="0.6"/>
+
+  <!-- Ligne ECG / heartbeat -->
+  <polyline
+    points="5,24 12,24 15,14 18,34 21,20 25,24 33,24 38,24 43,24"
+    stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Croix médicale (en haut à droite) -->
+  <rect x="34" y="7" width="7" height="2.4" rx="1.2" fill="rgba(255,255,255,0.75)"/>
+  <rect x="36.8" y="4.8" width="2.4" height="7" rx="1.2" fill="rgba(255,255,255,0.75)"/>
+
+  <!-- Texte principal -->
+  <text x="57" y="28" font-family="'Merriweather', Georgia, serif" font-weight="700" font-size="16" fill="#0f172a" letter-spacing="-0.3">Blog Infirmier</text>
+
+  <!-- Sous-titre -->
+  <text x="58" y="41" font-family="'Inter', system-ui, sans-serif" font-weight="500" font-size="9.5" fill="#475569" letter-spacing="0.5">SANTÉ PUBLIQUE &amp; NUMÉRIQUE</text>
+
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2d81d6"/>
+      <stop offset="100%" stop-color="#1255a0"/>
+    </linearGradient>
+  </defs>
+</svg>

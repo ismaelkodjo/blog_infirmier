@@ -10,116 +10,138 @@
 {% block content %}
 
 <!-- ========== HERO SECTION ========== -->
-<section class="hero-section d-flex align-items-center" aria-label="Section principale">
+<section class="hero-section" aria-label="Section principale">
+  <div class="hero-dots" aria-hidden="true"></div>
   <div class="container">
-    <div class="row align-items-center min-vh-75">
+    <div class="row align-items-center">
       <div class="col-lg-6 py-5">
-        <span class="badge bg-health-light text-health fw-semibold mb-3 px-3 py-2 rounded-pill">
+        <span class="badge bg-health-light text-health fw-semibold mb-3 px-3 py-2 rounded-pill" style="font-size:.78rem;letter-spacing:.04em;">
           <i class="bi bi-heart-pulse me-1"></i>Santé Publique &amp; Numérique
         </span>
-        <h1 class="display-4 fw-bold text-dark lh-tight mb-4">
+        <h1 class="display-4 fw-bold lh-tight mb-4">
           Santé Publique,<br>
           <span class="text-gradient">Connaissances Partagées</span>
         </h1>
-        <p class="lead text-muted mb-4">
+        <p class="lead text-muted mb-4" style="font-size:1.05rem; line-height:1.75;">
           Une plateforme dédiée aux professionnels de santé et au grand public pour diffuser des informations sanitaires fiables, des ressources pédagogiques et des analyses épidémiologiques.
         </p>
         <div class="d-flex flex-wrap gap-3">
-          <a href="{% url 'blog:article_list' %}" class="btn btn-primary btn-lg px-4 shadow-sm">
+          <a href="{% url 'blog:article_list' %}" class="btn btn-primary btn-lg px-4">
             <i class="bi bi-journal-text me-2"></i>Lire le blog
           </a>
           <a href="{% url 'resources:resource_list' %}" class="btn btn-outline-primary btn-lg px-4">
             <i class="bi bi-download me-2"></i>Ressources
           </a>
         </div>
+
         <!-- Stats rapides -->
-        <div class="d-flex gap-4 mt-5">
-          <div class="text-center">
-            <div class="fw-bold fs-4 text-primary">{{ stats.articles }}+</div>
-            <small class="text-muted">Articles</small>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">{{ stats.articles }}+</span>
+            <span class="hero-stat-label">Articles</span>
           </div>
-          <div class="text-center">
-            <div class="fw-bold fs-4 text-primary">{{ stats.categories }}</div>
-            <small class="text-muted">Catégories</small>
+          <div class="hero-stat">
+            <span class="hero-stat-value">{{ stats.categories }}</span>
+            <span class="hero-stat-label">Catégories</span>
           </div>
-          <div class="text-center">
-            <div class="fw-bold fs-4 text-primary">{{ stats.subscribers }}+</div>
-            <small class="text-muted">Abonnés</small>
+          <div class="hero-stat">
+            <span class="hero-stat-value">{{ stats.subscribers }}+</span>
+            <span class="hero-stat-label">Abonnés</span>
           </div>
-          <div class="text-center">
-            <div class="fw-bold fs-4 text-primary">{{ stats.resources }}+</div>
-            <small class="text-muted">Ressources</small>
+          <div class="hero-stat">
+            <span class="hero-stat-value">{{ stats.resources }}+</span>
+            <span class="hero-stat-label">Ressources</span>
           </div>
         </div>
       </div>
+
+      <!-- Illustration droite -->
       <div class="col-lg-6 d-none d-lg-flex justify-content-center">
-        <div class="hero-illustration">
+        <div class="hero-illustration" aria-hidden="true">
           <div class="hero-circle">
-            <i class="bi bi-heart-pulse-fill text-primary" style="font-size: 8rem; opacity: 0.15;"></i>
+            <i class="bi bi-heart-pulse-fill text-primary" style="font-size: 7rem; opacity: 0.12;"></i>
           </div>
-          <div class="floating-card card-1 shadow-lg rounded-4 p-3 bg-white">
+          <div class="floating-card card-1 shadow-lg rounded-4 p-3 bg-white border-0" style="max-width:195px;">
             <div class="d-flex align-items-center gap-2">
-              <div class="icon-box bg-primary-light rounded-3 p-2"><i class="bi bi-shield-check text-primary"></i></div>
-              <div><strong class="small d-block">Santé Publique</strong><small class="text-muted">Données vérifiées</small></div>
+              <div class="icon-box bg-primary-light rounded-3 p-2">
+                <i class="bi bi-shield-check text-primary fs-5"></i>
+              </div>
+              <div>
+                <strong class="small d-block lh-1 mb-1">Santé Publique</strong>
+                <small class="text-muted" style="font-size:.72rem;">Données vérifiées</small>
+              </div>
             </div>
           </div>
-          <div class="floating-card card-2 shadow-lg rounded-4 p-3 bg-white">
+          <div class="floating-card card-2 shadow-lg rounded-4 p-3 bg-white border-0" style="max-width:195px;">
             <div class="d-flex align-items-center gap-2">
-              <div class="icon-box bg-health-light rounded-3 p-2"><i class="bi bi-graph-up text-health"></i></div>
-              <div><strong class="small d-block">Épidémiologie</strong><small class="text-muted">Analyses &amp; données</small></div>
+              <div class="icon-box bg-health-light rounded-3 p-2">
+                <i class="bi bi-graph-up text-health fs-5"></i>
+              </div>
+              <div>
+                <strong class="small d-block lh-1 mb-1">Épidémiologie</strong>
+                <small class="text-muted" style="font-size:.72rem;">Analyses &amp; données</small>
+              </div>
             </div>
           </div>
-          <div class="floating-card card-3 shadow-lg rounded-4 p-3 bg-white">
+          <div class="floating-card card-3 shadow-lg rounded-4 p-3 bg-white border-0" style="max-width:195px;">
             <div class="d-flex align-items-center gap-2">
-              <div class="icon-box bg-warning-light rounded-3 p-2"><i class="bi bi-phone text-warning"></i></div>
-              <div><strong class="small d-block">Santé Numérique</strong><small class="text-muted">e-santé</small></div>
+              <div class="icon-box bg-warning-light rounded-3 p-2">
+                <i class="bi bi-phone fs-5" style="color:#d97706;"></i>
+              </div>
+              <div>
+                <strong class="small d-block lh-1 mb-1">Santé Numérique</strong>
+                <small class="text-muted" style="font-size:.72rem;">e-santé &amp; innovation</small>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="hero-wave">
-    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f8f9fa"/></svg>
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f8fafc"/>
+    </svg>
   </div>
 </section>
 
 <!-- ========== ARTICLES MIS EN AVANT ========== -->
 {% if featured_articles %}
-<section class="py-5 bg-light" aria-labelledby="featured-heading">
+<section class="py-5 section-articles-featured" aria-labelledby="featured-heading">
   <div class="container">
     <div class="section-header text-center mb-5">
-      <span class="section-badge">À la une</span>
-      <h2 id="featured-heading" class="fw-bold mt-2">Articles mis en avant</h2>
-      <p class="text-muted">Sélection éditoriale des meilleurs contenus</p>
+      <span class="section-badge"><i class="bi bi-star-fill me-1"></i>À la une</span>
+      <h2 id="featured-heading" class="fw-bold mt-3 mb-2">Articles mis en avant</h2>
+      <p class="text-muted mb-0">Sélection éditoriale des meilleurs contenus</p>
     </div>
     <div class="row g-4">
       {% for article in featured_articles %}
       <div class="col-lg-4">
         <article class="card h-100 border-0 shadow-sm hover-lift rounded-4 overflow-hidden">
           {% if article.cover_image %}
-          <a href="{{ article.get_absolute_url }}">
-            <img src="{{ article.cover_image.url }}" class="card-img-top article-img" alt="{{ article.title }}" loading="lazy">
+          <a href="{{ article.get_absolute_url }}" class="d-block overflow-hidden" style="height:210px;">
+            <img src="{{ article.cover_image.url }}" class="w-100 h-100 article-img" alt="{{ article.title }}" loading="lazy">
           </a>
           {% else %}
-          <div class="card-img-placeholder bg-gradient-primary d-flex align-items-center justify-content-center" style="height:200px;">
-            <i class="bi bi-journal-richtext text-white" style="font-size:3rem;opacity:0.5;"></i>
-          </div>
+          <a href="{{ article.get_absolute_url }}" class="card-img-placeholder d-flex align-items-center justify-content-center text-decoration-none" style="height:210px; background: linear-gradient(135deg, var(--medical-blue-light) 0%, #f0fff4 100%);">
+            <i class="bi bi-journal-richtext" style="font-size:3rem; color:var(--medical-blue); opacity:.4;"></i>
+          </a>
           {% endif %}
           <div class="card-body d-flex flex-column p-4">
             {% if article.category %}
-            <a href="{{ article.category.get_absolute_url }}" class="badge-category mb-2">{{ article.category.name }}</a>
+            <a href="{{ article.category.get_absolute_url }}" class="badge-category mb-2 align-self-start">{{ article.category.name }}</a>
             {% endif %}
-            <h3 class="card-title fs-5 fw-bold mb-2">
+            <h3 class="card-title fs-5 fw-bold mb-2 lh-snug">
               <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
             </h3>
-            <p class="card-text text-muted small flex-grow-1">{{ article.summary|truncatewords:20 }}</p>
+            <p class="card-text text-muted small flex-grow-1 lh-relaxed">{{ article.summary|truncatewords:20 }}</p>
             <div class="d-flex align-items-center justify-content-between mt-3 pt-3 border-top">
-              <small class="text-muted">
-                <i class="bi bi-person-circle me-1"></i>{{ article.author.get_full_name|default:article.author.username }}
+              <small class="text-muted d-flex align-items-center gap-1">
+                <i class="bi bi-person-circle"></i>
+                {{ article.author.get_full_name|default:article.author.username }}
               </small>
-              <small class="text-muted">
-                <i class="bi bi-clock me-1"></i>{{ article.reading_time }} min
+              <small class="text-muted d-flex align-items-center gap-1">
+                <i class="bi bi-clock"></i>{{ article.reading_time }} min
               </small>
             </div>
           </div>
@@ -132,15 +154,15 @@
 {% endif %}
 
 <!-- ========== DERNIERS ARTICLES ========== -->
-<section class="py-5" aria-labelledby="latest-heading">
+<section class="py-5 bg-white" aria-labelledby="latest-heading">
   <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex justify-content-between align-items-end mb-5">
       <div>
-        <span class="section-badge">Blog</span>
-        <h2 id="latest-heading" class="fw-bold mt-2 mb-0">Derniers articles</h2>
+        <span class="section-badge"><i class="bi bi-journal-text me-1"></i>Blog</span>
+        <h2 id="latest-heading" class="fw-bold mt-3 mb-0">Derniers articles</h2>
       </div>
-      <a href="{% url 'blog:article_list' %}" class="btn btn-outline-primary">
-        Voir tous <i class="bi bi-arrow-right ms-1"></i>
+      <a href="{% url 'blog:article_list' %}" class="btn btn-outline-primary d-none d-sm-inline-flex align-items-center gap-1">
+        Voir tous <i class="bi bi-arrow-right"></i>
       </a>
     </div>
     <div class="row g-4">
@@ -148,71 +170,83 @@
       <div class="col-md-6 col-lg-4">
         <article class="card h-100 border-0 shadow-sm hover-lift rounded-4 overflow-hidden">
           {% if article.cover_image %}
-          <a href="{{ article.get_absolute_url }}">
-            <img src="{{ article.cover_image.url }}" class="card-img-top article-img" alt="{{ article.title }}" loading="lazy">
+          <a href="{{ article.get_absolute_url }}" class="d-block overflow-hidden" style="height:185px;">
+            <img src="{{ article.cover_image.url }}" class="w-100 h-100 article-img" alt="{{ article.title }}" loading="lazy">
           </a>
           {% else %}
-          <a href="{{ article.get_absolute_url }}" class="card-img-placeholder bg-light d-flex align-items-center justify-content-center text-decoration-none" style="height:180px;">
-            <i class="bi bi-journal-text text-primary" style="font-size:2.5rem;opacity:0.4;"></i>
+          <a href="{{ article.get_absolute_url }}" class="card-img-placeholder d-flex align-items-center justify-content-center text-decoration-none" style="height:185px; background: linear-gradient(135deg, #f8fafc 0%, #e8f1fb 100%);">
+            <i class="bi bi-journal-text" style="font-size:2.2rem; color:var(--medical-blue); opacity:.35;"></i>
           </a>
           {% endif %}
           <div class="card-body d-flex flex-column p-4">
             {% if article.category %}
-            <a href="{{ article.category.get_absolute_url }}" class="badge-category mb-2">{{ article.category.name }}</a>
+            <a href="{{ article.category.get_absolute_url }}" class="badge-category mb-2 align-self-start">{{ article.category.name }}</a>
             {% endif %}
-            <h3 class="card-title fs-6 fw-bold mb-2">
+            <h3 class="card-title fs-6 fw-bold mb-2 lh-snug">
               <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
             </h3>
             <p class="card-text text-muted small flex-grow-1">{{ article.summary|truncatewords:15 }}</p>
             <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
-              <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ article.published_at|date:"d M Y" }}</small>
-              <small class="text-muted"><i class="bi bi-eye me-1"></i>{{ article.views_count|intcomma }}</small>
+              <small class="text-muted d-flex align-items-center gap-1">
+                <i class="bi bi-calendar3"></i>{{ article.published_at|date:"d M Y" }}
+              </small>
+              <small class="text-muted d-flex align-items-center gap-1">
+                <i class="bi bi-eye"></i>{{ article.views_count|intcomma }}
+              </small>
             </div>
           </div>
         </article>
       </div>
       {% empty %}
       <div class="col-12 text-center py-5">
-        <i class="bi bi-journal-x text-muted" style="font-size:3rem;"></i>
-        <p class="text-muted mt-3">Aucun article publié pour le moment.</p>
+        <div class="mb-3" style="font-size:3rem; opacity:.3;">
+          <i class="bi bi-journal-x text-muted"></i>
+        </div>
+        <p class="text-muted">Aucun article publié pour le moment.</p>
         {% if user.is_staff %}
-        <a href="{% url 'blog:article_create' %}" class="btn btn-primary">Créer le premier article</a>
+        <a href="{% url 'blog:article_create' %}" class="btn btn-primary">
+          <i class="bi bi-plus-lg me-2"></i>Créer le premier article
+        </a>
         {% endif %}
       </div>
       {% endfor %}
+    </div>
+    <div class="text-center mt-4 d-sm-none">
+      <a href="{% url 'blog:article_list' %}" class="btn btn-outline-primary">
+        Voir tous les articles <i class="bi bi-arrow-right ms-1"></i>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- ========== CATÉGORIES ========== -->
-<section class="py-5 bg-light" aria-labelledby="categories-heading">
+<section class="py-5" style="background: var(--neutral-50);" aria-labelledby="categories-heading">
   <div class="container">
     <div class="section-header text-center mb-5">
-      <span class="section-badge">Thématiques</span>
-      <h2 id="categories-heading" class="fw-bold mt-2">Explorez par catégorie</h2>
-      <p class="text-muted">Trouvez les articles qui vous correspondent</p>
+      <span class="section-badge"><i class="bi bi-grid me-1"></i>Thématiques</span>
+      <h2 id="categories-heading" class="fw-bold mt-3 mb-2">Explorez par catégorie</h2>
+      <p class="text-muted mb-0">Trouvez les articles qui vous correspondent</p>
     </div>
     <div class="row g-3">
       {% for cat in categories %}
       <div class="col-6 col-md-4 col-lg-3">
-        <a href="{{ cat.get_absolute_url }}" class="card border-0 shadow-sm hover-lift rounded-4 text-decoration-none h-100 p-3">
+        <a href="{{ cat.get_absolute_url }}" class="card category-card border-0 shadow-sm hover-lift rounded-4 text-decoration-none h-100 p-3 d-block">
           <div class="d-flex align-items-center gap-3">
-            <div class="category-icon rounded-3 d-flex align-items-center justify-content-center"
-                 style="background-color:{{ cat.color }}22; min-width:44px; height:44px;">
-              <i class="{{ cat.icon }}" style="color:{{ cat.color }}; font-size:1.3rem;"></i>
+            <div class="category-icon" style="background-color:{{ cat.color }}18; min-width:48px; height:48px; border-radius:var(--radius-md);">
+              <i class="{{ cat.icon }}" style="color:{{ cat.color }}; font-size:1.4rem;"></i>
             </div>
-            <div>
-              <span class="fw-semibold text-dark small d-block">{{ cat.name }}</span>
-              <small class="text-muted">{{ cat.get_article_count }} article{{ cat.get_article_count|pluralize }}</small>
+            <div class="min-w-0">
+              <span class="fw-semibold text-dark small d-block text-truncate">{{ cat.name }}</span>
+              <small class="text-muted" style="font-size:.72rem;">{{ cat.get_article_count }} article{{ cat.get_article_count|pluralize }}</small>
             </div>
           </div>
         </a>
       </div>
       {% endfor %}
     </div>
-    <div class="text-center mt-4">
-      <a href="{% url 'blog:category_list' %}" class="btn btn-outline-primary">
-        <i class="bi bi-grid me-2"></i>Toutes les catégories
+    <div class="text-center mt-5">
+      <a href="{% url 'blog:category_list' %}" class="btn btn-outline-primary px-4">
+        <i class="bi bi-grid-3x3-gap me-2"></i>Toutes les catégories
       </a>
     </div>
   </div>
@@ -220,56 +254,65 @@
 
 <!-- ========== ARTICLES POPULAIRES ========== -->
 {% if popular_articles %}
-<section class="py-5" aria-labelledby="popular-heading">
+<section class="py-5 bg-white" aria-labelledby="popular-heading">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-8">
-        <span class="section-badge">Tendances</span>
-        <h2 id="popular-heading" class="fw-bold mt-2 mb-4">Articles les plus lus</h2>
-        {% for article in popular_articles %}
-        <article class="d-flex flex-column flex-sm-row gap-3 mb-4 pb-4 {% if not forloop.last %}border-bottom{% endif %}">
-          <div class="d-flex gap-3">
+    <div class="row g-5">
+      <!-- Articles populaires -->
+      <div class="col-lg-7">
+        <span class="section-badge"><i class="bi bi-fire me-1"></i>Tendances</span>
+        <h2 id="popular-heading" class="fw-bold mt-3 mb-4">Articles les plus lus</h2>
+        <div class="d-flex flex-column gap-0">
+          {% for article in popular_articles %}
+          <article class="popular-article-item d-flex gap-3 py-4 {% if not forloop.last %}border-bottom{% endif %}">
             <span class="popular-rank flex-shrink-0">{{ forloop.counter }}</span>
             {% if article.cover_image %}
             <a href="{{ article.get_absolute_url }}" class="flex-shrink-0">
               <img src="{{ article.cover_image.url }}" alt="{{ article.title }}"
-                   class="rounded-3 popular-article-img" loading="lazy">
+                   class="popular-article-img" loading="lazy">
             </a>
             {% endif %}
-          </div>
-          <div class="min-w-0">
-            {% if article.category %}
-            <span class="badge-category-sm mb-1">{{ article.category.name }}</span>
-            {% endif %}
-            <h3 class="fs-6 fw-semibold mb-1">
-              <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
-            </h3>
-            <small class="text-muted">
-              <i class="bi bi-eye me-1"></i>{{ article.views_count|intcomma }} vues &nbsp;·&nbsp;
-              <i class="bi bi-clock me-1"></i>{{ article.reading_time }} min de lecture
-            </small>
-          </div>
-        </article>
-        {% endfor %}
+            <div class="min-w-0 flex-grow-1">
+              {% if article.category %}
+              <span class="badge-category-sm mb-1 d-inline-block">{{ article.category.name }}</span>
+              {% endif %}
+              <h3 class="fs-6 fw-semibold mb-1 lh-snug">
+                <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
+              </h3>
+              <small class="text-muted d-flex align-items-center gap-2 flex-wrap">
+                <span><i class="bi bi-eye me-1"></i>{{ article.views_count|intcomma }} vues</span>
+                <span class="text-muted opacity-50">·</span>
+                <span><i class="bi bi-clock me-1"></i>{{ article.reading_time }} min</span>
+              </small>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
       </div>
+
       <!-- Ressources sidebar -->
-      <div class="col-lg-4">
-        <span class="section-badge">Ressources</span>
-        <h2 class="fw-bold mt-2 mb-4 fs-4">Ressources récentes</h2>
-        {% for resource in recent_resources %}
-        <a href="{{ resource.get_absolute_url }}" class="d-flex align-items-center gap-3 p-3 mb-3 bg-light rounded-3 text-decoration-none hover-lift">
-          <div class="resource-icon text-{{ resource.get_color }}">
-            <i class="{{ resource.get_icon }} fs-3"></i>
-          </div>
-          <div>
-            <span class="fw-semibold text-dark small d-block">{{ resource.title|truncatechars:40 }}</span>
-            <small class="text-muted">{{ resource.download_count }} téléchargement{{ resource.download_count|pluralize }}</small>
-          </div>
-        </a>
-        {% empty %}
-        <p class="text-muted small">Aucune ressource disponible.</p>
-        {% endfor %}
-        <a href="{% url 'resources:resource_list' %}" class="btn btn-sm btn-outline-primary w-100 mt-2">
+      <div class="col-lg-5">
+        <span class="section-badge"><i class="bi bi-file-earmark me-1"></i>Ressources</span>
+        <h2 class="fw-bold mt-3 mb-4 fs-4">Ressources récentes</h2>
+        <div class="d-flex flex-column gap-2">
+          {% for resource in recent_resources %}
+          <a href="{{ resource.get_absolute_url }}"
+             class="resource-card-sm d-flex align-items-center gap-3 p-3 bg-light text-decoration-none">
+            <div class="flex-shrink-0 text-{{ resource.get_color }}">
+              <i class="{{ resource.get_icon }} fs-2"></i>
+            </div>
+            <div class="min-w-0">
+              <span class="fw-semibold text-dark small d-block text-truncate">{{ resource.title|truncatechars:42 }}</span>
+              <small class="text-muted">
+                <i class="bi bi-download me-1"></i>{{ resource.download_count }} téléchargement{{ resource.download_count|pluralize }}
+              </small>
+            </div>
+            <i class="bi bi-chevron-right text-muted ms-auto flex-shrink-0" style="font-size:.8rem;"></i>
+          </a>
+          {% empty %}
+          <p class="text-muted small">Aucune ressource disponible.</p>
+          {% endfor %}
+        </div>
+        <a href="{% url 'resources:resource_list' %}" class="btn btn-outline-primary btn-sm w-100 mt-3">
           Toutes les ressources <i class="bi bi-arrow-right ms-1"></i>
         </a>
       </div>
@@ -279,55 +322,56 @@
 {% endif %}
 
 <!-- ========== PRÉSENTATION AUTEUR ========== -->
-<section class="py-5 bg-medical-light" aria-labelledby="author-heading">
-  <div class="container">
+<section class="author-section py-5" aria-labelledby="author-heading">
+  <div class="container py-3">
     <div class="row align-items-center g-5">
       <div class="col-lg-4 text-center">
-        <div class="author-photo-wrapper mx-auto">
-          <div class="author-photo bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center"
-               style="width:200px;height:200px;margin:auto;">
+        <div class="author-photo-wrapper mx-auto" style="display:inline-block;">
+          <div class="author-photo bg-white rounded-circle d-flex align-items-center justify-content-center"
+               style="width:200px; height:200px; margin:auto;">
             <i class="bi bi-person-circle text-primary" style="font-size:5rem;"></i>
           </div>
           <div class="author-badge">
-            <span class="badge bg-health text-white px-3 py-2 rounded-pill shadow">
+            <span class="badge bg-health text-white px-3 py-2 rounded-pill shadow-sm" style="background-color: var(--health-green) !important; font-size:.78rem;">
               <i class="bi bi-patch-check-fill me-1"></i>Infirmier ESP
             </span>
           </div>
         </div>
       </div>
+
       <div class="col-lg-8">
-        <span class="section-badge">À propos</span>
-        <h2 id="author-heading" class="fw-bold mt-2 mb-3">Infirmier de Santé Publique</h2>
-        <p class="text-white-75 lead mb-4">
+        <span class="section-badge" style="background:rgba(255,255,255,.15); color:rgba(255,255,255,.9); border-color:rgba(255,255,255,.2);">À propos</span>
+        <h2 id="author-heading" class="fw-bold mt-3 mb-3 text-white">Infirmier de Santé Publique</h2>
+        <p class="lead mb-4" style="color:rgba(255,255,255,.75); font-size:1rem; line-height:1.8;">
           Passionné par la santé publique, l'épidémiologie et la santé numérique, je partage ici mes connaissances et expériences pour contribuer à l'amélioration de la santé des populations.
         </p>
         <div class="row g-3 mb-4">
           <div class="col-sm-6">
-            <div class="d-flex align-items-center gap-2 text-white">
-              <i class="bi bi-mortarboard-fill text-health"></i>
-              <span class="small">Formation spécialisée en Santé Publique</span>
+            <div class="author-expertise-item">
+              <div class="author-expertise-icon"><i class="bi bi-mortarboard-fill text-health"></i></div>
+              <span>Formation spécialisée en Santé Publique</span>
             </div>
           </div>
           <div class="col-sm-6">
-            <div class="d-flex align-items-center gap-2 text-white">
-              <i class="bi bi-award-fill text-health"></i>
-              <span class="small">Expert en systèmes d'information sanitaire</span>
+            <div class="author-expertise-item">
+              <div class="author-expertise-icon"><i class="bi bi-award-fill text-health"></i></div>
+              <span>Expert en systèmes d'information sanitaire</span>
             </div>
           </div>
           <div class="col-sm-6">
-            <div class="d-flex align-items-center gap-2 text-white">
-              <i class="bi bi-graph-up-arrow text-health"></i>
-              <span class="small">Analyste en épidémiologie</span>
+            <div class="author-expertise-item">
+              <div class="author-expertise-icon"><i class="bi bi-graph-up-arrow text-health"></i></div>
+              <span>Analyste en épidémiologie</span>
             </div>
           </div>
           <div class="col-sm-6">
-            <div class="d-flex align-items-center gap-2 text-white">
-              <i class="bi bi-phone text-health"></i>
-              <span class="small">Promoteur de la santé numérique</span>
+            <div class="author-expertise-item">
+              <div class="author-expertise-icon"><i class="bi bi-phone text-health"></i></div>
+              <span>Promoteur de la santé numérique</span>
             </div>
           </div>
         </div>
-        <div class="d-flex gap-3">
+        <div class="d-flex flex-wrap gap-3">
           <a href="{% url 'core:about' %}" class="btn btn-light fw-semibold">
             <i class="bi bi-person me-2"></i>En savoir plus
           </a>

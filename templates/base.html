@@ -53,6 +53,7 @@
   {% block extra_css %}{% endblock %}
 
   <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/logo-icon.svg' %}">
   <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 </head>
 <body>
@@ -63,12 +64,18 @@
 
     <!-- Logo / Brand -->
     <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'core:home' %}">
-      <div class="brand-icon">
-        <i class="bi bi-heart-pulse-fill text-white fs-4"></i>
-      </div>
+      <!-- Icône SVG inline -->
+      <svg width="38" height="38" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="brand-svg-icon flex-shrink-0">
+        <rect width="48" height="48" rx="13" fill="rgba(255,255,255,0.2)"/>
+        <polyline points="5,24 12,24 15,14 18,34 21,20 25,24 33,24 38,24 43,24"
+          stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <rect x="34" y="7" width="7" height="2.5" rx="1.25" fill="rgba(255,255,255,0.85)"/>
+        <rect x="36.75" y="4.75" width="2.5" height="7" rx="1.25" fill="rgba(255,255,255,0.85)"/>
+      </svg>
+      <!-- Texte -->
       <div class="brand-text lh-1">
-        <span class="fw-bold fs-6 d-block">Blog Infirmier</span>
-        <small class="opacity-75 d-none d-md-block" style="font-size:0.65rem;">Santé Publique &amp; Numérique</small>
+        <span class="fw-bold d-block" style="font-size:.975rem; letter-spacing:-.01em;">Blog Infirmier</span>
+        <small class="opacity-65 d-none d-md-block" style="font-size:.6rem; letter-spacing:.07em; text-transform:uppercase; font-weight:500;">Santé Publique &amp; Numérique</small>
       </div>
     </a>
 
@@ -279,7 +286,13 @@
       <!-- Colonne 1 : À propos -->
       <div class="col-lg-4">
         <div class="d-flex align-items-center gap-2 mb-3">
-          <i class="bi bi-heart-pulse-fill text-health fs-4"></i>
+          <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="48" height="48" rx="13" fill="#1a6fc4"/>
+            <polyline points="5,24 12,24 15,14 18,34 21,20 25,24 33,24 38,24 43,24"
+              stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <rect x="34" y="7" width="7" height="2.5" rx="1.25" fill="rgba(255,255,255,0.85)"/>
+            <rect x="36.75" y="4.75" width="2.5" height="7" rx="1.25" fill="rgba(255,255,255,0.85)"/>
+          </svg>
           <span class="fw-bold fs-5">Blog Infirmier</span>
         </div>
         <p class="text-white-50 small">
