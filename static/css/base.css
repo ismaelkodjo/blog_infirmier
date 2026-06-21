@@ -525,6 +525,8 @@ a { transition: color var(--transition); }
 @media (max-width: 479.98px) {
   .d-grid.gap-2 { gap: .5rem !important; }
   .d-flex.justify-content-center.gap-3 { gap: .5rem !important; }
+  .newsletter-strip form.d-flex { flex-direction: column; }
+  .newsletter-strip form.d-flex .btn { width: 100%; }
 }
 
 @media print {

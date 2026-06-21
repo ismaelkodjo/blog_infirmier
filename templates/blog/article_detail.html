@@ -110,7 +110,7 @@
         <!-- Partage -->
         <div class="mt-4 p-4 bg-light rounded-4">
           <strong class="small text-muted"><i class="bi bi-share me-2"></i>Partager cet article :</strong>
-          <div class="d-flex gap-2 mt-2">
+          <div class="d-flex flex-wrap gap-2 mt-2">
             <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
                target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
               <i class="bi bi-facebook me-1"></i>Facebook
@@ -218,7 +218,7 @@
 
           <!-- Réponses -->
           {% for reply in comment.get_replies %}
-          <div class="comment reply ms-5 mt-2 card border-0 bg-white border-start border-primary border-2 rounded-end-4 p-3">
+          <div class="comment reply ms-3 ms-sm-5 mt-2 card border-0 bg-white border-start border-primary border-2 rounded-end-4 p-3">
             <div class="d-flex align-items-center gap-2 mb-2">
               <div class="avatar-sm bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
                    style="width:28px;height:28px;font-size:0.75rem;">
@@ -234,7 +234,7 @@
           {% endfor %}
 
           <!-- Formulaire réponse (masqué par défaut) -->
-          <div class="reply-form mt-2 ms-5 d-none" id="reply-form-{{ comment.pk }}">
+          <div class="reply-form mt-2 ms-3 ms-sm-5 d-none" id="reply-form-{{ comment.pk }}">
             <form method="post" class="card bg-light border-0 rounded-4 p-3">
               {% csrf_token %}
               <input type="hidden" name="parent_id" value="{{ comment.pk }}">

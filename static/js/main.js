@@ -154,6 +154,17 @@ window.showToast = function (message, type = 'info') {
   });
 })();
 
+// ── Wrap article tables for horizontal scroll on mobile ───────
+(function () {
+  document.querySelectorAll('.article-content table').forEach(table => {
+    if (table.parentElement.classList.contains('table-responsive-wrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'table-responsive-wrapper';
+    table.parentNode.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  });
+})();
+
 // ── Reading progress bar ──────────────────────────────────────
 (function () {
   if (!document.querySelector('.article-content')) return;

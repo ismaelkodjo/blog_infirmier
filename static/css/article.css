@@ -25,7 +25,8 @@
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
   font-style: italic; color: var(--medical-blue-dark);
 }
-.article-content table   { width: 100%; margin-bottom: 1.5rem; border-collapse: collapse; }
+.article-content .table-responsive-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.article-content table   { width: 100%; margin-bottom: 1.5rem; border-collapse: collapse; min-width: 400px; }
 .article-content th,
 .article-content td      { padding: .75rem 1rem; border: 1px solid var(--neutral-200); }
 .article-content th      { background: var(--medical-blue-light); color: var(--medical-blue-dark); font-weight: 600; }
