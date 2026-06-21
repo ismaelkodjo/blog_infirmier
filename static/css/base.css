@@ -271,6 +271,44 @@ a { transition: color var(--transition); }
   font-weight: 700; font-size: .75rem; flex-shrink: 0;
 }
 
+/* ── Navbar collapse menu (mobile) ── */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-blue-dark) 100%);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: .75rem 1rem 1rem;
+    margin-top: .5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  }
+  .navbar-collapse .nav-link {
+    padding: .55rem .75rem !important;
+    border-radius: var(--radius-md);
+  }
+  .navbar-collapse .dropdown-menu {
+    background: rgba(255,255,255,.1) !important;
+    border: 1px solid rgba(255,255,255,.15) !important;
+    box-shadow: none !important;
+  }
+  .navbar-collapse .dropdown-item {
+    color: rgba(255,255,255,.9) !important;
+    border-radius: var(--radius-md);
+  }
+  .navbar-collapse .dropdown-item:hover {
+    background: rgba(255,255,255,.15) !important;
+    color: #fff !important;
+  }
+  .navbar-collapse .dropdown-divider {
+    border-color: rgba(255,255,255,.15) !important;
+  }
+  .navbar-collapse .form-control {
+    background: rgba(255,255,255,.15) !important;
+    border-color: rgba(255,255,255,.25) !important;
+    color: #fff !important;
+  }
+  .navbar-collapse .form-control::placeholder { color: rgba(255,255,255,.6) !important; }
+  .navbar-collapse .d-flex { flex-wrap: wrap; gap: .5rem !important; }
+}
+
 /* ── Sidebar sticky — DESKTOP UNIQUEMENT ── */
 .sticky-sidebar {
   position: sticky;
