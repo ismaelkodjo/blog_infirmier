@@ -307,6 +307,35 @@ a { transition: color var(--transition); }
   }
   .navbar-collapse .form-control::placeholder { color: rgba(255,255,255,.6) !important; }
   .navbar-collapse .d-flex { flex-wrap: wrap; gap: .5rem !important; }
+
+  /* Dropdown utilisateur (Mon profil, Tableau de bord…) */
+  .navbar-collapse .dropdown .dropdown-menu {
+    background: #1a55a0 !important;
+    border: 1px solid rgba(255,255,255,.15) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: .5rem !important;
+  }
+  .navbar-collapse .dropdown .dropdown-item {
+    color: rgba(255,255,255,.9) !important;
+    border-radius: var(--radius-md) !important;
+    padding: .55rem .75rem !important;
+    font-size: .875rem;
+  }
+  .navbar-collapse .dropdown .dropdown-item:hover {
+    background: rgba(255,255,255,.15) !important;
+    color: #fff !important;
+  }
+  .navbar-collapse .dropdown .dropdown-item.text-danger {
+    color: #fca5a5 !important;
+  }
+  .navbar-collapse .dropdown .dropdown-item.text-danger:hover {
+    background: rgba(239,68,68,.2) !important;
+    color: #fca5a5 !important;
+  }
+  .navbar-collapse .dropdown .dropdown-divider {
+    border-color: rgba(255,255,255,.15) !important;
+  }
 }
 
 /* ── Sidebar sticky — DESKTOP UNIQUEMENT ── */
