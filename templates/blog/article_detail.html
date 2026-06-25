@@ -27,6 +27,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/article.css' %}">
+<link rel="stylesheet" href="{% static 'css/article_content.css' %}">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -91,7 +92,7 @@
         </div>
 
         <!-- Contenu -->
-        <div class="article-content prose">
+        <div class="article-content">
           {{ article.content|safe }}
         </div>
 

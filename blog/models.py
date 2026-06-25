@@ -57,7 +57,7 @@ class Article(models.Model):
     subtitle = models.CharField(max_length=300, blank=True, null=True, verbose_name="Sous-titre")
     slug = models.SlugField(max_length=270, unique=True, blank=True, verbose_name="Slug")
     summary = models.TextField(max_length=500, verbose_name="Résumé")
-    content = RichTextUploadingField(verbose_name="Contenu")
+    content = RichTextUploadingField(config_name='djiba', verbose_name="Contenu")
     cover_image = models.ImageField(upload_to='articles/', blank=True, null=True, verbose_name="Image de couverture")
 
     # Relations
