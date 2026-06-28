@@ -64,6 +64,14 @@
 
     <!-- Logo / Brand -->
     <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'core:home' %}">
+      <div class="brand-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="5,24 12,24 15,7 18,36 21,17 25,24 33,24 38,24 43,24"
+            stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <rect x="34" y="9" width="7" height="2.5" rx="1.25" fill="rgba(255,255,255,0.9)"/>
+          <rect x="36.75" y="6.75" width="2.5" height="7" rx="1.25" fill="rgba(255,255,255,0.9)"/>
+        </svg>
+      </div>
       <div class="brand-text lh-1">
         <span class="fw-bold d-block" style="font-size:.975rem; letter-spacing:-.01em;">Blog Infirmier</span>
         <small class="opacity-65 d-none d-md-block" style="font-size:.6rem; letter-spacing:.07em; text-transform:uppercase; font-weight:500;">Santé Publique &amp; Numérique</small>
@@ -296,15 +304,15 @@
           Plateforme dédiée à la santé publique, l'épidémiologie et la santé numérique.
           Des contenus fiables pour les professionnels et le grand public.
         </p>
-        <div class="d-flex gap-3 mt-3">
-          <a href="https://www.linkedin.com/in/nanliebe-sakpani-89a5b2284" class="text-white-50 hover-white" aria-label="LinkedIn">
-            <i class="bi bi-linkedin fs-5"></i>
+        <div class="d-flex gap-2 mt-3">
+          <a href="https://www.linkedin.com/in/nanliebe-sakpani-89a5b2284" class="social-icon si-linkedin" aria-label="LinkedIn">
+            <i class="bi bi-linkedin"></i>
           </a>
-          <a href="https://wa.me/22890140074" class="text-white-50 hover-white" aria-label="WhatsApp">
-            <i class="bi bi-whatsapp fs-5"></i>
+          <a href="https://wa.me/22890140074" class="social-icon si-whatsapp" aria-label="WhatsApp">
+            <i class="bi bi-whatsapp"></i>
           </a>
-          <a href="https://web.facebook.com/kodjo.sakpani.9" class="text-white-50 hover-white" aria-label="Facebook">
-            <i class="bi bi-facebook fs-5"></i>
+          <a href="https://web.facebook.com/kodjo.sakpani.9" class="social-icon si-facebook" aria-label="Facebook">
+            <i class="bi bi-facebook"></i>
           </a>
         </div>
       </div>
@@ -314,28 +322,28 @@
         <h6 class="text-white fw-semibold mb-3 border-bottom border-secondary pb-2">Navigation</h6>
         <ul class="list-unstyled small">
           <li class="mb-2">
-            <a href="{% url 'core:home' %}" class="text-white-50 text-decoration-none hover-white">
-              <i class="bi bi-chevron-right me-1"></i>Accueil
+            <a href="{% url 'core:home' %}" class="footer-link">
+              <span class="footer-link-icon"><i class="bi bi-chevron-right"></i></span>Accueil
             </a>
           </li>
           <li class="mb-2">
-            <a href="{% url 'blog:article_list' %}" class="text-white-50 text-decoration-none hover-white">
-              <i class="bi bi-chevron-right me-1"></i>Blog
+            <a href="{% url 'blog:article_list' %}" class="footer-link">
+              <span class="footer-link-icon"><i class="bi bi-chevron-right"></i></span>Blog
             </a>
           </li>
           <li class="mb-2">
-            <a href="{% url 'core:parcours' %}" class="text-white-50 text-decoration-none hover-white">
-              <i class="bi bi-chevron-right me-1"></i>Mon Parcours
+            <a href="{% url 'core:parcours' %}" class="footer-link">
+              <span class="footer-link-icon"><i class="bi bi-chevron-right"></i></span>Mon Parcours
             </a>
           </li>
           <li class="mb-2">
-            <a href="{% url 'resources:resource_list' %}" class="text-white-50 text-decoration-none hover-white">
-              <i class="bi bi-chevron-right me-1"></i>Ressources
+            <a href="{% url 'resources:resource_list' %}" class="footer-link">
+              <span class="footer-link-icon"><i class="bi bi-chevron-right"></i></span>Ressources
             </a>
           </li>
           <li class="mb-2">
-            <a href="{% url 'contact:contact_view' %}" class="text-white-50 text-decoration-none hover-white">
-              <i class="bi bi-chevron-right me-1"></i>Contact
+            <a href="{% url 'contact:contact_view' %}" class="footer-link">
+              <span class="footer-link-icon"><i class="bi bi-chevron-right"></i></span>Contact
             </a>
           </li>
         </ul>
@@ -347,8 +355,8 @@
         <ul class="list-unstyled small">
           {% for cat in global_categories|slice:":6" %}
           <li class="mb-2">
-            <a href="{{ cat.get_absolute_url }}" class="text-white-50 text-decoration-none hover-white">
-              <i class="{{ cat.icon }} me-1"></i>{{ cat.name }}
+            <a href="{{ cat.get_absolute_url }}" class="footer-link">
+              <span class="footer-link-icon" style="background:rgba(255,255,255,.1);"><i class="{{ cat.icon }}"></i></span>{{ cat.name }}
             </a>
           </li>
           {% endfor %}
@@ -360,13 +368,13 @@
         <h6 class="text-white fw-semibold mb-3 border-bottom border-secondary pb-2">Informations</h6>
         <ul class="list-unstyled small">
           <li class="mb-2">
-            <a href="{% url 'core:about' %}" class="text-white-50 text-decoration-none hover-white">
-              <i class="bi bi-chevron-right me-1"></i>À propos
+            <a href="{% url 'core:about' %}" class="footer-link">
+              <span class="footer-link-icon"><i class="bi bi-chevron-right"></i></span>À propos
             </a>
           </li>
           <li class="mb-2">
-            <a href="{% url 'core:legal_notice' %}" class="text-white-50 text-decoration-none hover-white">
-              <i class="bi bi-chevron-right me-1"></i>Mentions légales
+            <a href="{% url 'core:legal_notice' %}" class="footer-link">
+              <span class="footer-link-icon"><i class="bi bi-chevron-right"></i></span>Mentions légales
             </a>
           </li>
         </ul>
