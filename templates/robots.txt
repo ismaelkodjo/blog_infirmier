@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /tableau-de-bord/
 Disallow: /accounts/
-Sitemap: http://localhost:8000/sitemap.xml
+Sitemap: https://infirmierblog.pythonanywhere.com/sitemap.xml
