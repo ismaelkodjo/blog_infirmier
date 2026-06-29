@@ -8,246 +8,406 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4 px-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="fw-bold mb-0"><i class="bi bi-speedometer2 me-2 text-primary"></i>Tableau de bord</h1>
-      <p class="text-muted small mb-0">Bienvenue, {{ user.get_full_name|default:user.username }}</p>
-    </div>
-    <div class="d-flex gap-2">
-      <a href="{% url 'blog:article_create' %}" class="btn btn-primary">
-        <i class="bi bi-plus-circle me-2"></i>Nouvel article
-      </a>
-      <a href="{% url 'admin:index' %}" class="btn btn-outline-secondary">
-        <i class="bi bi-gear me-2"></i>Admin
-      </a>
+<div class="dashboard-wrapper">
+
+  <!-- ===== HEADER ===== -->
+  <div class="dashboard-header">
+    <div class="container-fluid px-4">
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+          <div class="dashboard-greeting">
+            <i class="bi bi-speedometer2 me-2 opacity-75"></i>Tableau de bord
+          </div>
+          <p class="dashboard-subtitle mb-0">
+            Bonjour, <strong class="text-white">{{ user.get_full_name|default:user.username }}</strong> —
+            <span>{% now "l d F Y" %}</span>
+          </p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="{% url 'blog:article_create' %}" class="btn btn-light fw-semibold">
+            <i class="bi bi-plus-circle me-2"></i>Nouvel article
+          </a>
+          <a href="{% url 'admin:index' %}" class="btn btn-outline-light">
+            <i class="bi bi-gear me-2"></i>Admin Django
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ===== STATS CARDS ===== -->
-  <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <p class="text-muted small mb-1">Articles publiés</p>
-              <h2 class="fw-bold mb-0 display-6">{{ stats.total_articles }}</h2>
+  <div class="container-fluid px-4 pb-5">
+
+    <!-- ===== STATS CARDS ===== -->
+    <div class="dashboard-stats-row mb-4">
+      <div class="row g-3">
+
+        <!-- Articles -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-primary">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <div class="stat-card-label">Articles publiés</div>
+                <div class="stat-card-value">{{ stats.total_articles }}</div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-primary">
+                <i class="bi bi-journal-text"></i>
+              </div>
             </div>
-            <div class="stat-icon bg-primary-light rounded-3 p-2">
-              <i class="bi bi-journal-text text-primary fs-4"></i>
+            <div class="d-flex align-items-center gap-2">
+              <div class="progress flex-grow-1" style="height:4px;">
+                <div class="progress-bar" style="width:70%; background:var(--medical-blue);"></div>
+              </div>
+              <span class="stat-card-trend stat-card-trend-up"><i class="bi bi-arrow-up"></i>+2</span>
             </div>
           </div>
-          <div class="progress mt-3" style="height:4px;">
-            <div class="progress-bar bg-primary" style="width:70%"></div>
+        </div>
+
+        <!-- Vues -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-success">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <div class="stat-card-label">Vues totales</div>
+                <div class="stat-card-value">{{ stats.total_views|intcomma }}</div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-success">
+                <i class="bi bi-eye"></i>
+              </div>
+            </div>
+            <span class="stat-card-trend stat-card-trend-up"><i class="bi bi-graph-up me-1"></i>Ce mois</span>
+          </div>
+        </div>
+
+        <!-- Commentaires -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-warning">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <div class="stat-card-label">Commentaires</div>
+                <div class="stat-card-value">{{ stats.total_comments }}</div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-warning">
+                <i class="bi bi-chat-dots"></i>
+              </div>
+            </div>
+            {% if stats.pending_comments > 0 %}
+            <span class="stat-card-trend" style="background:#fef3c7;color:#d97706;">
+              <i class="bi bi-clock me-1"></i>{{ stats.pending_comments }} en attente
+            </span>
+            {% else %}
+            <span class="stat-card-trend stat-card-trend-up"><i class="bi bi-check me-1"></i>Tout modéré</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Abonnés -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-info">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <div class="stat-card-label">Abonnés newsletter</div>
+                <div class="stat-card-value">{{ stats.total_subscribers }}</div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-info">
+                <i class="bi bi-envelope-check"></i>
+              </div>
+            </div>
+            <span class="stat-card-trend stat-card-trend-neutral"><i class="bi bi-people me-1"></i>Actifs</span>
+          </div>
+        </div>
+
+        <!-- Ressources -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-danger">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <div class="stat-card-label">Ressources</div>
+                <div class="stat-card-value">{{ stats.total_resources }}</div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-danger">
+                <i class="bi bi-file-earmark-arrow-down"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Téléchargements -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-teal">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <div class="stat-card-label">Téléchargements</div>
+                <div class="stat-card-value">{{ stats.total_downloads|intcomma }}</div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-teal">
+                <i class="bi bi-download"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-orange">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <div class="stat-card-label">Messages non lus</div>
+                <div class="stat-card-value {% if stats.total_messages > 0 %}text-danger{% endif %}">
+                  {{ stats.total_messages }}
+                </div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-orange">
+                <i class="bi bi-inbox{% if stats.total_messages > 0 %}-fill{% endif %}"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auteurs -->
+        <div class="col-6 col-md-3">
+          <div class="stat-card stat-card-purple">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <div class="stat-card-label">Auteurs</div>
+                <div class="stat-card-value">{{ stats.total_authors }}</div>
+              </div>
+              <div class="stat-card-icon stat-card-icon-purple">
+                <i class="bi bi-people"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== GRAPHIQUES ===== -->
+    <p class="dash-section-title"><i class="bi bi-bar-chart-line text-primary"></i>Statistiques</p>
+    <div class="row g-4 mb-4">
+      <div class="col-lg-8">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3 class="dash-card-title">
+              <span class="dash-card-title-icon-primary"><i class="bi bi-bar-chart"></i></span>
+              Articles publiés par mois
+            </h3>
+            <span class="badge" style="background:var(--medical-blue-light);color:var(--medical-blue);font-size:.72rem;">12 derniers mois</span>
+          </div>
+          <div class="dash-card-body">
+            <canvas id="articlesChart" height="100"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="dash-card h-100">
+          <div class="dash-card-header">
+            <h3 class="dash-card-title">
+              <span class="dash-card-title-icon-primary"><i class="bi bi-pie-chart"></i></span>
+              Par catégorie
+            </h3>
+          </div>
+          <div class="dash-card-body">
+            <canvas id="categoriesChart" height="220"></canvas>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <p class="text-muted small mb-1">Vues totales</p>
-              <h2 class="fw-bold mb-0 display-6">{{ stats.total_views|intcomma }}</h2>
-            </div>
-            <div class="stat-icon bg-success-light rounded-3 p-2">
-              <i class="bi bi-eye text-success fs-4"></i>
-            </div>
+
+    <!-- ===== TABLEAUX + MODÉRATION ===== -->
+    <p class="dash-section-title"><i class="bi bi-layout-text-window text-primary"></i>Activité récente</p>
+    <div class="row g-4 mb-4">
+
+      <!-- Articles récents -->
+      <div class="col-lg-8">
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3 class="dash-card-title">
+              <span class="dash-card-title-icon-primary"><i class="bi bi-clock-history"></i></span>
+              Articles récents
+            </h3>
+            <a href="{% url 'blog:article_list' %}" class="btn btn-sm btn-outline-primary" style="font-size:.78rem;">
+              Voir tous <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+          <div class="table-responsive">
+            <table class="table dash-table">
+              <thead>
+                <tr>
+                  <th class="ps-4">Titre</th>
+                  <th>Catégorie</th>
+                  <th>Statut</th>
+                  <th>Vues</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for article in recent_articles %}
+                <tr>
+                  <td class="ps-4">
+                    <a href="{{ article.get_absolute_url }}" class="fw-semibold text-dark text-decoration-none hover-primary d-block" style="max-width:280px;">
+                      {{ article.title|truncatechars:45 }}
+                    </a>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3 me-1"></i>{{ article.created_at|date:"d M Y" }}
+                    </small>
+                  </td>
+                  <td>
+                    {% if article.category %}
+                    <span class="badge-category-sm">{{ article.category.name }}</span>
+                    {% else %}
+                    <span class="text-muted">—</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if article.status == 'published' %}
+                    <span class="status-badge status-published"><i class="bi bi-check-circle-fill me-1"></i>Publié</span>
+                    {% else %}
+                    <span class="status-badge status-draft"><i class="bi bi-pencil-fill me-1"></i>Brouillon</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <span class="meta-chip">
+                      <i class="bi bi-eye"></i>{{ article.views_count|intcomma }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="{{ article.get_absolute_url }}" class="btn btn-sm btn-light" title="Voir" style="width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);">
+                        <i class="bi bi-eye" style="font-size:.8rem;"></i>
+                      </a>
+                      <a href="{% url 'blog:article_edit' article.slug %}" class="btn btn-sm btn-outline-primary" title="Modifier" style="width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);">
+                        <i class="bi bi-pencil" style="font-size:.8rem;"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="5" class="text-center py-5 text-muted">
+                    <i class="bi bi-journal-x d-block mb-2" style="font-size:2rem;opacity:.3;"></i>
+                    Aucun article
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <p class="text-muted small mb-1">Commentaires</p>
-              <h2 class="fw-bold mb-0 display-6">{{ stats.total_comments }}</h2>
+
+      <!-- Colonne droite -->
+      <div class="col-lg-4 d-flex flex-column gap-4">
+
+        <!-- Actions rapides -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3 class="dash-card-title">
+              <span class="dash-card-title-icon-success"><i class="bi bi-lightning-charge"></i></span>
+              Actions rapides
+            </h3>
+          </div>
+          <div class="dash-card-body d-flex flex-column gap-2">
+            <a href="{% url 'blog:article_create' %}" class="quick-action-btn">
+              <span class="quick-action-icon stat-card-icon-primary"><i class="bi bi-plus-lg"></i></span>
+              <span>Nouvel article</span>
+              <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:.8rem;"></i>
+            </a>
+            <a href="{% url 'resources:resource_list' %}" class="quick-action-btn">
+              <span class="quick-action-icon stat-card-icon-teal"><i class="bi bi-file-earmark-plus"></i></span>
+              <span>Ajouter une ressource</span>
+              <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:.8rem;"></i>
+            </a>
+            <a href="{% url 'dashboard:moderate_comments' %}" class="quick-action-btn">
+              <span class="quick-action-icon stat-card-icon-warning"><i class="bi bi-shield-check"></i></span>
+              <span>Modérer les commentaires</span>
               {% if stats.pending_comments > 0 %}
-              <span class="badge bg-warning text-dark small">{{ stats.pending_comments }} en attente</span>
+              <span class="badge ms-auto" style="background:#fef3c7;color:#d97706;font-size:.65rem;">{{ stats.pending_comments }}</span>
+              {% else %}
+              <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:.8rem;"></i>
               {% endif %}
-            </div>
-            <div class="stat-icon bg-warning-light rounded-3 p-2">
-              <i class="bi bi-chat-dots text-warning fs-4"></i>
-            </div>
+            </a>
+            <a href="{% url 'admin:index' %}" class="quick-action-btn">
+              <span class="quick-action-icon stat-card-icon-purple"><i class="bi bi-gear"></i></span>
+              <span>Administration Django</span>
+              <i class="bi bi-chevron-right ms-auto text-muted" style="font-size:.8rem;"></i>
+            </a>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <p class="text-muted small mb-1">Abonnés</p>
-              <h2 class="fw-bold mb-0 display-6">{{ stats.total_subscribers }}</h2>
-            </div>
-            <div class="stat-icon bg-info-light rounded-3 p-2">
-              <i class="bi bi-envelope text-info fs-4"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <p class="text-muted small mb-1">Ressources</p>
-              <h2 class="fw-bold mb-0 display-6">{{ stats.total_resources }}</h2>
-            </div>
-            <div class="stat-icon bg-danger-light rounded-3 p-2">
-              <i class="bi bi-file-earmark text-danger fs-4"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <p class="text-muted small mb-1">Téléchargements</p>
-          <h2 class="fw-bold mb-0 display-6">{{ stats.total_downloads|intcomma }}</h2>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <p class="text-muted small mb-1">Messages non lus</p>
-          <h2 class="fw-bold mb-0 display-6 {% if stats.total_messages > 0 %}text-danger{% endif %}">{{ stats.total_messages }}</h2>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <p class="text-muted small mb-1">Auteurs</p>
-          <h2 class="fw-bold mb-0 display-6">{{ stats.total_authors }}</h2>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ===== GRAPHIQUES ===== -->
-  <div class="row g-4 mb-4">
-    <div class="col-lg-8">
-      <div class="card border-0 shadow-sm rounded-4 p-4">
-        <h3 class="fs-6 fw-bold mb-3"><i class="bi bi-bar-chart me-2 text-primary"></i>Articles publiés par mois</h3>
-        <canvas id="articlesChart" height="100"></canvas>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="card border-0 shadow-sm rounded-4 p-4">
-        <h3 class="fs-6 fw-bold mb-3"><i class="bi bi-pie-chart me-2 text-primary"></i>Articles par catégorie</h3>
-        <canvas id="categoriesChart" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== TABLEAUX ===== -->
-  <div class="row g-4">
-    <!-- Articles récents -->
-    <div class="col-lg-8">
-      <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-header bg-white border-0 p-4 d-flex justify-content-between align-items-center">
-          <h3 class="fs-6 fw-bold mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>Articles récents</h3>
-          <a href="{% url 'blog:article_list' %}" class="btn btn-sm btn-outline-primary">Voir tous</a>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-              <tr>
-                <th class="ps-4">Titre</th>
-                <th>Catégorie</th>
-                <th>Statut</th>
-                <th>Vues</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for article in recent_articles %}
-              <tr>
-                <td class="ps-4">
-                  <a href="{{ article.get_absolute_url }}" class="fw-semibold text-dark text-decoration-none">
-                    {{ article.title|truncatechars:45 }}
+        <!-- Commentaires en attente -->
+        <div class="dash-card flex-grow-1">
+          <div class="dash-card-header">
+            <h3 class="dash-card-title">
+              <span class="dash-card-title-icon-warning"><i class="bi bi-chat-dots"></i></span>
+              Modération
+            </h3>
+            <a href="{% url 'dashboard:moderate_comments' %}" class="btn btn-sm btn-outline-warning" style="font-size:.78rem;">
+              Gérer <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+          <div class="dash-card-body">
+            {% for comment in pending_comments %}
+            <div class="comment-item">
+              <div class="d-flex gap-2 align-items-start">
+                <div class="comment-avatar flex-shrink-0">
+                  {{ comment.get_author_name|first|upper }}
+                </div>
+                <div class="min-w-0 flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <strong class="small text-dark">{{ comment.get_author_name }}</strong>
+                    <small class="text-muted">{{ comment.created_at|date:"d M" }}</small>
+                  </div>
+                  <p class="small text-muted mb-1 lh-snug">{{ comment.content|truncatechars:75 }}</p>
+                  <a href="{{ comment.article.get_absolute_url }}" class="comment-article-link">
+                    <i class="bi bi-link-45deg me-1"></i>{{ comment.article.title|truncatechars:32 }}
                   </a>
-                  <small class="d-block text-muted">{{ article.created_at|date:"d M Y" }}</small>
-                </td>
-                <td><span class="badge-category-sm">{{ article.category.name|default:"—" }}</span></td>
-                <td>
-                  {% if article.status == 'published' %}
-                  <span class="badge bg-success">Publié</span>
-                  {% else %}
-                  <span class="badge bg-secondary">Brouillon</span>
-                  {% endif %}
-                </td>
-                <td><i class="bi bi-eye me-1 text-muted"></i>{{ article.views_count }}</td>
-                <td>
-                  <a href="{% url 'blog:article_edit' article.slug %}" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-pencil"></i>
-                  </a>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                  <div class="d-flex gap-2 mt-2">
+                    <form method="post" action="{% url 'dashboard:moderate_comments' %}" class="m-0">
+                      {% csrf_token %}
+                      <input type="hidden" name="comment_id" value="{{ comment.pk }}">
+                      <input type="hidden" name="action" value="approve">
+                      <button type="submit" class="btn btn-success btn-sm py-0 px-2" style="font-size:.75rem;height:26px;">
+                        <i class="bi bi-check2 me-1"></i>Approuver
+                      </button>
+                    </form>
+                    <form method="post" action="{% url 'dashboard:moderate_comments' %}" class="m-0">
+                      {% csrf_token %}
+                      <input type="hidden" name="comment_id" value="{{ comment.pk }}">
+                      <input type="hidden" name="action" value="delete">
+                      <button type="submit" class="btn btn-outline-danger btn-sm py-0 px-2" style="font-size:.75rem;height:26px;">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-4">
+              <div class="icon-pill icon-pill-success mx-auto mb-3" style="width:52px;height:52px;font-size:1.3rem;">
+                <i class="bi bi-check-circle"></i>
+              </div>
+              <p class="text-muted small mb-0">Aucun commentaire en attente</p>
+            </div>
+            {% endfor %}
+          </div>
         </div>
+
       </div>
     </div>
 
-    <!-- Commentaires en attente -->
-    <div class="col-lg-4">
-      <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-header bg-white border-0 p-4 d-flex justify-content-between align-items-center">
-          <h3 class="fs-6 fw-bold mb-0"><i class="bi bi-chat-dots me-2 text-warning"></i>Modération</h3>
-          <a href="{% url 'dashboard:moderate_comments' %}" class="btn btn-sm btn-outline-warning">Gérer</a>
-        </div>
-        <div class="card-body p-4">
-          {% for comment in pending_comments %}
-          <div class="mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
-            <div class="d-flex justify-content-between mb-1">
-              <strong class="small">{{ comment.get_author_name }}</strong>
-              <small class="text-muted">{{ comment.created_at|date:"d M" }}</small>
-            </div>
-            <p class="small text-muted mb-1">{{ comment.content|truncatechars:80 }}</p>
-            <small class="text-primary">Sur : {{ comment.article.title|truncatechars:30 }}</small>
-            <div class="d-flex gap-2 mt-2">
-              <form method="post" action="{% url 'dashboard:moderate_comments' %}">
-                {% csrf_token %}
-                <input type="hidden" name="comment_id" value="{{ comment.pk }}">
-                <input type="hidden" name="action" value="approve">
-                <button type="submit" class="btn btn-sm btn-success btn-xs"><i class="bi bi-check"></i> Approuver</button>
-              </form>
-              <form method="post" action="{% url 'dashboard:moderate_comments' %}">
-                {% csrf_token %}
-                <input type="hidden" name="comment_id" value="{{ comment.pk }}">
-                <input type="hidden" name="action" value="delete">
-                <button type="submit" class="btn btn-sm btn-outline-danger btn-xs"><i class="bi bi-trash"></i></button>
-              </form>
-            </div>
-          </div>
-          {% empty %}
-          <div class="text-center py-3 text-muted">
-            <i class="bi bi-check-circle fs-2 text-success d-block mb-2"></i>
-            <small>Aucun commentaire en attente</small>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-// Articles par mois
+// ── Chart : Articles par mois ──
 const ctx1 = document.getElementById('articlesChart').getContext('2d');
+const gradient1 = ctx1.createLinearGradient(0, 0, 0, 260);
+gradient1.addColorStop(0, 'rgba(26,111,196,.85)');
+gradient1.addColorStop(1, 'rgba(26,111,196,.2)');
+
 new Chart(ctx1, {
   type: 'bar',
   data: {
@@ -255,22 +415,48 @@ new Chart(ctx1, {
     datasets: [{
       label: 'Articles',
       data: {{ chart_data|safe }},
-      backgroundColor: 'rgba(26, 111, 196, 0.8)',
-      borderColor: 'rgba(26, 111, 196, 1)',
-      borderWidth: 1,
-      borderRadius: 6,
+      backgroundColor: gradient1,
+      borderColor: 'rgba(26,111,196,1)',
+      borderWidth: 0,
+      borderRadius: 8,
+      borderSkipped: false,
+      hoverBackgroundColor: 'rgba(26,111,196,.95)',
     }]
   },
   options: {
     responsive: true,
-    plugins: { legend: { display: false } },
-    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0f172a',
+        padding: 10,
+        titleFont: { size: 12, weight: '700' },
+        bodyFont: { size: 12 },
+        cornerRadius: 8,
+        callbacks: {
+          label: ctx => ` ${ctx.parsed.y} article${ctx.parsed.y > 1 ? 's' : ''}`
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { stepSize: 1, font: { size: 11 } },
+        grid: { color: 'rgba(0,0,0,.05)' },
+        border: { display: false }
+      },
+      x: {
+        ticks: { font: { size: 11 } },
+        grid: { display: false },
+        border: { display: false }
+      }
+    }
   }
 });
 
-// Articles par catégorie
+// ── Chart : Articles par catégorie ──
 const ctx2 = document.getElementById('categoriesChart').getContext('2d');
-const palette = ['#1a6fc4','#28a745','#ffc107','#dc3545','#6610f2','#fd7e14','#20c997','#e83e8c'];
+const palette = ['#1a6fc4','#22c55e','#f59e0b','#ef4444','#7c3aed','#0891b2','#f97316','#ec4899'];
 new Chart(ctx2, {
   type: 'doughnut',
   data: {
@@ -278,14 +464,26 @@ new Chart(ctx2, {
     datasets: [{
       data: {{ cat_data|safe }},
       backgroundColor: palette,
-      borderWidth: 2,
+      borderWidth: 3,
       borderColor: '#fff',
+      hoverOffset: 8,
     }]
   },
   options: {
     responsive: true,
+    cutout: '65%',
     plugins: {
-      legend: { position: 'bottom', labels: { padding: 12, font: { size: 11 } } }
+      legend: {
+        position: 'bottom',
+        labels: { padding: 14, font: { size: 11 }, usePointStyle: true, pointStyleWidth: 8 }
+      },
+      tooltip: {
+        backgroundColor: '#0f172a',
+        padding: 10,
+        cornerRadius: 8,
+        titleFont: { size: 12, weight: '700' },
+        bodyFont: { size: 12 }
+      }
     }
   }
 });
