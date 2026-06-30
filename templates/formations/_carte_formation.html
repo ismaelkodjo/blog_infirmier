@@ -1,0 +1,56 @@
+{% load static %}
+<div class="card h-100 border-0 shadow-sm formation-card">
+  <div class="position-relative overflow-hidden formation-card-img-wrapper">
+    {% if formation.image %}
+    <img src="{{ formation.image.url }}" class="card-img-top formation-card-img" alt="{{ formation.titre }}">
+    {% else %}
+    <div class="formation-card-img-placeholder d-flex align-items-center justify-content-center bg-primary-subtle">
+      <i class="bi bi-mortarboard text-primary" style="font-size:3rem;"></i>
+    </div>
+    {% endif %}
+    <!-- Type badge -->
+    <span class="badge position-absolute top-0 start-0 m-2
+      {% if formation.type_formation == 'presentiel' %}bg-success
+      {% elif formation.type_formation == 'en_ligne' %}bg-info
+      {% else %}bg-warning text-dark{% endif %}">
+      {% if formation.type_formation == 'presentiel' %}<i class="bi bi-people me-1"></i>Présentiel
+      {% elif formation.type_formation == 'en_ligne' %}<i class="bi bi-laptop me-1"></i>En ligne
+      {% else %}<i class="bi bi-arrows-angle-expand me-1"></i>Hybride{% endif %}
+    </span>
+    {% if formation.certificat %}
+    <span class="badge bg-dark position-absolute top-0 end-0 m-2">
+      <i class="bi bi-patch-check me-1"></i>Certifié
+    </span>
+    {% endif %}
+  </div>
+  <div class="card-body d-flex flex-column">
+    {% if formation.categorie %}
+    <span class="badge bg-primary-subtle text-primary mb-2 rounded-pill" style="font-size:.7rem;width:fit-content;">{{ formation.categorie.nom }}</span>
+    {% endif %}
+    <h6 class="card-title fw-semibold mb-1">
+      <a href="{{ formation.get_absolute_url }}" class="text-dark text-decoration-none stretched-link">{{ formation.titre }}</a>
+    </h6>
+    {% if formation.sous_titre %}
+    <p class="card-text text-muted small mb-3 flex-grow-1">{{ formation.sous_titre }}</p>
+    {% endif %}
+    <!-- Méta -->
+    <div class="d-flex gap-3 text-muted small mb-3">
+      {% if formation.duree_heures %}
+      <span><i class="bi bi-clock me-1"></i>{{ formation.duree_heures }}h</span>
+      {% endif %}
+      <span><i class="bi bi-bar-chart me-1"></i>{{ formation.get_niveau_display }}</span>
+    </div>
+    <!-- Prix -->
+    <div class="d-flex align-items-center justify-content-between mt-auto">
+      <div>
+        <span class="fw-bold text-primary fs-5">{{ formation.prix_actuel|floatformat:0 }} FCFA</span>
+        {% if formation.en_promotion %}
+        <del class="text-muted small ms-1">{{ formation.prix|floatformat:0 }}</del>
+        {% endif %}
+      </div>
+      <a href="{% url 'formations:inscription' formation.slug %}" class="btn btn-primary btn-sm">
+        S'inscrire
+      </a>
+    </div>
+  </div>
+</div>

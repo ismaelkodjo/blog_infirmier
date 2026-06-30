@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ formation.titre }} — Formations{% endblock %}
+
+{% block content %}
+<!-- Hero formation -->
+<section class="py-5" style="background: linear-gradient(135deg, #0f172a 0%, #1a6fc4 100%);">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'formations:home' %}" class="text-white-50">Formations</a></li>
+        {% if formation.categorie %}<li class="breadcrumb-item"><a href="{% url 'formations:home' %}?categorie={{ formation.categorie.slug }}" class="text-white-50">{{ formation.categorie.nom }}</a></li>{% endif %}
+        <li class="breadcrumb-item active text-white">{{ formation.titre }}</li>
+      </ol>
+    </nav>
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <div class="d-flex gap-2 flex-wrap mb-3">
+          <span class="badge {% if formation.type_formation == 'presentiel' %}bg-success{% elif formation.type_formation == 'en_ligne' %}bg-info{% else %}bg-warning text-dark{% endif %}">
+            {{ formation.get_type_formation_display }}
+          </span>
+          <span class="badge bg-secondary">{{ formation.get_niveau_display }}</span>
+          {% if formation.certificat %}<span class="badge bg-dark"><i class="bi bi-patch-check me-1"></i>Certifié</span>{% endif %}
+        </div>
+        <h1 class="display-5 fw-bold text-white mb-3">{{ formation.titre }}</h1>
+        {% if formation.sous_titre %}<p class="lead text-white opacity-75 mb-4">{{ formation.sous_titre }}</p>{% endif %}
+        <div class="d-flex gap-4 text-white-50 small mb-4">
+          {% if formation.duree_heures %}<span><i class="bi bi-clock me-1"></i>{{ formation.duree_heures }} heures</span>{% endif %}
+          <span><i class="bi bi-people me-1"></i>{{ formation.inscriptions.count }} inscrits</span>
+          {% if formation.modules.count %}<span><i class="bi bi-collection me-1"></i>{{ formation.modules.count }} module{{ formation.modules.count|pluralize }}</span>{% endif %}
+        </div>
+        {% if deja_inscrit %}
+        <div class="alert alert-success border-0 rounded-3">
+          <i class="bi bi-check-circle-fill me-2"></i>Vous êtes inscrit à cette formation.
+          <a href="{% url 'formations:espace_apprenant' %}" class="alert-link ms-2">Accéder à mon espace →</a>
+        </div>
+        {% else %}
+        <a href="{% url 'formations:inscription' formation.slug %}" class="btn btn-warning btn-lg fw-semibold">
+          <i class="bi bi-pencil-square me-2"></i>S'inscrire — {{ formation.prix_actuel|floatformat:0 }} FCFA
+        </a>
+        {% endif %}
+      </div>
+      <div class="col-lg-5">
+        {% if formation.image %}
+        <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" class="img-fluid rounded-4 shadow-lg">
+        {% else %}
+        <div class="rounded-4 bg-white bg-opacity-10 d-flex align-items-center justify-content-center" style="height:280px;">
+          <i class="bi bi-mortarboard-fill text-white opacity-25" style="font-size:6rem;"></i>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-8">
+
+      <!-- Description -->
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3">À propos de cette formation</h2>
+        <div class="text-muted">{{ formation.description|linebreaks }}</div>
+      </section>
+
+      <!-- Objectifs -->
+      {% if formation.objectifs %}
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3"><i class="bi bi-bullseye text-primary me-2"></i>Objectifs pédagogiques</h2>
+        <ul class="list-unstyled">
+          {% for obj in formation.objectifs.splitlines %}
+          {% if obj.strip %}
+          <li class="d-flex gap-2 mb-2">
+            <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+            <span>{{ obj }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      <!-- Prérequis -->
+      {% if formation.prerequis %}
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3"><i class="bi bi-info-circle text-warning me-2"></i>Prérequis</h2>
+        <ul class="list-unstyled">
+          {% for p in formation.prerequis.splitlines %}
+          {% if p.strip %}
+          <li class="d-flex gap-2 mb-2">
+            <i class="bi bi-dot text-muted fs-4 flex-shrink-0 mt-n1"></i>
+            <span>{{ p }}</span>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      <!-- Programme (modules) -->
+      {% if modules %}
+      <section class="mb-5">
+        <h2 class="h4 fw-bold mb-3"><i class="bi bi-collection text-primary me-2"></i>Programme</h2>
+        <div class="accordion" id="programmeAccordion">
+          {% for module in modules %}
+          <div class="accordion-item border-0 mb-2 rounded-3 shadow-sm overflow-hidden">
+            <h3 class="accordion-header">
+              <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} fw-semibold" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#module{{ module.pk }}">
+                <span class="me-3 badge bg-primary-subtle text-primary rounded-circle" style="width:28px;height:28px;line-height:20px;text-align:center;">{{ forloop.counter }}</span>
+                {{ module.titre }}
+                {% if module.duree_minutes %}<span class="text-muted small ms-auto me-3">{{ module.duree_minutes }} min</span>{% endif %}
+              </button>
+            </h3>
+            <div id="module{{ module.pk }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}">
+              <div class="accordion-body pt-0">
+                {% if module.description %}<p class="text-muted small mb-3">{{ module.description }}</p>{% endif %}
+                <ul class="list-unstyled mb-0">
+                  {% for lecon in module.lecons.all %}
+                  <li class="d-flex align-items-center gap-2 py-2 border-bottom">
+                    <i class="bi bi-{% if lecon.type_lecon == 'video' %}play-circle{% elif lecon.type_lecon == 'pdf' %}file-pdf{% elif lecon.type_lecon == 'quiz' %}question-circle{% else %}file-text{% endif %} text-primary"></i>
+                    <span class="flex-grow-1 small">{{ lecon.titre }}</span>
+                    {% if lecon.duree_minutes %}<span class="text-muted small">{{ lecon.duree_minutes }} min</span>{% endif %}
+                    {% if lecon.gratuite %}<span class="badge bg-success-subtle text-success small">Gratuit</span>{% endif %}
+                  </li>
+                  {% empty %}
+                  <li class="text-muted small">Contenu à venir</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+
+      <!-- Sessions présentiel -->
+      {% if sessions %}
+      <section>
+        <h2 class="h4 fw-bold mb-3"><i class="bi bi-calendar-event text-primary me-2"></i>Prochaines sessions</h2>
+        <div class="row g-3">
+          {% for session in sessions %}
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <div class="fw-bold text-primary mb-1">{{ session.date_debut|date:"d/m/Y" }}</div>
+                <div class="small text-muted mb-2">{{ session.date_debut|date:"H:i" }} → {{ session.date_fin|date:"H:i" }}</div>
+                <div class="small"><i class="bi bi-geo-alt me-1"></i>{{ session.lieu }}, {{ session.ville }}</div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <span class="badge {% if session.est_complet %}bg-danger{% else %}bg-success{% endif %}">
+                    {% if session.est_complet %}Complet{% else %}{{ session.places_disponibles }} place{{ session.places_disponibles|pluralize }}{% endif %}
+                  </span>
+                  {% if not session.est_complet %}
+                  <a href="{% url 'formations:inscription' formation.slug %}?session={{ session.pk }}" class="btn btn-sm btn-primary">Réserver</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm sticky-top" style="top:80px;">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <div class="display-5 fw-bold text-primary">{{ formation.prix_actuel|floatformat:0 }} FCFA</div>
+            {% if formation.en_promotion %}
+            <del class="text-muted">{{ formation.prix|floatformat:0 }} FCFA</del>
+            <span class="badge bg-danger ms-1">Promo</span>
+            {% endif %}
+          </div>
+          {% if deja_inscrit %}
+          <a href="{% url 'formations:espace_apprenant' %}" class="btn btn-success w-100 btn-lg mb-3">
+            <i class="bi bi-play-circle me-2"></i>Accéder à la formation
+          </a>
+          {% else %}
+          <a href="{% url 'formations:inscription' formation.slug %}" class="btn btn-primary w-100 btn-lg mb-3">
+            <i class="bi bi-pencil-square me-2"></i>S'inscrire maintenant
+          </a>
+          {% endif %}
+          <ul class="list-unstyled text-muted small mb-0">
+            {% if formation.duree_heures %}<li class="mb-2"><i class="bi bi-clock me-2"></i>{{ formation.duree_heures }} heures de formation</li>{% endif %}
+            <li class="mb-2"><i class="bi bi-translate me-2"></i>En français</li>
+            <li class="mb-2"><i class="bi bi-phone me-2"></i>Accès sur mobile et PC</li>
+            {% if formation.certificat %}<li class="mb-2"><i class="bi bi-patch-check me-2"></i>Certificat de fin de formation</li>{% endif %}
+            <li class="mb-2"><i class="bi bi-infinity me-2"></i>Accès illimité</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

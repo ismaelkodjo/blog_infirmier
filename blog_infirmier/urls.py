@@ -33,6 +33,8 @@ urlpatterns = [
     path('contact/', include('contact.urls')),
     path('newsletter/', include('newsletter.urls')),
     path('tableau-de-bord/', include('dashboard.urls')),
+    path('boutique/', include('boutique.urls')),
+    path('formations/', include('formations.urls')),
 
     # SEO
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),

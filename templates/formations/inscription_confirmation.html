@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Inscription confirmée — {{ inscription.numero }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 text-center">
+      <div class="d-inline-flex align-items-center justify-content-center bg-success-subtle rounded-circle mb-4" style="width:96px;height:96px;">
+        <i class="bi bi-mortarboard-fill text-success" style="font-size:3rem;"></i>
+      </div>
+      <h1 class="h2 fw-bold">Inscription reçue !</h1>
+      <p class="text-muted lead mb-3">Merci {{ inscription.prenom }}, votre inscription a bien été enregistrée.</p>
+      <span class="badge bg-primary fs-5 px-4 py-2 rounded-pill mb-4 d-inline-block">{{ inscription.numero }}</span>
+
+      <div class="card border-0 shadow-sm mb-4 text-start">
+        <div class="card-body">
+          <h6 class="fw-bold mb-3">Récapitulatif</h6>
+          <div class="d-flex justify-content-between small border-bottom pb-2 mb-2">
+            <span class="text-muted">Formation</span>
+            <span class="fw-semibold">{{ inscription.formation.titre }}</span>
+          </div>
+          {% if inscription.session %}
+          <div class="d-flex justify-content-between small border-bottom pb-2 mb-2">
+            <span class="text-muted">Session</span>
+            <span>{{ inscription.session.date_debut|date:"d/m/Y" }} — {{ inscription.session.ville }}</span>
+          </div>
+          {% endif %}
+          <div class="d-flex justify-content-between small border-bottom pb-2 mb-2">
+            <span class="text-muted">Montant</span>
+            <span class="fw-bold text-primary">{{ inscription.formation.prix_actuel|floatformat:0 }} FCFA</span>
+          </div>
+          <div class="d-flex justify-content-between small">
+            <span class="text-muted">Mode de paiement</span>
+            <span>{{ inscription.get_mode_paiement_display }}</span>
+          </div>
+        </div>
+      </div>
+
+      {% if inscription.mode_paiement == 'virement' %}
+      <div class="alert alert-info border-0 rounded-3 text-start mb-4">
+        <h6 class="fw-bold"><i class="bi bi-bank2 me-2"></i>Instructions de virement</h6>
+        <p class="small mb-1">Virez <strong>{{ inscription.formation.prix_actuel|floatformat:0 }} FCFA</strong> sur :</p>
+        <ul class="small mb-2">
+          <li>Banque : <strong>UTB Togo</strong></li>
+          <li>Titulaire : <strong>Blog Infirmier de Santé Publique</strong></li>
+          <li>Référence : <strong>{{ inscription.numero }}</strong></li>
+        </ul>
+        <p class="small mb-0 text-muted">Votre inscription sera confirmée sous 24h après réception.</p>
+      </div>
+      {% elif inscription.mode_paiement == 'sur_place' %}
+      <div class="alert alert-success border-0 rounded-3 text-start mb-4">
+        <h6 class="fw-bold"><i class="bi bi-cash me-2"></i>Paiement sur place</h6>
+        <p class="small mb-0">Préparez <strong>{{ inscription.formation.prix_actuel|floatformat:0 }} FCFA</strong> le jour de la session.</p>
+      </div>
+      {% endif %}
+
+      <div class="d-flex gap-3 justify-content-center">
+        <a href="{% url 'formations:home' %}" class="btn btn-primary">
+          <i class="bi bi-mortarboard me-2"></i>Autres formations
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'formations:espace_apprenant' %}" class="btn btn-outline-primary">
+          <i class="bi bi-person-badge me-2"></i>Mon espace
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

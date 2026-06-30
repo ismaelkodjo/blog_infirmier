@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     'newsletter',
     'dashboard',
     'core',
+    'boutique',
+    'formations',
 ]
 
 # ===========================================================

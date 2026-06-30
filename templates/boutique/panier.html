@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mon panier — Boutique{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="h3 fw-bold mb-4"><i class="bi bi-cart3 me-2 text-primary"></i>Mon panier</h1>
+
+  {% if panier.lignes.all %}
+  <div class="row g-4">
+    <!-- Lignes panier -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+          {% for ligne in panier.lignes.all %}
+          <div class="d-flex gap-3 align-items-center p-4 {% if not forloop.last %}border-bottom{% endif %}">
+            <!-- Image -->
+            <div class="flex-shrink-0">
+              {% if ligne.produit.image %}
+              <img src="{{ ligne.produit.image.url }}" alt="{{ ligne.produit.nom }}" class="rounded-3" style="width:80px;height:70px;object-fit:cover;">
+              {% else %}
+              <div class="rounded-3 bg-light d-flex align-items-center justify-content-center" style="width:80px;height:70px;">
+                <i class="bi bi-bag-medical text-muted fs-4"></i>
+              </div>
+              {% endif %}
+            </div>
+            <!-- Infos -->
+            <div class="flex-grow-1 min-w-0">
+              <a href="{{ ligne.produit.get_absolute_url }}" class="fw-semibold text-dark text-decoration-none">{{ ligne.produit.nom }}</a>
+              <div class="text-primary fw-bold">{{ ligne.produit.prix_actuel|floatformat:0 }} FCFA</div>
+            </div>
+            <!-- Quantité -->
+            <form method="post" action="{% url 'boutique:panier_modifier' ligne.pk %}" class="d-flex align-items-center gap-2">
+              {% csrf_token %}
+              <div class="input-group input-group-sm" style="width:110px;">
+                <button type="button" class="btn btn-outline-secondary qty-minus">-</button>
+                <input type="number" name="quantite" value="{{ ligne.quantite }}" min="0" class="form-control text-center qty-input">
+                <button type="button" class="btn btn-outline-secondary qty-plus">+</button>
+              </div>
+              <button type="submit" class="btn btn-sm btn-outline-primary">Màj</button>
+            </form>
+            <!-- Sous-total -->
+            <div class="text-end fw-bold" style="min-width:100px;">
+              {{ ligne.sous_total|floatformat:0 }} FCFA
+            </div>
+            <!-- Supprimer -->
+            <form method="post" action="{% url 'boutique:panier_supprimer' ligne.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Résumé -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm sticky-top" style="top:80px;">
+        <div class="card-body">
+          <h5 class="fw-bold mb-4">Résumé de la commande</h5>
+
+          <!-- Zone livraison -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Zone de livraison</label>
+            <select class="form-select" id="zone-select">
+              <option value="">Sélectionner une zone…</option>
+              {% for zone in zones %}
+              <option value="{{ zone.frais }}">{{ zone.nom }} — {{ zone.frais|floatformat:0 }} FCFA ({{ zone.delai_jours }}j)</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <hr>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Sous-total</span>
+            <span class="fw-semibold">{{ panier.get_total|floatformat:0 }} FCFA</span>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-muted">Livraison</span>
+            <span id="frais-livraison" class="fw-semibold">—</span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between mb-4">
+            <span class="fw-bold fs-5">Total</span>
+            <span id="total-commande" class="fw-bold fs-5 text-primary">{{ panier.get_total|floatformat:0 }} FCFA</span>
+          </div>
+
+          <a href="{% url 'boutique:commander' %}" class="btn btn-primary w-100 btn-lg">
+            <i class="bi bi-lock me-2"></i>Passer la commande
+          </a>
+          <a href="{% url 'boutique:home' %}" class="btn btn-outline-secondary w-100 mt-2">
+            <i class="bi bi-arrow-left me-2"></i>Continuer mes achats
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-cart-x text-muted d-block mb-3" style="font-size:4rem;"></i>
+    <h4 class="text-muted">Votre panier est vide</h4>
+    <a href="{% url 'boutique:home' %}" class="btn btn-primary mt-3">
+      <i class="bi bi-shop me-2"></i>Découvrir les produits
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const sousTotal = {{ panier.get_total|default:0 }};
+const fraisEl = document.getElementById('frais-livraison');
+const totalEl = document.getElementById('total-commande');
+document.getElementById('zone-select')?.addEventListener('change', function () {
+  const frais = parseFloat(this.value) || 0;
+  fraisEl.textContent = frais ? frais.toLocaleString('fr-FR') + ' FCFA' : '—';
+  totalEl.textContent = (sousTotal + frais).toLocaleString('fr-FR') + ' FCFA';
+});
+document.querySelectorAll('.qty-minus').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.closest('.input-group').querySelector('.qty-input');
+    if (parseInt(input.value) > 0) input.value = parseInt(input.value) - 1;
+  });
+});
+document.querySelectorAll('.qty-plus').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.closest('.input-group').querySelector('.qty-input');
+    input.value = parseInt(input.value) + 1;
+  });
+});
+</script>
+{% endblock %}

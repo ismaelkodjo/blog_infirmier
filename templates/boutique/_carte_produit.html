@@ -1,0 +1,48 @@
+{% load static %}
+<div class="card h-100 border-0 shadow-sm produit-card">
+  <div class="position-relative overflow-hidden produit-card-img-wrapper">
+    {% if produit.image %}
+    <img src="{{ produit.image.url }}" class="card-img-top produit-card-img" alt="{{ produit.nom }}">
+    {% else %}
+    <div class="produit-card-img-placeholder d-flex align-items-center justify-content-center bg-light">
+      <i class="bi bi-bag-medical text-muted" style="font-size:3rem;"></i>
+    </div>
+    {% endif %}
+    {% if produit.en_promotion %}
+    <span class="badge bg-danger position-absolute top-0 end-0 m-2">Promo</span>
+    {% endif %}
+    {% if not produit.en_stock %}
+    <div class="produit-rupture-overlay">Rupture de stock</div>
+    {% endif %}
+  </div>
+  <div class="card-body d-flex flex-column">
+    {% if produit.categorie %}
+    <span class="badge bg-primary-subtle text-primary mb-2 rounded-pill" style="font-size:.7rem;">{{ produit.categorie.nom }}</span>
+    {% endif %}
+    <h6 class="card-title fw-semibold mb-1">
+      <a href="{{ produit.get_absolute_url }}" class="text-dark text-decoration-none stretched-link">{{ produit.nom }}</a>
+    </h6>
+    {% if produit.description_courte %}
+    <p class="card-text text-muted small mb-3 flex-grow-1">{{ produit.description_courte }}</p>
+    {% endif %}
+    <div class="d-flex align-items-center justify-content-between mt-auto">
+      <div>
+        <span class="fw-bold text-primary fs-5">{{ produit.prix_actuel|floatformat:0 }} FCFA</span>
+        {% if produit.en_promotion %}
+        <del class="text-muted small ms-1">{{ produit.prix|floatformat:0 }}</del>
+        {% endif %}
+      </div>
+      {% if produit.en_stock %}
+      <form method="post" action="{% url 'boutique:panier_ajouter' produit.pk %}" class="add-to-cart-form">
+        {% csrf_token %}
+        <input type="hidden" name="quantite" value="1">
+        <button type="submit" class="btn btn-primary btn-sm" title="Ajouter au panier">
+          <i class="bi bi-cart-plus"></i>
+        </button>
+      </form>
+      {% else %}
+      <button class="btn btn-secondary btn-sm" disabled>Indisponible</button>
+      {% endif %}
+    </div>
+  </div>
+</div>

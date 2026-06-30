@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Passer la commande — Boutique{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="h3 fw-bold mb-4"><i class="bi bi-bag-check me-2 text-primary"></i>Finaliser la commande</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="row g-4">
+      <!-- Adresse de livraison -->
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="fw-bold mb-4"><i class="bi bi-geo-alt me-2 text-primary"></i>Adresse de livraison</h5>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="form-label fw-semibold small">Prénom *</label>
+                {{ adresse_form.prenom }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label fw-semibold small">Nom *</label>
+                {{ adresse_form.nom }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Téléphone *</label>
+                {{ adresse_form.telephone }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Adresse *</label>
+                {{ adresse_form.adresse_ligne1 }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Complément</label>
+                {{ adresse_form.adresse_ligne2 }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label fw-semibold small">Ville *</label>
+                {{ adresse_form.ville }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label fw-semibold small">Région</label>
+                {{ adresse_form.region }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Pays</label>
+                {{ adresse_form.pays }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone de livraison -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-truck me-2 text-primary"></i>Zone de livraison</h5>
+            <div class="row g-2">
+              {% for zone in zones %}
+              <div class="col-12">
+                <label class="d-flex align-items-center gap-3 p-3 border rounded-3 cursor-pointer zone-radio-label">
+                  <input type="radio" name="zone_livraison" value="{{ zone.pk }}" class="form-check-input mt-0">
+                  <div class="flex-grow-1">
+                    <strong>{{ zone.nom }}</strong>
+                    <span class="text-muted small ms-2">Délai : {{ zone.delai_jours }} jour{{ zone.delai_jours|pluralize }} ouvrable{{ zone.delai_jours|pluralize }}</span>
+                  </div>
+                  <span class="badge bg-primary-subtle text-primary fs-6">{{ zone.frais|floatformat:0 }} FCFA</span>
+                </label>
+              </div>
+              {% empty %}
+              <p class="text-muted small">Aucune zone de livraison configurée. Contactez-nous pour les frais.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode de paiement -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-credit-card me-2 text-primary"></i>Mode de paiement</h5>
+            <div class="d-flex flex-column gap-2">
+              <label class="d-flex align-items-center gap-3 p-3 border rounded-3">
+                <input type="radio" name="mode_paiement" value="virement" class="form-check-input mt-0" checked>
+                <i class="bi bi-bank2 fs-4 text-primary"></i>
+                <div>
+                  <strong>Virement bancaire</strong>
+                  <p class="text-muted small mb-0">Coordonnées communiquées après validation de la commande.</p>
+                </div>
+              </label>
+              <label class="d-flex align-items-center gap-3 p-3 border rounded-3">
+                <input type="radio" name="mode_paiement" value="a_la_livraison" class="form-check-input mt-0">
+                <i class="bi bi-cash-stack fs-4 text-success"></i>
+                <div>
+                  <strong>Paiement à la livraison</strong>
+                  <p class="text-muted small mb-0">Payez en espèces à la réception de votre colis.</p>
+                </div>
+              </label>
+              <label class="d-flex align-items-center gap-3 p-3 border rounded-3 opacity-50">
+                <input type="radio" name="mode_paiement" value="mobile_money" class="form-check-input mt-0" disabled>
+                <i class="bi bi-phone fs-4 text-warning"></i>
+                <div>
+                  <strong>Mobile Money (Flooz / T-Money)</strong>
+                  <p class="text-muted small mb-0">Bientôt disponible.</p>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-chat-text me-2 text-primary"></i>Notes (optionnel)</h5>
+            {{ commande_form.notes }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Résumé commande -->
+      <div class="col-lg-5">
+        <div class="card border-0 shadow-sm sticky-top" style="top:80px;">
+          <div class="card-body">
+            <h5 class="fw-bold mb-4">Récapitulatif</h5>
+            {% for ligne in panier.lignes.all %}
+            <div class="d-flex justify-content-between align-items-start mb-2 small">
+              <span class="text-muted">{{ ligne.produit.nom }} × {{ ligne.quantite }}</span>
+              <span class="fw-semibold">{{ ligne.sous_total|floatformat:0 }} FCFA</span>
+            </div>
+            {% endfor %}
+            <hr>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Sous-total</span>
+              <span class="fw-semibold">{{ panier.get_total|floatformat:0 }} FCFA</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span class="text-muted">Livraison</span>
+              <span id="recap-frais">À calculer</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-4">
+              <span class="fw-bold fs-5">Total</span>
+              <span id="recap-total" class="fw-bold fs-5 text-primary">{{ panier.get_total|floatformat:0 }} FCFA</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+              <i class="bi bi-check-circle me-2"></i>Confirmer la commande
+            </button>
+            <p class="text-muted text-center small mt-3">
+              <i class="bi bi-lock-fill me-1"></i>Vos données sont sécurisées
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const sousTotal = {{ panier.get_total|default:0 }};
+const zones = {
+  {% for zone in zones %}"{{ zone.pk }}": {{ zone.frais }},{% endfor %}
+};
+function updateRecap() {
+  const selected = document.querySelector('input[name="zone_livraison"]:checked');
+  const frais = selected ? (zones[selected.value] || 0) : 0;
+  document.getElementById('recap-frais').textContent = frais ? frais.toLocaleString('fr-FR') + ' FCFA' : 'À calculer';
+  document.getElementById('recap-total').textContent = (sousTotal + frais).toLocaleString('fr-FR') + ' FCFA';
+}
+document.querySelectorAll('input[name="zone_livraison"]').forEach(r => r.addEventListener('change', updateRecap));
+</script>
+{% endblock %}

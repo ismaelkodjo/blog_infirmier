@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lecon.titre }} — {{ formation.titre }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-0">
+  <div class="row g-0" style="min-height:calc(100vh - 72px);">
+
+    <!-- Sidebar navigation -->
+    <div class="col-lg-3 border-end bg-light" style="overflow-y:auto;max-height:calc(100vh - 72px);position:sticky;top:72px;">
+      <div class="p-3 border-bottom">
+        <a href="{{ formation.get_absolute_url }}" class="text-muted small d-flex align-items-center gap-1 mb-2">
+          <i class="bi bi-arrow-left"></i> Retour
+        </a>
+        <h6 class="fw-bold mb-0">{{ formation.titre }}</h6>
+      </div>
+      {% for module in formation.modules.all %}
+      <div class="border-bottom">
+        <div class="px-3 py-2 bg-white fw-semibold small text-muted">
+          {{ forloop.counter }}. {{ module.titre }}
+        </div>
+        {% for l in module.lecons.all %}
+        <a href="{% url 'formations:lecon' slug=formation.slug lecon_id=l.pk %}"
+           class="d-flex align-items-center gap-2 px-3 py-2 text-decoration-none small border-bottom
+                  {% if l.pk == lecon.pk %}bg-primary text-white{% else %}text-dark hover-bg-light{% endif %}">
+          <i class="bi bi-{% if l.type_lecon == 'video' %}play-circle{% elif l.type_lecon == 'pdf' %}file-pdf{% elif l.type_lecon == 'quiz' %}question-circle{% else %}file-text{% endif %}
+                    {% if l.pk == lecon.pk %}text-white{% else %}text-primary{% endif %}"></i>
+          <span class="flex-grow-1">{{ l.titre }}</span>
+          {% if l.duree_minutes %}<span class="opacity-75">{{ l.duree_minutes }}m</span>{% endif %}
+        </a>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Contenu leçon -->
+    <div class="col-lg-9 p-4 p-lg-5">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <span class="badge bg-{% if lecon.type_lecon == 'video' %}danger{% elif lecon.type_lecon == 'pdf' %}warning text-dark{% elif lecon.type_lecon == 'quiz' %}info{% else %}secondary{% endif %}">
+          <i class="bi bi-{% if lecon.type_lecon == 'video' %}play-circle{% elif lecon.type_lecon == 'pdf' %}file-pdf{% elif lecon.type_lecon == 'quiz' %}question-circle{% else %}file-text{% endif %} me-1"></i>
+          {{ lecon.get_type_lecon_display }}
+        </span>
+        {% if lecon.duree_minutes %}
+        <span class="text-muted small"><i class="bi bi-clock me-1"></i>{{ lecon.duree_minutes }} min</span>
+        {% endif %}
+      </div>
+      <h1 class="h3 fw-bold mb-4">{{ lecon.titre }}</h1>
+
+      <!-- Contenu selon type -->
+      {% if lecon.type_lecon == 'video' and lecon.contenu %}
+      <div class="ratio ratio-16x9 mb-4 rounded-3 overflow-hidden shadow-sm">
+        {% if 'youtube' in lecon.contenu or 'youtu.be' in lecon.contenu %}
+        <iframe src="{{ lecon.contenu }}" allowfullscreen class="rounded-3"></iframe>
+        {% else %}
+        <video controls class="w-100 rounded-3">
+          <source src="{{ lecon.contenu }}">
+        </video>
+        {% endif %}
+      </div>
+      {% elif lecon.type_lecon == 'pdf' and lecon.fichier %}
+      <div class="mb-4">
+        <a href="{{ lecon.fichier.url }}" target="_blank" class="btn btn-outline-danger btn-lg">
+          <i class="bi bi-file-pdf me-2"></i>Ouvrir le document PDF
+        </a>
+      </div>
+      {% endif %}
+
+      {% if lecon.contenu and lecon.type_lecon not in 'video' %}
+      <div class="lecon-content mb-5">{{ lecon.contenu|linebreaks }}</div>
+      {% elif lecon.type_lecon == 'video' and lecon.contenu %}
+      <!-- description sous la vidéo -->
+      {% endif %}
+
+      <!-- Marquer comme terminée -->
+      <div class="border-top pt-4 mt-4">
+        {% if progression.terminee %}
+        <div class="d-flex align-items-center gap-2 text-success">
+          <i class="bi bi-check-circle-fill fs-4"></i>
+          <span class="fw-semibold">Leçon terminée !</span>
+          <span class="text-muted small ms-2">{{ progression.date_completion|date:"d/m/Y" }}</span>
+        </div>
+        {% else %}
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" name="marquer_terminee" value="1" class="btn btn-success">
+            <i class="bi bi-check-circle me-2"></i>Marquer comme terminée
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

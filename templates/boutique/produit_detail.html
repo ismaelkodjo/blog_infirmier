@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ produit.nom }} — Boutique{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Fil d'ariane -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'boutique:home' %}">Boutique</a></li>
+      {% if produit.categorie %}<li class="breadcrumb-item"><a href="{% url 'boutique:home' %}?categorie={{ produit.categorie.slug }}">{{ produit.categorie.nom }}</a></li>{% endif %}
+      <li class="breadcrumb-item active">{{ produit.nom }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-5">
+    <!-- Image -->
+    <div class="col-lg-5">
+      <div class="produit-detail-img-wrapper rounded-4 overflow-hidden border">
+        {% if produit.image %}
+        <img src="{{ produit.image.url }}" class="img-fluid w-100" alt="{{ produit.nom }}">
+        {% else %}
+        <div class="d-flex align-items-center justify-content-center bg-light" style="min-height:360px;">
+          <i class="bi bi-bag-medical text-muted" style="font-size:5rem;"></i>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Infos produit -->
+    <div class="col-lg-7">
+      {% if produit.categorie %}
+      <span class="badge bg-primary-subtle text-primary rounded-pill mb-2">{{ produit.categorie.nom }}</span>
+      {% endif %}
+      <h1 class="h2 fw-bold mb-2">{{ produit.nom }}</h1>
+      {% if produit.description_courte %}
+      <p class="text-muted lead mb-3">{{ produit.description_courte }}</p>
+      {% endif %}
+
+      <!-- Prix -->
+      <div class="d-flex align-items-baseline gap-3 mb-4">
+        <span class="display-6 fw-bold text-primary">{{ produit.prix_actuel|floatformat:0 }} FCFA</span>
+        {% if produit.en_promotion %}
+        <del class="text-muted fs-5">{{ produit.prix|floatformat:0 }} FCFA</del>
+        <span class="badge bg-danger">Promo</span>
+        {% endif %}
+      </div>
+
+      <!-- Stock -->
+      <div class="mb-4">
+        {% if produit.en_stock %}
+        <span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>En stock ({{ produit.stock }} disponible{{ produit.stock|pluralize }})</span>
+        {% else %}
+        <span class="text-danger fw-semibold"><i class="bi bi-x-circle-fill me-1"></i>Rupture de stock</span>
+        {% endif %}
+      </div>
+
+      <!-- Ajouter au panier -->
+      {% if produit.en_stock %}
+      <form method="post" action="{% url 'boutique:panier_ajouter' produit.pk %}" class="d-flex gap-3 align-items-center mb-4">
+        {% csrf_token %}
+        <div class="input-group" style="width:130px;">
+          <button type="button" class="btn btn-outline-secondary qty-minus">-</button>
+          <input type="number" name="quantite" value="1" min="1" max="{{ produit.stock }}" class="form-control text-center qty-input">
+          <button type="button" class="btn btn-outline-secondary qty-plus">+</button>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg flex-grow-1">
+          <i class="bi bi-cart-plus me-2"></i>Ajouter au panier
+        </button>
+      </form>
+      {% endif %}
+
+      <!-- Livraison info -->
+      <div class="alert alert-info border-0 rounded-3 d-flex gap-2 align-items-start">
+        <i class="bi bi-truck fs-5 mt-1 flex-shrink-0"></i>
+        <div>
+          <strong>Livraison disponible partout au Togo</strong><br>
+          <small class="text-muted">Les frais de port sont calculés selon votre zone lors de la commande.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description complète -->
+  <div class="row mt-5">
+    <div class="col-lg-8">
+      <h3 class="h5 fw-bold border-bottom pb-2 mb-3">Description du produit</h3>
+      <div class="produit-description">{{ produit.description|linebreaks }}</div>
+    </div>
+  </div>
+
+  <!-- Produits similaires -->
+  {% if produits_similaires %}
+  <div class="mt-5">
+    <h3 class="h5 fw-bold mb-4">Produits similaires</h3>
+    <div class="row g-4">
+      {% for p in produits_similaires %}
+      <div class="col-sm-6 col-lg-3">
+        {% include "boutique/_carte_produit.html" with produit=p %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.qty-minus').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.closest('.input-group').querySelector('.qty-input');
+    if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+  });
+});
+document.querySelectorAll('.qty-plus').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.closest('.input-group').querySelector('.qty-input');
+    const max = parseInt(input.max) || 999;
+    if (parseInt(input.value) < max) input.value = parseInt(input.value) + 1;
+  });
+});
+</script>
+{% endblock %}

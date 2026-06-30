@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Formations — Blog Infirmier{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="formations-hero py-5 bg-gradient-primary text-white" style="background: linear-gradient(135deg, #0f172a 0%, #1a6fc4 60%, #1e3a8a 100%);">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <span class="badge bg-white text-primary mb-3 px-3 py-2 rounded-pill">
+          <i class="bi bi-mortarboard me-1"></i> Formations professionnelles
+        </span>
+        <h1 class="display-5 fw-bold mb-3">Développez vos <span class="text-warning">compétences</span> infirmières</h1>
+        <p class="lead opacity-75 mb-4">Formations en présentiel et en ligne conçues par des professionnels de santé publique au Togo.</p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="#formations" class="btn btn-warning btn-lg fw-semibold">
+            <i class="bi bi-grid me-2"></i>Voir les formations
+          </a>
+          {% if user.is_authenticated %}
+          <a href="{% url 'formations:espace_apprenant' %}" class="btn btn-outline-light btn-lg">
+            <i class="bi bi-person-badge me-2"></i>Mon espace
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+        <i class="bi bi-mortarboard-fill text-white opacity-10" style="font-size:10rem;"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="py-4 border-bottom bg-light">
+  <div class="container">
+    <div class="row g-3 text-center">
+      <div class="col-4">
+        <div class="fw-bold fs-4 text-primary">{{ formations.count }}+</div>
+        <div class="text-muted small">Formations</div>
+      </div>
+      <div class="col-4">
+        <div class="fw-bold fs-4 text-primary">3</div>
+        <div class="text-muted small">Formats (Présentiel, En ligne, Hybride)</div>
+      </div>
+      <div class="col-4">
+        <div class="fw-bold fs-4 text-primary">100%</div>
+        <div class="text-muted small">Certifié</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filtres -->
+<section class="py-4 border-bottom">
+  <div class="container">
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+      <a href="{% url 'formations:home' %}" class="btn btn-sm {% if not type_filtre and not categorie_active %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">Toutes</a>
+      <a href="?type=presentiel" class="btn btn-sm {% if type_filtre == 'presentiel' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">
+        <i class="bi bi-people me-1"></i>Présentiel
+      </a>
+      <a href="?type=en_ligne" class="btn btn-sm {% if type_filtre == 'en_ligne' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">
+        <i class="bi bi-laptop me-1"></i>En ligne
+      </a>
+      <a href="?type=hybride" class="btn btn-sm {% if type_filtre == 'hybride' %}btn-primary{% else %}btn-outline-secondary{% endif %} rounded-pill">
+        <i class="bi bi-arrows-angle-expand me-1"></i>Hybride
+      </a>
+      {% if categories %}
+      <span class="text-muted small mx-2">|</span>
+      {% for cat in categories %}
+      <a href="?categorie={{ cat.slug }}" class="btn btn-sm {% if categorie_active.pk == cat.pk %}btn-info{% else %}btn-outline-secondary{% endif %} rounded-pill">{{ cat.nom }}</a>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Formations en vedette -->
+{% if formations_vedette and not type_filtre and not categorie_active %}
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="h4 fw-bold mb-4"><i class="bi bi-star-fill text-warning me-2"></i>Formations en vedette</h2>
+    <div class="row g-4">
+      {% for f in formations_vedette %}
+      <div class="col-md-6 col-lg-4">
+        {% include "formations/_carte_formation.html" with formation=f %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Toutes les formations -->
+<section id="formations" class="py-5">
+  <div class="container">
+    <h2 class="h4 fw-bold mb-4">
+      {% if type_filtre %}
+        {% if type_filtre == 'presentiel' %}Formations présentiel{% elif type_filtre == 'en_ligne' %}Formations en ligne{% else %}Formations hybrides{% endif %}
+      {% elif categorie_active %}
+        {{ categorie_active.nom }}
+      {% else %}
+        Toutes les formations
+      {% endif %}
+      <span class="text-muted fs-6 fw-normal ms-2">({{ formations.count }} formation{{ formations.count|pluralize }})</span>
+    </h2>
+    {% if formations %}
+    <div class="row g-4">
+      {% for f in formations %}
+      <div class="col-md-6 col-lg-4">
+        {% include "formations/_carte_formation.html" with formation=f %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5 text-muted">
+      <i class="bi bi-mortarboard fs-1 d-block mb-3"></i>
+      <p>Aucune formation disponible pour ce filtre.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 bg-primary text-white text-center">
+  <div class="container">
+    <h2 class="h3 fw-bold mb-3">Une formation sur mesure pour votre équipe ?</h2>
+    <p class="lead opacity-75 mb-4">Contactez-nous pour organiser une session de formation intra-établissement.</p>
+    <a href="{% url 'contact:contact' %}" class="btn btn-warning btn-lg fw-semibold">
+      <i class="bi bi-envelope me-2"></i>Nous contacter
+    </a>
+  </div>
+</section>
+{% endblock %}
