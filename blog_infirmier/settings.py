@@ -42,6 +42,7 @@ CSRF_TRUSTED_ORIGINS = ['https://infirmierblog.pythonanywhere.com']
 # APPLICATIONS
 # ===========================================================
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -346,3 +347,129 @@ GOOGLE_ANALYTICS_ID = config('GOOGLE_ANALYTICS_ID', default='')
 # ===========================================================
 SILENCED_SYSTEM_CHECKS = ['django_ratelimit.E003']
 RATELIMIT_USE_CACHE = 'default'
+
+# ===========================================================
+# JAZZMIN — Thème Admin
+# ===========================================================
+JAZZMIN_SETTINGS = {
+    # ── Identité ──────────────────────────────────────────────
+    "site_title": "Blog Infirmier Admin",
+    "site_header": "Blog Infirmier",
+    "site_brand": "🏥 Blog Infirmier",
+    "site_logo": None,
+    "login_logo": None,
+    "site_icon": None,
+    "welcome_sign": "Bienvenue dans l'administration",
+    "copyright": "Blog Infirmier de Santé Publique",
+
+    # ── Recherche ─────────────────────────────────────────────
+    "search_model": ["blog.Article", "auth.User"],
+
+    # ── Menu utilisateur (haut droite) ────────────────────────
+    "user_avatar": None,
+    "topmenu_links": [
+        {"name": "Accueil",    "url": "admin:index",          "permissions": ["auth.view_user"]},
+        {"name": "Voir le site", "url": "/",                  "new_window": True},
+        {"name": "Articles",   "url": "admin:blog_article_changelist"},
+    ],
+
+    # ── Menu latéral ──────────────────────────────────────────
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+
+    "order_with_respect_to": [
+        "blog",
+        "blog.Article",
+        "blog.Categorie",
+        "blog.Commentaire",
+        "resources",
+        "newsletter",
+        "contact",
+        "accounts",
+        "auth",
+        "taggit",
+    ],
+
+    "icons": {
+        # App icons
+        "auth":                     "fas fa-users-cog",
+        "auth.user":                "fas fa-user",
+        "auth.group":               "fas fa-users",
+        "blog.article":             "fas fa-newspaper",
+        "blog.categorie":           "fas fa-tags",
+        "blog.commentaire":         "fas fa-comments",
+        "accounts.profil":          "fas fa-id-card",
+        "contact.messagedecontact": "fas fa-envelope",
+        "newsletter.abonne":        "fas fa-rss",
+        "resources.resource":       "fas fa-book-medical",
+        "taggit.tag":               "fas fa-hashtag",
+    },
+    "default_icon_parents": "fas fa-folder",
+    "default_icon_children": "fas fa-circle",
+
+    # ── Interface ─────────────────────────────────────────────
+    "related_modal_active": True,
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": False,
+    "show_ui_builder": False,
+
+    # ── Sidebar liens custom ───────────────────────────────────
+    "custom_links": {
+        "blog": [{
+            "name": "Mon Dashboard",
+            "url": "/dashboard/",
+            "icon": "fas fa-chart-line",
+            "permissions": ["blog.view_article"],
+        }],
+    },
+
+    # ── Changelist ────────────────────────────────────────────
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+    "language_chooser": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    # Thème Bootstrap
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+
+    # Couleurs navbar & sidebar
+    "brand_colour": "navbar-primary",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark navbar-primary",
+    "no_navbar_border": True,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+
+    # Thème global
+    "theme": "flatly",
+    "dark_mode_theme": None,
+
+    # Boutons
+    "button_classes": {
+        "primary":   "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info":      "btn-info",
+        "warning":   "btn-warning",
+        "danger":    "btn-danger",
+        "success":   "btn-success",
+    },
+}

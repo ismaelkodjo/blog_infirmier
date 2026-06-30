@@ -16,3 +16,4 @@ django-robots==6.1
 slugify==0.0.1
 python-slugify==8.0.4
 django-ratelimit==4.1.0
+django-jazzmin==3.0.1
