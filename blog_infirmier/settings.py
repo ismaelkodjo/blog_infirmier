@@ -420,7 +420,7 @@ JAZZMIN_SETTINGS = {
     "custom_links": {
         "blog": [{
             "name": "Mon Dashboard",
-            "url": "/dashboard/",
+            "url": "/tableau-de-bord/",
             "icon": "fas fa-chart-line",
             "permissions": ["blog.view_article"],
         }],
