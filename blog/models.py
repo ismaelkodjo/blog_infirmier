@@ -54,6 +54,13 @@ class Article(models.Model):
 
     # Informations principales
     title = models.CharField(max_length=250, verbose_name="Titre")
+    seo_title = models.CharField(
+        max_length=60,
+        blank=True,
+        null=True,
+        verbose_name="Titre SEO",
+        help_text="Titre affiché dans Google (max 60 caractères). Si vide, le titre principal est utilisé tronqué."
+    )
     subtitle = models.CharField(max_length=300, blank=True, null=True, verbose_name="Sous-titre")
     slug = models.SlugField(max_length=270, unique=True, blank=True, verbose_name="Slug")
     summary = models.TextField(max_length=500, verbose_name="Résumé")
@@ -115,6 +122,14 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:article_detail', kwargs={'slug': self.slug})
+
+    def get_seo_title(self):
+        """Retourne le titre SEO ≤ 60 caractères, sans couper un mot."""
+        source = self.seo_title if self.seo_title else self.title
+        if len(source) <= 60:
+            return source
+        # Tronque sur le dernier espace avant 57 chars et ajoute '...'
+        return source[:57].rsplit(' ', 1)[0] + '...'
 
     def increment_views(self):
         Article.objects.filter(pk=self.pk).update(views_count=models.F('views_count') + 1)
