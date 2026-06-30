@@ -135,12 +135,14 @@
 .section-articles-featured {
   background: linear-gradient(180deg, var(--neutral-50) 0%, #ffffff 100%);
   position: relative;
+  overflow: hidden; /* ✅ CORRECTIF : contient le pseudo-élément shimmer de 300% */
 }
 .section-articles-featured::before {
   content: '';
   position: absolute;
   top: 0; left: -100%; right: auto;
-  width: 300%; height: 3px;
+  width: 300%;
+  height: 3px;
   background: linear-gradient(90deg,
     var(--medical-blue) 0%,
     var(--accent-teal) 33%,
