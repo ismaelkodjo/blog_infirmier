@@ -844,3 +844,142 @@ a { transition: color var(--transition); }
     display: none !important;
   }
 }
+/* ============================================================
+   CORRECTIF RESPONSIVE — À ajouter à la FIN de base.css
+   ET à la FIN de home.css
+   ============================================================ */
+
+/* ── 1. Bloquer le scroll horizontal global ── */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* ── 2. Hero wave SVG — forcer pleine largeur sans débordement ── */
+.hero-wave {
+  overflow: hidden;
+  width: 100%;
+  line-height: 0;
+}
+.hero-wave svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ── 3. Hero section — empêcher les éléments absolus de déborder ── */
+.hero-section {
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── 4. Hero dots — contraindre au viewport ── */
+.hero-dots {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* ── 5. Hero illustration — cacher sur < lg (déjà fait via d-none d-lg-flex
+        mais les pseudo-éléments peuvent encore déborder) ── */
+@media (max-width: 991.98px) {
+  .hero-illustration,
+  .floating-card,
+  .hero-circle {
+    display: none !important;
+  }
+  .hero-dots {
+    display: none;
+  }
+}
+
+/* ── 6. Hero stats — wrap propre sur mobile ── */
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+  margin-top: 1.5rem;
+}
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 60px;
+}
+
+@media (max-width: 575.98px) {
+  /* Hero texte */
+  .hero-section .display-4 {
+    font-size: 1.75rem !important;
+  }
+  .hero-section .lead {
+    font-size: .95rem !important;
+  }
+  /* Boutons hero en colonne sur très petit écran */
+  .hero-section .d-flex.flex-wrap.gap-3 {
+    flex-direction: column;
+    gap: .75rem !important;
+  }
+  .hero-section .btn-lg {
+    width: 100%;
+    justify-content: center;
+  }
+  /* Stats en grille 2 colonnes */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+    margin-top: 1.25rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  /* Articles populaires — image réduite */
+  .popular-article-img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  /* Section author — centrage du contenu */
+  .author-section .col-lg-8 {
+    text-align: center;
+  }
+  .author-section .d-flex.flex-wrap.gap-3 {
+    justify-content: center;
+  }
+  .author-expertise-item {
+    justify-content: center;
+    text-align: left;
+  }
+}
+
+/* ── 7. Navbar — barre de recherche trop large sur mobile ── */
+@media (max-width: 991.98px) {
+  .navbar-collapse form.d-flex {
+    width: 100%;
+  }
+  .navbar-collapse .input-group {
+    width: 100%;
+  }
+}
+
+/* ── 8. Sections avec padding excessif sur mobile ── */
+@media (max-width: 767.98px) {
+  .py-5 {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+  .mb-5 {
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* ── 9. Container — s'assurer qu'il ne déborde jamais ── */
+.container,
+.container-fluid {
+  max-width: 100%;
+}
+
+/* ── 10. Row — pas de gutter négatif qui déborde ── */
+@media (max-width: 575.98px) {
+  .row {
+    --bs-gutter-x: 1rem;
+  }
+}
