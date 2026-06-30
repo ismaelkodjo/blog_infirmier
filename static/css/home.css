@@ -359,3 +359,60 @@
     justify-content: center;
   }
 }
+
+/* ============================================================
+   CORRECTIF SCROLLBAR HORIZONTALE — production
+   À coller À LA FIN de home.css
+   ============================================================ */
+
+/* 1. Wrapper général — approche la plus robuste pour la prod */
+html {
+  overflow-x: hidden !important;
+}
+
+/* 2. Shimmer — la vraie cause : l'élément se déplace vers la droite
+      Remplacement par clip-path au lieu de translateX */
+.section-articles-featured {
+  overflow: hidden !important;
+  contain: layout;   /* isolation du débordement */
+}
+.section-articles-featured::before {
+  /* On supprime l'animation qui déplace l'élément hors du viewport */
+  animation: none !important;
+  /* Remplacé par un dégradé statique animé via opacity uniquement */
+  background: linear-gradient(90deg,
+    var(--medical-blue) 0%,
+    var(--accent-teal) 33%,
+    var(--health-green) 66%,
+    var(--medical-blue) 100%);
+  opacity: .8;
+  animation: shimmerFade 3s ease-in-out infinite !important;
+  width: 100% !important;
+  left: 0 !important;
+}
+@keyframes shimmerFade {
+  0%, 100% { opacity: .5; }
+  50%       { opacity: 1; }
+}
+
+/* 3. Hero section — tous les enfants absolus contenus */
+.hero-section,
+.author-section,
+.newsletter-strip,
+.footer {
+  overflow: hidden !important;
+  contain: layout;
+}
+
+/* 4. Floating cards — ne dépassent plus à droite */
+.floating-card {
+  right: 0 !important;
+  max-width: 180px !important;
+}
+
+/* 5. Hero dots — coupés si trop larges */
+.hero-dots {
+  overflow: hidden !important;
+  right: 0 !important;
+  max-width: 180px !important;
+}
