@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'core',
     'boutique',
     'formations',
+    'payments',
 ]
 
 # ===========================================================
@@ -107,6 +108,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'blog.context_processors.global_context',
                 'core.context_processors.analytics',
+                'core.context_processors.cart_count',
             ],
         },
     },
@@ -267,6 +269,15 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='Blog Infirmier <noreply@bloginfirmier.com>')
 CONTACT_EMAIL = config('CONTACT_EMAIL')
+
+# ===========================================================
+# PAIEMENTS — PayPal & Mobile Money
+# ===========================================================
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID', default='')
+PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET', default='')
+
+MOBILE_MONEY_API_URL = config('MOBILE_MONEY_API_URL', default='')
+MOBILE_MONEY_API_KEY = config('MOBILE_MONEY_API_KEY', default='')
 
 # ===========================================================
 # TAGGIT

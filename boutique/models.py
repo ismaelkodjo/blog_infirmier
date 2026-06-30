@@ -165,8 +165,9 @@ class LigneCommande(models.Model):
 
     @property
     def sous_total(self):
+        if self.prix_unitaire is None or self.quantite is None:
+            return 0
         return self.prix_unitaire * self.quantite
-
 
 class Panier(models.Model):
     session_key = models.CharField(max_length=40, unique=True)

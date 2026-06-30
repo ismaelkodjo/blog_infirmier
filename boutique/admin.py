@@ -15,6 +15,8 @@ class LigneCommandeInline(admin.TabularInline):
     readonly_fields = ['nom_produit', 'prix_unitaire', 'quantite', 'sous_total']
 
     def sous_total(self, obj):
+        if obj.pk is None:
+            return "-"
         return f"{obj.sous_total:,.0f} FCFA"
     sous_total.short_description = "Sous-total"
 

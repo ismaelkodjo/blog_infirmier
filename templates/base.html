@@ -86,8 +86,9 @@
   <div class="container">
 
     <!-- Logo / Brand -->
-    <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'core:home' %}">
+    <a class="navbar-brand d-flex align-items-center gap-2"  href="{% url 'core:home' %}">
       <div class="brand-icon" aria-hidden="true">
+        
         <svg width="22" height="22" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <polyline points="5,24 12,24 15,7 18,36 21,17 25,24 33,24 38,24 43,24"
             stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -124,28 +125,7 @@
           </a>
         </li>
 
-        <!-- Catégories dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-             aria-expanded="false">
-            <i class="bi bi-grid me-1"></i>Catégories
-          </a>
-          <ul class="dropdown-menu dropdown-menu-lg shadow border-0">
-            {% for cat in global_categories %}
-            <li>
-              <a class="dropdown-item py-2" href="{{ cat.get_absolute_url }}">
-                <i class="{{ cat.icon }} me-2 text-primary"></i>{{ cat.name }}
-              </a>
-            </li>
-            {% endfor %}
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item py-2 text-primary fw-semibold" href="{% url 'blog:category_list' %}">
-                <i class="bi bi-grid-3x3-gap me-2"></i>Toutes les catégories
-              </a>
-            </li>
-          </ul>
-        </li>
+        
 
         <li class="nav-item">
           <a class="nav-link {% if 'formations' in request.path %}active{% endif %}"
@@ -154,13 +134,13 @@
           </a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link {% if 'parcours' in request.path %}active{% endif %}"
-             href="{% url 'core:parcours' %}">
-            <i class="bi bi-person-badge me-1"></i>Parcours
-          </a>
-        </li>
-
+         <li class="nav-item">
+           <a class="nav-link {% if 'boutique' in request.path %}active{% endif %}"
+               href="{% url 'boutique:home' %}">
+              <i class="bi bi-bag-heart me-1"></i>Boutique
+           </a>
+          </li>
+          
         <li class="nav-item">
           <a class="nav-link {% if 'a-propos' in request.path %}active{% endif %}"
              href="{% url 'core:about' %}">
@@ -177,7 +157,7 @@
 
       </ul>
 
-      <!-- Recherche + Auth -->
+      <!-- Recherche + Panier + Auth -->
       <div class="d-flex align-items-center gap-2">
 
         <!-- Barre de recherche -->
@@ -192,6 +172,18 @@
             </button>
           </div>
         </form>
+
+        <!-- Panier -->
+        <a href="{% url 'boutique:panier' %}"
+           class="btn btn-outline-light btn-sm position-relative"
+           title="Mon panier">
+            <i class="bi bi-cart3"></i>
+            {% if cart_count %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ cart_count }}
+            </span>
+            {% endif %}
+        </a>
 
         <!-- Utilisateur connecté -->
         {% if user.is_authenticated %}
