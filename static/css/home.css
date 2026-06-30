@@ -114,6 +114,7 @@
 .floating-card {
   position: absolute;
   animation: float 5s ease-in-out infinite;
+  will-change: transform;
   min-width: 180px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -138,14 +139,18 @@
 .section-articles-featured::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--medical-blue), var(--accent-teal), var(--health-green), var(--medical-blue));
-  background-size: 300% auto;
+  top: 0; left: -100%; right: auto;
+  width: 300%; height: 3px;
+  background: linear-gradient(90deg,
+    var(--medical-blue) 0%,
+    var(--accent-teal) 33%,
+    var(--health-green) 66%,
+    var(--medical-blue) 100%);
   animation: shimmer 4s linear infinite;
+  will-change: transform;
 }
 @keyframes shimmer {
-  to { background-position: 300% center; }
+  to { transform: translateX(33.33%); }
 }
 
 /* ── Section : Catégories ── */

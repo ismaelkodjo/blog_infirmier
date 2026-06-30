@@ -319,15 +319,24 @@
   color: #15803d;
 }
 .status-published .status-dot {
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 8px; height: 8px; border-radius: 50%;
   background: #22c55e;
-  box-shadow: 0 0 0 2px rgba(34,197,94,.3);
-  animation: pulse-dot 2s ease-in-out infinite;
   flex-shrink: 0;
+  position: relative;
+}
+/* Halo pulsant via ::after — transform+opacity = composite ✅ */
+.status-published .status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: rgba(34,197,94,.4);
+  animation: pulse-dot 2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 2px rgba(34,197,94,.3); }
-  50%       { box-shadow: 0 0 0 4px rgba(34,197,94,.15); }
+  0%, 100% { transform: scale(1); opacity: .7; }
+  50%       { transform: scale(1.9); opacity: 0; }
 }
 .status-draft {
   background: var(--neutral-100);
