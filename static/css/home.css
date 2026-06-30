@@ -11,9 +11,11 @@
     radial-gradient(ellipse 60% 50% at -10% 80%, rgba(34,197,94,.08) 0%, transparent 60%),
     linear-gradient(160deg, #f4f9ff 0%, #ffffff 50%, #f0fff8 100%);
   position: relative;
-  overflow: hidden;
+  overflow: hidden;         /* ← Contient tous les pseudo-éléments et éléments absolus */
   display: flex;
   align-items: center;
+  width: 100%;              /* ← Ne dépasse jamais le viewport */
+  max-width: 100%;
 }
 
 /* Grid décorative subtile en fond */
@@ -27,7 +29,8 @@
   background-size: 48px 48px;
   pointer-events: none;
 }
-/* Glow bas-gauche */
+
+/* Glow bas-gauche — contenu par overflow:hidden du parent */
 .hero-section::after {
   content: '';
   position: absolute;
@@ -47,11 +50,26 @@
   background-size: 24px 24px;
   opacity: .6;
   pointer-events: none;
+  /* Empêche ce bloc de créer un scroll horizontal */
+  overflow: hidden;
+  max-width: calc(100vw - 5%);
 }
 
 .min-vh-75 { min-height: 75vh; }
-.hero-wave { position: absolute; bottom: -1px; left: 0; right: 0; line-height: 0; }
-.hero-wave svg { width: 100%; height: 80px; display: block; }
+
+/* ── Hero wave — totalement contenu ── */
+.hero-wave {
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  line-height: 0;
+  overflow: hidden;   /* ← FIX : empêche le SVG de déborder */
+  width: 100%;
+}
+.hero-wave svg {
+  width: 100%;
+  height: 80px;
+  display: block;
+}
 
 /* ── Stats rapides dans le hero ── */
 .hero-stats {
@@ -89,6 +107,8 @@
   position: relative;
   width: 420px;
   height: 420px;
+  overflow: hidden;   /* ← Contient les floating-cards qui débordent sur les bords */
+  flex-shrink: 0;
 }
 .hero-circle {
   position: absolute;
@@ -116,13 +136,14 @@
   animation: float 5s ease-in-out infinite;
   will-change: transform;
   min-width: 180px;
+  max-width: 200px;   /* ← Limite la largeur pour éviter le débordement */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,.8) !important;
   box-shadow: 0 8px 32px rgba(26,111,196,.12), 0 2px 8px rgba(0,0,0,.06) !important;
 }
-.card-1 { top: 8%;  left: -10px; animation-delay: 0s; }
-.card-2 { bottom: 12%; right: -10px; animation-delay: 1.8s; }
+.card-1 { top: 8%;  left: 0; animation-delay: 0s; }       /* ← left:0 au lieu de -10px */
+.card-2 { bottom: 12%; right: 0; animation-delay: 1.8s; } /* ← right:0 au lieu de -10px */
 .card-3 { bottom: 0; left: 18%; animation-delay: 3.2s; }
 
 @keyframes float {
@@ -135,24 +156,27 @@
 .section-articles-featured {
   background: linear-gradient(180deg, var(--neutral-50) 0%, #ffffff 100%);
   position: relative;
-  overflow: hidden; /* ✅ CORRECTIF : contient le pseudo-élément shimmer de 300% */
+  overflow: hidden;   /* ← Contient le pseudo-élément shimmer de 300% de large */
+  width: 100%;
 }
 .section-articles-featured::before {
   content: '';
   position: absolute;
-  top: 0; left: -100%; right: auto;
-  width: 300%;
+  top: 0; left: 0;
+  width: 100%;
   height: 3px;
   background: linear-gradient(90deg,
     var(--medical-blue) 0%,
     var(--accent-teal) 33%,
     var(--health-green) 66%,
     var(--medical-blue) 100%);
+  background-size: 300% 100%;   /* ← Déplacement via background-position, pas left */
   animation: shimmer 4s linear infinite;
-  will-change: transform;
+  will-change: background-position;
 }
 @keyframes shimmer {
-  to { transform: translateX(33.33%); }
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
 /* ── Section : Catégories ── */
@@ -216,7 +240,8 @@
 .author-section {
   background: linear-gradient(135deg, #0f172a 0%, var(--medical-blue-dark) 60%, #1e3a8a 100%);
   position: relative;
-  overflow: hidden;
+  overflow: hidden;   /* ← Contient les cercles décoratifs hors-écran */
+  width: 100%;
 }
 .author-section::before {
   content: '';
@@ -293,20 +318,44 @@
   flex-shrink: 0;
 }
 
-/* ── Responsive ── */
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
 @media (max-width: 991.98px) {
-  .hero-section { min-height: auto; padding: 3.5rem 0 5rem; }
-  .hero-illustration { display: none; }
-  .hero-dots { display: none; }
+  .hero-section {
+    min-height: auto;
+    padding: 3.5rem 0 5rem;
+  }
+  /* Cacher les éléments décoratifs sources de débordement */
+  .hero-illustration,
+  .floating-card,
+  .hero-circle,
+  .hero-dots { display: none !important; }
 }
 
 @media (max-width: 767.98px) {
   .display-4 { font-size: 1.875rem !important; }
   .hero-stats { gap: 1rem; }
   .hero-stat-value { font-size: 1.4rem; }
+
+  /* Author section — centrage */
+  .author-section .col-lg-8 { text-align: center; }
+  .author-section .d-flex.flex-wrap.gap-3 { justify-content: center; }
+  .author-expertise-item { justify-content: center; }
 }
 
 @media (max-width: 575.98px) {
   .popular-article-img { width: 72px; height: 54px; }
   .hero-stats { justify-content: space-between; }
+
+  /* Boutons hero en pleine largeur */
+  .hero-section .d-flex.flex-wrap.gap-3 {
+    flex-direction: column;
+    gap: .75rem !important;
+  }
+  .hero-section .btn-lg {
+    width: 100%;
+    justify-content: center;
+  }
 }
