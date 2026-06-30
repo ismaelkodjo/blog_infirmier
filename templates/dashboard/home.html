@@ -12,14 +12,16 @@
 
   <!-- ===== HEADER ===== -->
   <div class="dashboard-header">
+    <div class="dashboard-header-glow" aria-hidden="true"></div>
     <div class="container-fluid px-4">
       <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div>
           <div class="dashboard-greeting">
-            <i class="bi bi-speedometer2 me-2 opacity-75"></i>Tableau de bord
+            <i class="bi bi-speedometer2" aria-hidden="true"></i>
+            Tableau de bord
           </div>
           <p class="dashboard-subtitle mb-0">
-            Bonjour, <strong class="text-white">{{ user.get_full_name|default:user.username }}</strong> —
+            Bonjour, <strong>{{ user.get_full_name|default:user.username }}</strong> —
             <span>{% now "l d F Y" %}</span>
           </p>
         </div>
@@ -28,7 +30,7 @@
             <i class="bi bi-plus-circle me-2"></i>Nouvel article
           </a>
           <a href="{% url 'admin:index' %}" class="btn btn-outline-light">
-            <i class="bi bi-gear me-2"></i>Admin Django
+            <i class="bi bi-gear me-2"></i>Administration
           </a>
         </div>
       </div>
@@ -188,7 +190,7 @@
         <div class="dash-card">
           <div class="dash-card-header">
             <h3 class="dash-card-title">
-              <span class="dash-card-title-icon-primary"><i class="bi bi-bar-chart"></i></span>
+              <span class="dash-card-title-icon dash-card-title-icon-primary"><i class="bi bi-bar-chart"></i></span>
               Articles publiés par mois
             </h3>
             <span class="badge" style="background:var(--medical-blue-light);color:var(--medical-blue);font-size:.72rem;">12 derniers mois</span>
@@ -202,7 +204,7 @@
         <div class="dash-card h-100">
           <div class="dash-card-header">
             <h3 class="dash-card-title">
-              <span class="dash-card-title-icon-primary"><i class="bi bi-pie-chart"></i></span>
+              <span class="dash-card-title-icon dash-card-title-icon-primary"><i class="bi bi-pie-chart"></i></span>
               Par catégorie
             </h3>
           </div>
@@ -222,7 +224,7 @@
         <div class="dash-card">
           <div class="dash-card-header">
             <h3 class="dash-card-title">
-              <span class="dash-card-title-icon-primary"><i class="bi bi-clock-history"></i></span>
+              <span class="dash-card-title-icon dash-card-title-icon-primary"><i class="bi bi-clock-history"></i></span>
               Articles récents
             </h3>
             <a href="{% url 'blog:article_list' %}" class="btn btn-sm btn-outline-primary" style="font-size:.78rem;">
@@ -260,9 +262,9 @@
                   </td>
                   <td>
                     {% if article.status == 'published' %}
-                    <span class="status-badge status-published"><i class="bi bi-check-circle-fill me-1"></i>Publié</span>
+                    <span class="status-badge status-published"><span class="status-dot"></span>Publié</span>
                     {% else %}
-                    <span class="status-badge status-draft"><i class="bi bi-pencil-fill me-1"></i>Brouillon</span>
+                    <span class="status-badge status-draft"><span class="status-dot"></span>Brouillon</span>
                     {% endif %}
                   </td>
                   <td>
@@ -272,11 +274,11 @@
                   </td>
                   <td>
                     <div class="d-flex gap-1">
-                      <a href="{{ article.get_absolute_url }}" class="btn btn-sm btn-light" title="Voir" style="width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);">
-                        <i class="bi bi-eye" style="font-size:.8rem;"></i>
+                      <a href="{{ article.get_absolute_url }}" class="action-btn action-btn-view" title="Voir">
+                        <i class="bi bi-eye"></i>
                       </a>
-                      <a href="{% url 'blog:article_edit' article.slug %}" class="btn btn-sm btn-outline-primary" title="Modifier" style="width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);">
-                        <i class="bi bi-pencil" style="font-size:.8rem;"></i>
+                      <a href="{% url 'blog:article_edit' article.slug %}" class="action-btn action-btn-edit" title="Modifier">
+                        <i class="bi bi-pencil"></i>
                       </a>
                     </div>
                   </td>
@@ -302,7 +304,7 @@
         <div class="dash-card">
           <div class="dash-card-header">
             <h3 class="dash-card-title">
-              <span class="dash-card-title-icon-success"><i class="bi bi-lightning-charge"></i></span>
+              <span class="dash-card-title-icon dash-card-title-icon-success"><i class="bi bi-lightning-charge"></i></span>
               Actions rapides
             </h3>
           </div>
@@ -338,7 +340,7 @@
         <div class="dash-card flex-grow-1">
           <div class="dash-card-header">
             <h3 class="dash-card-title">
-              <span class="dash-card-title-icon-warning"><i class="bi bi-chat-dots"></i></span>
+              <span class="dash-card-title-icon dash-card-title-icon-warning"><i class="bi bi-chat-dots"></i></span>
               Modération
             </h3>
             <a href="{% url 'dashboard:moderate_comments' %}" class="btn btn-sm btn-outline-warning" style="font-size:.78rem;">
@@ -402,6 +404,33 @@
 
 {% block extra_js %}
 <script>
+// ── Compteur animé pour les stat-card-value ──
+document.addEventListener('DOMContentLoaded', () => {
+  const counters = document.querySelectorAll('.stat-card-value');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting || entry.target.dataset.counted) return;
+      entry.target.dataset.counted = '1';
+      const raw = entry.target.textContent.replace(/[^\d]/g, '');
+      const target = parseInt(raw, 10);
+      if (!target) return;
+      const duration = 900;
+      const start = performance.now();
+      const suffix = entry.target.textContent.replace(/[\d,]/g, '').trim();
+      const animate = now => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(eased * target);
+        entry.target.textContent = value.toLocaleString('fr-FR') + (suffix ? ' ' + suffix : '');
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    });
+  }, { threshold: 0.3 });
+  counters.forEach(el => observer.observe(el));
+});
+
 // ── Chart : Articles par mois ──
 const ctx1 = document.getElementById('articlesChart').getContext('2d');
 const gradient1 = ctx1.createLinearGradient(0, 0, 0, 260);
