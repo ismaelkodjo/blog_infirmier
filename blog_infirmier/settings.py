@@ -102,6 +102,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'blog.context_processors.global_context',
+                'core.context_processors.analytics',
             ],
         },
     },
@@ -337,6 +338,7 @@ SITE_NAME = "Blog Infirmier de Santé Publique"
 SITE_DESCRIPTION = "Plateforme dédiée à la santé publique, l'épidémiologie et la santé numérique"
 SITE_AUTHOR = "Infirmier de Santé Publique"
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
+GOOGLE_ANALYTICS_ID = config('GOOGLE_ANALYTICS_ID', default='') 
 
 # ===========================================================
 # RATE LIMITING

@@ -8,7 +8,7 @@
   <meta name="google-site-verification" content="KhQCOTD3HEjBTiDfplXYU9RH5SzOxmZAce9Dly1qt3Y" />
 
   <!-- SEO Meta -->
-  <title>{% block title %}{{ title }} — {{ site_name }}{% endblock %}</title>
+  <title>{% block title %}{% if title %}{{ title }} — {{ site_name }}{% else %}{{ site_name }}{% endif %}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ site_description }}{% endblock %}">
   <meta name="keywords" content="{% block meta_keywords %}santé publique, infirmier, épidémiologie, santé numérique{% endblock %}">
   <meta name="author" content="{{ site_author }}">
@@ -42,6 +42,19 @@
   }
   </script>
   {% endblock %}
+
+  <!-- Google Analytics (production uniquement, injecté via context processor) -->
+  {% if GA_ID %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ GA_ID }}', {
+      'anonymize_ip': true
+    });
+  </script>
+  {% endif %}
 
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
